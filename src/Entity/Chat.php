@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -15,11 +17,6 @@ class Chat
      * @ORM\Column(type="integer")
      */
     private $id;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $id_chat;
 
     /**
      * @ORM\Column(type="datetime")
@@ -36,21 +33,19 @@ class Chat
      */
     private $chat_content;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\User", inversedBy="chats")
+     */
+    private $users;
+
+    public function __construct()
+    {
+        $this->users = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getIdChat(): ?int
-    {
-        return $this->id_chat;
-    }
-
-    public function setIdChat(int $id_chat): self
-    {
-        $this->id_chat = $id_chat;
-
-        return $this;
     }
 
     public function getDateCreation(): ?\DateTimeInterface
@@ -85,6 +80,32 @@ class Chat
     public function setChatContent(string $chat_content): self
     {
         $this->chat_content = $chat_content;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getUsers(): Collection
+    {
+        return $this->Users;
+    }
+
+    public function addUser(User $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        if ($this->users->contains($user)) {
+            $this->users->removeElement($user);
+        }
 
         return $this;
     }

@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -52,6 +54,39 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $description;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Chat", mappedBy="Users")
+     */
+    private $chats;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Photo", inversedBy="User")
+     */
+    private $photo;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="user")
+     */
+    private $Comments;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Follow", mappedBy="user")
+     */
+    private $Following;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Follow", mappedBy="userFollowed")
+     */
+    private $Followed;
+
+    public function __construct()
+    {
+        $this->chats = new ArrayCollection();
+        $this->Comments = new ArrayCollection();
+        $this->Following = new ArrayCollection();
+        $this->Followed = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -170,6 +205,139 @@ class User implements UserInterface
     public function setDescription(?string $description): self
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Chat[]
+     */
+    public function getChats(): Collection
+    {
+        return $this->chats;
+    }
+
+    public function addChat(Chat $chat): self
+    {
+        if (!$this->chats->contains($chat)) {
+            $this->chats[] = $chat;
+            $chat->addUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeChat(Chat $chat): self
+    {
+        if ($this->chats->contains($chat)) {
+            $this->chats->removeElement($chat);
+            $chat->removeUser($this);
+        }
+
+        return $this;
+    }
+
+    public function getPhoto(): ?Photo
+    {
+        return $this->photo;
+    }
+
+    public function setPhoto(?Photo $photo): self
+    {
+        $this->photo = $photo;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Comment[]
+     */
+    public function getComments(): Collection
+    {
+        return $this->Comments;
+    }
+
+    public function addComment(Comment $comment): self
+    {
+        if (!$this->Comments->contains($comment)) {
+            $this->Comments[] = $comment;
+            $comment->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comment $comment): self
+    {
+        if ($this->Comments->contains($comment)) {
+            $this->Comments->removeElement($comment);
+            // set the owning side to null (unless already changed)
+            if ($comment->getUser() === $this) {
+                $comment->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Follow[]
+     */
+    public function getFollowing(): Collection
+    {
+        return $this->Following;
+    }
+
+    public function addFollowing(Follow $following): self
+    {
+        if (!$this->Following->contains($following)) {
+            $this->Following[] = $following;
+            $following->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFollowing(Follow $following): self
+    {
+        if ($this->Following->contains($following)) {
+            $this->Following->removeElement($following);
+            // set the owning side to null (unless already changed)
+            if ($following->getUser() === $this) {
+                $following->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Follow[]
+     */
+    public function getFollowed(): Collection
+    {
+        return $this->Followed;
+    }
+
+    public function addFollowed(Follow $followed): self
+    {
+        if (!$this->Followed->contains($followed)) {
+            $this->Followed[] = $followed;
+            $followed->setUserFollowed($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFollowed(Follow $followed): self
+    {
+        if ($this->Followed->contains($followed)) {
+            $this->Followed->removeElement($followed);
+            // set the owning side to null (unless already changed)
+            if ($followed->getUserFollowed() === $this) {
+                $followed->setUserFollowed(null);
+            }
+        }
 
         return $this;
     }

@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -15,11 +17,6 @@ class Photo
      * @ORM\Column(type="integer")
      */
     private $id;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $id_photo;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -46,21 +43,31 @@ class Photo
      */
     private $date_update;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Category", inversedBy="photos")
+     */
+    private $categories;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\User", mappedBy="photo")
+     */
+    private $User;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="photo")
+     */
+    private $Comments;
+
+    public function __construct()
+    {
+        $this->categories = new ArrayCollection();
+        $this->User = new ArrayCollection();
+        $this->Comments = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getIdPhoto(): ?int
-    {
-        return $this->id_photo;
-    }
-
-    public function setIdPhoto(int $id_photo): self
-    {
-        $this->id_photo = $id_photo;
-
-        return $this;
     }
 
     public function getTitle(): ?string
@@ -119,6 +126,94 @@ class Photo
     public function setDateUpdate(\DateTimeInterface $date_update): self
     {
         $this->date_update = $date_update;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Category[]
+     */
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
+    public function addCategories(Category $category): self
+    {
+        if (!$this->categories->contains($categories)) {
+            $this->categories[] = $categories;
+        }
+
+        return $this;
+    }
+
+    public function removeCategories(Category $categories): self
+    {
+        if ($this->categories->contains($categories)) {
+            $this->categories->removeElement($categories);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getUser(): Collection
+    {
+        return $this->User;
+    }
+
+    public function addUser(User $user): self
+    {
+        if (!$this->User->contains($user)) {
+            $this->User[] = $user;
+            $user->setPhoto($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        if ($this->User->contains($user)) {
+            $this->User->removeElement($user);
+            // set the owning side to null (unless already changed)
+            if ($user->getPhoto() === $this) {
+                $user->setPhoto(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Comment[]
+     */
+    public function getComments(): Collection
+    {
+        return $this->Comments;
+    }
+
+    public function addComment(Comment $comment): self
+    {
+        if (!$this->Comments->contains($comment)) {
+            $this->Comments[] = $comment;
+            $comment->setPhoto($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comment $comment): self
+    {
+        if ($this->Comments->contains($comment)) {
+            $this->Comments->removeElement($comment);
+            // set the owning side to null (unless already changed)
+            if ($comment->getPhoto() === $this) {
+                $comment->setPhoto(null);
+            }
+        }
 
         return $this;
     }
