@@ -58,7 +58,7 @@ class Category
         return $this->photos;
     }
 
-    public function addPhotos(Photo $photo): self
+    public function addPhoto(Photo $photo): self
     {
         if (!$this->photos->contains($photo)) {
             $this->photos[] = $photo;
@@ -68,7 +68,7 @@ class Category
         return $this;
     }
 
-    public function removePhotos(Photo $photo): self
+    public function removePhoto(Photo $photo): self
     {
         if ($this->photos->contains($photo)) {
             $this->photos->removeElement($photo);

@@ -22,14 +22,14 @@ class Follow
     private $date_follow;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="Following")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="followedUsers")
      */
-    private $user;
+    private $followedUsers;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="Followed")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="followByUsers")
      */
-    private $userFollowed;
+    private $followByUsers;
 
     public function getId(): ?int
     {
@@ -48,28 +48,30 @@ class Follow
         return $this;
     }
 
-    public function getUser(): ?User
+    public function getFollowedUsers(): ?User
     {
-        return $this->user;
+        return $this->followedUsers;
     }
 
-    public function setUser(?User $user): self
+    public function setFollowedUsers(?User $followedUsers): self
     {
-        $this->user = $user;
+        $this->followedUsers = $followedUsers;
 
         return $this;
     }
 
-    public function getUserFollowed(): ?User
+    public function getFollowByUsers(): ?User
     {
-        return $this->userFollowed;
+        return $this->followByUsers;
     }
 
-    public function setUserFollowed(?User $userFollowed): self
+    public function setFollowByUsers(?User $followByUsers): self
     {
-        $this->userFollowed = $userFollowed;
+        $this->followByUsers = $followByUsers;
 
         return $this;
     }
+
+
 
 }

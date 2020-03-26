@@ -1,0 +1,9 @@
+header, footer {
+    background-color: teal;
+    color: white;
+}
+
+a{
+    color: inherit;
+    text-decoration: inherit;
+}

@@ -5,10 +5,12 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
  */
 class User implements UserInterface
 {
@@ -59,33 +61,37 @@ class User implements UserInterface
      * @ORM\ManyToMany(targetEntity="App\Entity\Chat", mappedBy="Users")
      */
     private $chats;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Photo", inversedBy="User")
-     */
-    private $photo;
-
+    
+    
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="user")
      */
     private $Comments;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Follow", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="App\Entity\Follow", mappedBy="followedUsers")
      */
-    private $Following;
+    private $followedUsers;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Follow", mappedBy="userFollowed")
+     * @ORM\OneToMany(targetEntity="App\Entity\Follow", mappedBy="followByUsers")
      */
-    private $Followed;
+    private $followByUsers;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Photo", mappedBy="user")
+     */
+    private $photos;
+
+
 
     public function __construct()
     {
         $this->chats = new ArrayCollection();
         $this->Comments = new ArrayCollection();
-        $this->Following = new ArrayCollection();
-        $this->Followed = new ArrayCollection();
+        $this->followedUsers = new ArrayCollection();
+        $this->followByUsers = new ArrayCollection();
+        $this->photos = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -237,18 +243,6 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getPhoto(): ?Photo
-    {
-        return $this->photo;
-    }
-
-    public function setPhoto(?Photo $photo): self
-    {
-        $this->photo = $photo;
-
-        return $this;
-    }
-
     /**
      * @return Collection|Comment[]
      */
@@ -283,28 +277,28 @@ class User implements UserInterface
     /**
      * @return Collection|Follow[]
      */
-    public function getFollowing(): Collection
+    public function getFollowedUsers(): Collection
     {
-        return $this->Following;
+        return $this->followedUsers;
     }
 
-    public function addFollowing(Follow $following): self
+    public function addFollowedUser(Follow $followedUser): self
     {
-        if (!$this->Following->contains($following)) {
-            $this->Following[] = $following;
-            $following->setUser($this);
+        if (!$this->followedUsers->contains($followedUser)) {
+            $this->followedUsers[] = $followedUser;
+            $followedUser->setFollowedUsers($this);
         }
 
         return $this;
     }
 
-    public function removeFollowing(Follow $following): self
+    public function removeFollowedUser(Follow $followedUser): self
     {
-        if ($this->Following->contains($following)) {
-            $this->Following->removeElement($following);
+        if ($this->followedUsers->contains($followedUser)) {
+            $this->followedUsers->removeElement($followedUser);
             // set the owning side to null (unless already changed)
-            if ($following->getUser() === $this) {
-                $following->setUser(null);
+            if ($followedUser->getFollowedUsers() === $this) {
+                $followedUser->setFollowedUsers(null);
             }
         }
 
@@ -314,31 +308,64 @@ class User implements UserInterface
     /**
      * @return Collection|Follow[]
      */
-    public function getFollowed(): Collection
+    public function getFollowByUsers(): Collection
     {
-        return $this->Followed;
+        return $this->followByUsers;
     }
 
-    public function addFollowed(Follow $followed): self
+    public function addFollowByUser(Follow $followByUser): self
     {
-        if (!$this->Followed->contains($followed)) {
-            $this->Followed[] = $followed;
-            $followed->setUserFollowed($this);
+        if (!$this->followByUsers->contains($followByUser)) {
+            $this->followByUsers[] = $followByUser;
+            $followByUser->setFollowByUsers($this);
         }
 
         return $this;
     }
 
-    public function removeFollowed(Follow $followed): self
+    public function removeFollowByUser(Follow $followByUser): self
     {
-        if ($this->Followed->contains($followed)) {
-            $this->Followed->removeElement($followed);
+        if ($this->followByUsers->contains($followByUser)) {
+            $this->followByUsers->removeElement($followByUser);
             // set the owning side to null (unless already changed)
-            if ($followed->getUserFollowed() === $this) {
-                $followed->setUserFollowed(null);
+            if ($followByUser->getFollowByUsers() === $this) {
+                $followByUser->setFollowByUsers(null);
             }
         }
 
         return $this;
     }
+
+    /**
+     * @return Collection|Photo[]
+     */
+    public function getPhotos(): Collection
+    {
+        return $this->photos;
+    }
+
+    public function addPhoto(Photo $photo): self
+    {
+        if (!$this->photos->contains($photo)) {
+            $this->photos[] = $photo;
+            $photo->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePhoto(Photo $photo): self
+    {
+        if ($this->photos->contains($photo)) {
+            $this->photos->removeElement($photo);
+            // set the owning side to null (unless already changed)
+            if ($photo->getUser() === $this) {
+                $photo->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+
 }
