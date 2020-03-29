@@ -3,18 +3,36 @@
 {% block title %}Hello PhotoController!{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/laragon/www/TofBoxProject/src/Controller/PhotoController.php'|file_link(0) }}">src/Controller/PhotoController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/laragon/www/TofBoxProject/templates/photo/index.html.twig'|file_link(0) }}">templates/photo/index.html.twig</a></code></li>
-    </ul>
-</div>
+
+    <h1>Liste des photos</h1>
+
+    <div class="photo-wrap">
+        {% for photo in photos %}
+        <figure>
+            <img class="photo_view" src="{{ asset('img/' ~ photo.path ) }}" alt="{{ photo.title }}">
+            <figcaption><div>
+                            <a  href="{{ path('profil', {'id':photo.user.id}) }}">
+
+                                    <img class="profil_photo" src="{{ asset('img/' ~ photo.user.photoProfil) }}" alt="{{photo.user.nickname}}">
+                                    &nbsp;{{ photo.user.nickname }}
+
+                            </a>
+                        </div>
+                        <div>
+                            {% if app.user %}
+                                <a href="{{ path('add_follow', {'id':app.user.id, 'id_follow':photo.user.id}) }}">Follow</a>
+                            {% else %}
+                                <a href="{{ path('app_login') }}">Follow</a>
+                            {% endif %}
+                            Nb Likes: {{ photo.nbLike }}
+                        </div>
+            </figcaption>
+        </figure>
+
+        {% endfor %}
+
+
+    </div>
 {% endblock %}

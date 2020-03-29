@@ -38,11 +38,6 @@ class User implements UserInterface
     private $password;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $username;
-
-    /**
      * @ORM\Column(type="datetime")
      */
     private $date_creation;
@@ -82,6 +77,11 @@ class User implements UserInterface
      * @ORM\OneToMany(targetEntity="App\Entity\Photo", mappedBy="user")
      */
     private $photos;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $nickname;
 
 
 
@@ -170,13 +170,6 @@ class User implements UserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
-    }
-
-    public function setUsername(string $username): self
-    {
-        $this->username = $username;
-
-        return $this;
     }
 
     public function getDateCreation(): ?\DateTimeInterface
@@ -363,6 +356,18 @@ class User implements UserInterface
                 $photo->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getNickname(): ?string
+    {
+        return $this->nickname;
+    }
+
+    public function setNickname(string $nickname): self
+    {
+        $this->nickname = $nickname;
 
         return $this;
     }

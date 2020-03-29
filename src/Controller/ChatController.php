@@ -16,4 +16,13 @@ class ChatController extends AbstractController
             'controller_name' => 'ChatController',
         ]);
     }
+
+    public function addMessage()
+    {}
+
+    public function edit()
+    {}
+
+    public function delete()
+    {}
 }

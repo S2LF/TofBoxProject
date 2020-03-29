@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Voir Profil{% endblock %}
+
+{% block body %}
+
+
+
+    <h1>{{ user.nickname }}</h1>
+
+<div>
+    <img src="{{ asset('img/' ~ user.photoProfil ) }}" alt="">
+
+    <p>{{ user.email }}</p>
+    <p>{{ user.dateCreation | date("d/m/Y") }} </p>
+
+    <p>{{ user.photoProfil }}</p>
+    <p>{{ user.description }}</p>
+
+        <h2>Photos</h2>
+    <div class="photo-wrap">
+        {% for photo in user.photos %}
+        <figure>
+            <img class="photo_view" src="{{ asset('img/' ~ photo.path ) }}" alt="{{ photo.title }}">
+        <figcaption> <p>{{ photo.title }}</p></figcaption>
+        </figure>
+        
+
+        {% endfor %}
+    </div>
+
+    <h2>Conversations</h2>
+
+    <h2>Follows</h2>
+
+    <h2>Likes</h2>
+
+    <h2>Commentaires</h2>
+</div>
+
+{% endblock %}

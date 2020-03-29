@@ -12,9 +12,34 @@
         <div class="main-wrap">
             <header>
                 <nav>
-                <a href="{{ path('home') }}">Accueil</a>
+                <div>
+                    <a href="{{ path('home')  }}">Accueil</a>
+                    <a href="{{ path('photo') }}">Photos</a>
+                </div>
+
+                <div>
+                    {% if app.user %}
+                    <a href="{{ path('profil', {'id':app.user.id}) }}">{{ app.user.nickname}}</a>
+                    <a href="{{ path('app_logout') }}">Déconnexion</a>
+                    {% else %}
+                    <a href="{{ path('app_login') }}">Se connecter</a>
+                    <a href="{{ path('app_register') }}">S'inscrire</a>
+                    {% endif %}
+                  </div>
+
                 </nav>
             </header>
+
+            {% for message in app.flashes('success') %}
+            <div class="success">
+                {{ message }}
+            </div>
+            {% endfor %}
+            {% for message in app.flashes('error') %}
+            <div class="error">
+                {{ message }}
+            </div>
+            {% endfor %}
             
             {% block body %}
 

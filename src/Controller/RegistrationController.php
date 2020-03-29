@@ -28,7 +28,8 @@ class RegistrationController extends AbstractController
                     $user,
                     $form->get('plainPassword')->getData()
                 )
-            )->setDateCreation(new \Datetime('now', new \DateTimeZone('Europe/Paris')  ));
+            )->setDateCreation(new \Datetime('now', new \DateTimeZone('Europe/Paris')  ))
+            ->setPhotoProfil('default/default.jpg');
             
 
             $entityManager = $this->getDoctrine()->getManager();
@@ -44,4 +45,5 @@ class RegistrationController extends AbstractController
             'registrationForm' => $form->createView(),
         ]);
     }
+
 }

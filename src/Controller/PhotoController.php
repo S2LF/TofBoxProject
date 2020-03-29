@@ -2,18 +2,132 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Entity\Photo;
+use App\Form\PhotoType;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
+/**
+ * @Route("/photo")
+ */
 class PhotoController extends AbstractController
 {
     /**
-     * @Route("/photo", name="photo")
+     * @Route("/", name="photo")
      */
     public function index()
     {
+
+        $photos = $this->getDoctrine()
+                    ->getRepository(Photo::class)
+                    ->getAll();
+
         return $this->render('photo/index.html.twig', [
-            'controller_name' => 'PhotoController',
+            'photos' => $photos,
         ]);
+    }
+    /**
+     * @Route("/add", name="add_photo")
+     */
+    public function add(Request $request, EntityManagerInterface $em)
+    {
+        $photo = new Photo();
+
+        $form = $this->createForm(PhotoType::class, $photo);
+
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+            if($photo->getUser() == null){
+                $photo->setUser($this->getUser());
+            }
+
+
+        /** @var UploadedFile $imageFile */
+        $imageFile = $form->get('photo')->getData();
+        // Rename file with Regex & Add TimeStamp of Creation Date + UniqId
+        $safeFileName = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $photo->getTitle());
+        $newFilename = $safeFileName.'-'.uniqid().'.'.$imageFile->guessExtension();
+
+        // Move the file to the directory public/img
+        try {
+            $path = $photo->getUser()->getId();
+            $imageFile->move(
+                // img_directory is define in services.yaml
+                $this->getParameter('img_directory').$path,
+                $newFilename
+            );
+            $photo->setPath($path."/".$newFilename);
+        } catch( FileException $e) {
+            $this->addFlash("error", "Une problème est survenu lors de l'upload de l'image");
+        }
+        $photo->setDateCreation(new \Datetime('now', new \DateTimeZone('Europe/Paris')  ));
+
+        
+        // ->add('nb_like')
+        // ->add('date_update')
+        // ->add('user')
+
+        $em->persist($photo);
+        $em->flush();
+
+        $this->addFlash("success", "La photo a bien été ajouté, merci !");
+        return $this->redirectToRoute('home');
+        }
+
+        return $this->render('photo/form.html.twig', [
+            "form" => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/edit/{id}", name="edit_photo")
+     */
+    public function editPhoto(Photo $photo, Request $request, EntityManagerInterface $em)
+    {
+        $form = $this->createForm(PhotoType::class, $photo);
+
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()) {
+            $em->flush();
+            $this->addFlash("success", "La photo a bien été modifié !");
+            return $this->redirectToRoute("home");
+        }
+
+        return $this->render('photo/form.html.twig', [
+            "form" => $form->createView(),
+            "photo" => $photo
+        ]);
+
+
+    }
+
+    /**
+     * @Route("/delete/{id}", name="delete_photo")
+     */
+    public function deletePhoto(Photo $photo, EntityManagerInterface $em )
+    {
+        $fileSystem = new Filesystem();
+
+        if ( $this->getUser() == $photo->getUser()){
+            try {
+                $fileSystem->remove($this->getParameter('img_directory').$photo->getPath());
+                $em->remove($photo);
+                $em->flush();
+                $this->addFlash("success", "Photo supprimée avec succès !");
+            } catch (FileException $e){
+                $this->addFlash("error", "Un problème est survenu lors de la suppression");
+            }
+           
+        } else {
+            $this->addFlash("error", "La photo ne vous appartient pas !");
+        }
+
+        return $this->redirectToRoute("home");
     }
 }

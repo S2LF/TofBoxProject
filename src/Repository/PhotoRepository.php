@@ -47,4 +47,13 @@ class PhotoRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function getAll(){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager ->createQuery(
+                    "SELECT p
+                        FROM App\Entity\Photo p"
+        );
+        return $query->execute();
+    }
 }

@@ -1,9 +1,64 @@
 header, footer {
+    padding: 1em;
     background-color: teal;
     color: white;
+}
+
+* {
+    box-sizing: border-box;
 }
 
 a{
     color: inherit;
     text-decoration: inherit;
+}
+.photo-wrap{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+figure{
+    background-color: #fff;
+    text-align: center;
+}
+figcaption{
+    padding:0 1em 0.5em 1em;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.photo_view{
+    height: 277px;
+    width: 355px;
+    object-fit: cover;
+}
+.profil_photo{
+    width:30px;
+}
+
+figure img.photo_view{
+    margin: 1em 1em 0.5em 1em;
+
+}
+body{
+    background-color: #ebebdf;
+    
+}
+
+.success{
+    font-weight: bold;
+    color:green;
+    background: rgba(0, 128, 0, 0.2);
+    padding: 0.5em;
+    font-size:1.1em;
+    text-align: center;
+}
+
+.error{
+    font-weight: bold;
+    color:red;
+    background: rgba(255, 0, 0, 0.2);
+    padding: 0.5em;
+    font-size:1.1em;
+    text-align: center;
 }

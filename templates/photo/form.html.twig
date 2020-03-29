@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajout de Photo{% endblock %}
+
+{% block body %}
+    <h1>Ajouter une photo</h1>
+
+    {{ form_start(form) }}
+
+    {{ form_row(form.title) }}
+
+    {% if 'photo/add' in app.request.uri %}
+         {{ form_row(form.photo) }}    
+    {% elseif 'photo/edit' in app.request.uri %}
+        <img src="{{ asset('img/' ~ photo.path ) }}">
+    {% endif %}
+   
+    {{ form_row(form.description) }}
+
+    <button class="btn">Envoyer</button>
+{{ form_end(form) }}
+{% endblock %}

@@ -39,7 +39,7 @@ class Photo
     private $date_creation;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $date_update;
 
@@ -59,6 +59,11 @@ class Photo
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $path;
 
     public function __construct()
     {
@@ -200,5 +205,18 @@ class Photo
 
         return $this;
     }
+
+    public function getPath(): ?string
+    {
+        return $this->path;
+    }
+
+    public function setPath(string $path): self
+    {
+        $this->path = $path;
+
+        return $this;
+    }
+
 
 }

@@ -16,4 +16,15 @@ class CategoryController extends AbstractController
             'controller_name' => 'CategoryController',
         ]);
     }
+
+    public function add()
+    {}
+
+    public function edit()
+    {}
+
+    public function delete()
+    {}
+
+    
 }
