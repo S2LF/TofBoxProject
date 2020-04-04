@@ -14,28 +14,76 @@
     <p>{{ user.email }}</p>
     <p>{{ user.dateCreation | date("d/m/Y") }} </p>
 
-    <p>{{ user.photoProfil }}</p>
     <p>{{ user.description }}</p>
+
+
+
 
         <h2>Photos</h2>
     <div class="photo-wrap">
         {% for photo in user.photos %}
+
         <figure>
+            <a class="myBtn" data-photo="{{ photo.id }}" href="">
             <img class="photo_view" src="{{ asset('img/' ~ photo.path ) }}" alt="{{ photo.title }}">
+            </a>
+            {# TODO Modal Supr#}
+            {# <p><a href="{{ path('delete_photo', {'id': photo.id } ) }}">Supr</a></p> #}
         <figcaption> <p>{{ photo.title }}</p></figcaption>
         </figure>
-        
 
         {% endfor %}
     </div>
 
     <h2>Conversations</h2>
 
-    <h2>Follows</h2>
+    <section>
+
+        <h2>Follow you: {{ user.followedUsers | length }}</h2>
+
+        {% for followBy in user.followedUsers %}
+            <p><img class="profil_photo" src="{{ asset('img/' ~ followBy.followByUsers.photoProfil ) }}" alt="">{{ followBy.followByUsers.nickname }}</p>
+
+        {% endfor %}
+
+        <h2>You follow: {{ user.followByUsers | length }}</h2>
+
+        {% for followBy in user.followByUsers %}
+        <p><img class="profil_photo" src="{{ asset('img/' ~ followBy.followedUsers.photoProfil ) }}" alt="">{{ followBy.followedUsers.nickname }}</p>
+
+        {% endfor %}
+    </section>
 
     <h2>Likes</h2>
 
     <h2>Commentaires</h2>
 </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+
+            // Get the button that opens the modal
+        $(document).ready(function(){
+            $(".myBtn").on("click", function(e){
+                e.preventDefault()
+                
+                let photoid = $(this).data("photo")
+                $.get(
+                    "{{ path('ajax_show') }}",
+                    {
+                        "photoid" : photoid
+                    },
+                    function(data){
+                        $("#myModal .modal-body").html(data)
+                    }
+                )
+            })
+        })
+
+        
+    </script>
 
 {% endblock %}

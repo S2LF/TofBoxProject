@@ -2,8 +2,9 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Entity\Photo;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class HomeController extends AbstractController
 {
@@ -12,11 +13,17 @@ class HomeController extends AbstractController
      */
     public function index()
     {
-        
+        $photos = $this->getDoctrine()
+        ->getRepository(Photo::class)
+        ->getAll();
 
-        return $this->render('home/index.html.twig', [
-            'controller_name' => 'HomeController',
-        ]);
+return $this->render('home/index.html.twig', [
+'photos' => $photos,
+]);
+
+        // return $this->render('home/index.html.twig', [
+        //     'controller_name' => 'HomeController',
+        // ]);
     }
 
     public function isConnected()

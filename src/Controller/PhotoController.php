@@ -7,6 +7,7 @@ use App\Form\PhotoType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -22,13 +23,15 @@ class PhotoController extends AbstractController
     public function index()
     {
 
-        $photos = $this->getDoctrine()
-                    ->getRepository(Photo::class)
-                    ->getAll();
+        return $this->redirectToRoute("home");
 
-        return $this->render('photo/index.html.twig', [
-            'photos' => $photos,
-        ]);
+        // $photos = $this->getDoctrine()
+        //             ->getRepository(Photo::class)
+        //             ->getAll();
+
+        // return $this->render('photo/index.html.twig', [
+        //     'photos' => $photos,
+        // ]);
     }
     /**
      * @Route("/add", name="add_photo")
@@ -96,7 +99,7 @@ class PhotoController extends AbstractController
         if($form->isSubmitted() && $form->isValid()) {
             $em->flush();
             $this->addFlash("success", "La photo a bien été modifié !");
-            return $this->redirectToRoute("home");
+            return $this->redirectToRoute("profil ", array('id' => get_current_user('id')));
         }
 
         return $this->render('photo/form.html.twig', [
@@ -116,8 +119,9 @@ class PhotoController extends AbstractController
 
         if ( $this->getUser() == $photo->getUser()){
             try {
-                $fileSystem->remove($this->getParameter('img_directory').$photo->getPath());
                 $em->remove($photo);
+                // Si on arrive pas à supprimer la photo il ne faut pas supprimer la photo du dossier
+                $fileSystem->remove($this->getParameter('img_directory').$photo->getPath());
                 $em->flush();
                 $this->addFlash("success", "Photo supprimée avec succès !");
             } catch (FileException $e){
@@ -127,7 +131,25 @@ class PhotoController extends AbstractController
         } else {
             $this->addFlash("error", "La photo ne vous appartient pas !");
         }
+        return $this->redirectToRoute("profil", array('id' => $this->getUser()));
+    }
 
-        return $this->redirectToRoute("home");
+    /**
+     * @Route("/show/ajax", name="ajax_show", methods={"GET"})
+     */
+    public function ajax_show(Request $request, EntityManagerInterface $em){
+
+        $photoid = $request->query->get("photoid");
+        $photo = $em->getRepository(Photo::class)->findOneBy(['id' => $photoid]);
+
+
+        $html = $this->renderView("photo/ajaxShow.html.twig", [
+
+            "photo" => $photo
+
+        ]);
+
+        return new Response($html);
+
     }
 }

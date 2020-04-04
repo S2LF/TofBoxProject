@@ -2,10 +2,11 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}{% endblock %}</title>
+        <title>{% block title %}Accueil{% endblock %}</title>
         {% block stylesheets %}
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
         <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+        <script src="https://kit.fontawesome.com/64cfa211f1.js" crossorigin="anonymous"></script>
         {% endblock %}
     </head>
     <body>
@@ -13,8 +14,7 @@
             <header>
                 <nav>
                 <div>
-                    <a href="{{ path('home')  }}">Accueil</a>
-                    <a href="{{ path('photo') }}">Photos</a>
+                    <a href="{{ path('photo')  }}">Accueil</a>
                 </div>
 
                 <div>
@@ -30,6 +30,8 @@
                 </nav>
             </header>
 
+
+            {# Flash messages #}
             {% for message in app.flashes('success') %}
             <div class="success">
                 {{ message }}
@@ -50,7 +52,71 @@
             <footer>
                 <p>Footer</p>
             </footer>
-            {% block javascripts %}{% endblock %}
+
+
+            {# BUTTON AJAX
+            <!-- Trigger/Open The Modal -->
+            <button id="myBtn">Open Modal</button> 
+            #}
+
+            <!-- The Modal -->
+            <div id="myModal" class="modal">
+                <!-- Modal content -->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <span class="close">&times;</span>
+                    </div>
+                    <div class="modal-body">
+                        <div id="loaderModal"><i class=" fas fa-compact-disc fa-spin fa-4x"></i></div>
+                    </div>
+                </div>
+            </div>
+            <div id="loader"><i class="fas fa-compact-disc fa-spin fa-7x"></i></div>
+            {% block javascripts %}
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+
+                <script>
+
+                    $(document).ready(function(){
+                        $("#loader").fadeOut(500)
+                    })
+                    // Get the modal
+                    var modal = document.getElementById("myModal")
+                    var modalBody = document.getElementsByClassName("modal-body")[0]
+                    var btn = document.getElementsByClassName("myBtn")
+                
+                //    console.log(btn)
+                //    var i 
+
+                // for (i = 0; i <= btn.length; i++){
+                // // Get the button that opens the modal
+                // var thisBtn = document.getElementsByClassName("myBtn")[i]
+                //  }
+                
+                $('.myBtn').on('click', function() {
+                    modal.style.display = "block"
+                })
+
+                    // Get the <span> element that closes the modal
+                    var span = document.getElementsByClassName("close")[0]
+
+                    // When the user clicks on <span> (x), close the modal
+                    // modalBody has initial loader
+                    span.onclick = function() {
+                    modal.style.display = "none";
+                    modalBody.innerHTML('<div id="loaderModal"><i class="fas fa-compact-disc fa-spin fa-4x"></i></div>')
+                    }
+
+                    // When the user clicks anywhere outside of the modal, close it
+                    // modalBody has initial loader
+                    window.onclick = function(event) {
+                        if (event.target == modal) {
+                            modal.style.display = "none";
+                            modalBody.innerHTML = '<div id="loaderModal"><i class="fas fa-compact-disc fa-spin fa-4x"></i></div>'
+                        }
+                    }
+                </script>
+            {% endblock %}
         </div>
     </body>
 </html>
