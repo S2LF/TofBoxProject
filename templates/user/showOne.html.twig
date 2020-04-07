@@ -6,57 +6,137 @@
 
 
 
-    <h1>{{ user.nickname }}</h1>
-
+    <h1>{{ user.nickname }} 
+        {% if app.user == user %}
+            <a href="{{ path('user_edit', {'id':user.id}) }}"><i class="fas fa-user-edit"></i></a>
+        {% endif %}
+    </h1> 
+    
+    
+    {% if app.user != user %} <!-- TOTO: Changer chemin -->
+            {% if app.user %}
+                <a href="{{ path('add_follow', {'id':user.id, 'id_follow':user.id}) }}"><i class="far fa-eye"></i>&nbsp;Follow</a>
+            {% else %}
+                <a href="{{ path('app_login') }}"><i class="far fa-eye"></i>&nbsp;Follow</a>
+            {% endif %}
+    {% endif %}
 <div>
-    <img src="{{ asset('img/' ~ user.photoProfil ) }}" alt="">
+    <img class="profil_user" src="{{ asset('img/' ~ user.photoProfil ) }}" alt="">
 
-    <p>{{ user.email }}</p>
-    <p>{{ user.dateCreation | date("d/m/Y") }} </p>
+    {% if app.user == user %}
+    <p>Votre e-mail: {{ user.email }}</p>    
+    <p>Changer votre mot de passe ?</p> {# TODO #}
+    {% endif %}
 
+    <p>Inscrit depuis le {{ user.dateCreation | date("d/m/Y") }} </p>
+
+    {% if user.description != null %}
     <p>{{ user.description }}</p>
+    {% elseif app.user == user %}
+    <p>Vous n'avez pas encore de description</p>
+    {% else %}
+    <p>L'utilisateur n'as pas encore de description</p>
+    {% endif %}
 
 
-
-
-        <h2>Photos</h2>
+    <h2>Photos</h2>
     <div class="photo-wrap">
-        {% for photo in user.photos %}
+        {% if user.photos | length > 1 %}
+             {% for photo in user.photos %}
 
-        <figure>
-            <a class="myBtn" data-photo="{{ photo.id }}" href="">
-            <img class="photo_view" src="{{ asset('img/' ~ photo.path ) }}" alt="{{ photo.title }}">
-            </a>
-            {# TODO Modal Supr#}
-            {# <p><a href="{{ path('delete_photo', {'id': photo.id } ) }}">Supr</a></p> #}
-        <figcaption> <p>{{ photo.title }}</p></figcaption>
-        </figure>
+            <figure>
+                <a class="myBtn" data-photo="{{ photo.id }}" href="">
+                <img class="photo_view" src="{{ asset('img/' ~ photo.path ) }}" alt="{{ photo.title }}">
+                </a>
+                {# TOTO EditButton #}
+                <i class="fas fa-pen-square"></i> 
+                {# TODO Modal Supr#}
+                <i class="fas fa-trash-alt"></i>
+                {# <p><a href="{{ path('delete_photo', {'id': photo.id } ) }}">Supr</a></p> #}
+            <figcaption> <p>{{ photo.title }}</p></figcaption>
+            </figure>
 
-        {% endfor %}
+            {% endfor %}
+        {% else %}
+            {% if app.user == user %}
+            <div>
+                <p>Vous n'avez publié aucune photo</p>
+            </div>
+            {% else %}
+            <div>
+                <p>L'utilisateur n'a publié aucune photo</p>
+            </div>
+            {% endif %}
+
+        {% endif %}    
+           
     </div>
+
+
 
     <h2>Conversations</h2>
 
-    <section>
+    <a href="{{ path('create_chat', {'id': user.id}) }} ">Démarrer une conversation</a>
 
-        <h2>Follow you: {{ user.followedUsers | length }}</h2>
+    <section class="profil_section">
 
-        {% for followBy in user.followedUsers %}
-            <p><img class="profil_photo" src="{{ asset('img/' ~ followBy.followByUsers.photoProfil ) }}" alt="">{{ followBy.followByUsers.nickname }}</p>
+        <article>
+            {% if app.user == user %}
+                <h2>Vous suivez: {{ user.followByUsers | length }}</h2>
 
-        {% endfor %}
+                {% for followBy in user.followByUsers %}
+                <p><a href="{{ path('profil', {'id':followBy.followedUsers.id }) }}"><img class="profil_photo" src="{{ asset('img/' ~ followBy.followedUsers.photoProfil ) }}" alt="">{{ followBy.followedUsers.nickname }}</a></p>
 
-        <h2>You follow: {{ user.followByUsers | length }}</h2>
+                {% endfor %}
+            {% else %}
+                <h2>{{ user.nickname }} suit: {{ user.followByUsers | length }}</h2>
 
-        {% for followBy in user.followByUsers %}
-        <p><img class="profil_photo" src="{{ asset('img/' ~ followBy.followedUsers.photoProfil ) }}" alt="">{{ followBy.followedUsers.nickname }}</p>
+                {% for followBy in user.followByUsers %}
+                <p><a href="{{ path('profil', {'id':followBy.followedUsers.id }) }}"><img class="profil_photo" src="{{ asset('img/' ~ followBy.followedUsers.photoProfil ) }}" alt="">{{ followBy.followedUsers.nickname }}</a></p>
 
-        {% endfor %}
+                {% endfor %}
+            {% endif %}
+
+        </article>
+        <article>
+            {% if app.user == user %}
+                <h2>Vous êtes suivis par: {{ user.followedUsers | length }}</h2>
+
+                {% for followBy in user.followedUsers %}
+                <p><a href="{{ path('profil', {'id':followBy.followByUsers.id }) }}"><img class="profil_photo" src="{{ asset('img/' ~ followBy.followByUsers.photoProfil ) }}" alt="">{{ followBy.followByUsers.nickname }}</a></p>
+
+                {% endfor %}
+            {% else %}
+                <h2>{{ user.nickname }} est suivi par: {{ user.followedUsers | length }}</h2>
+
+                {% for followBy in user.followedUsers %}
+                <p><a href="{{ path('profil', {'id':followBy.followByUsers.id }) }}" class=""><img class="profil_photo" src="{{ asset('img/' ~ followBy.followByUsers.photoProfil ) }}" alt="">{{ followBy.followByUsers.nickname }}</a></p>
+
+                {% endfor %}
+            {% endif %}
+
+        </article>
+            {% if app.user == user %}
+            <h2>Vous aimer</h2>
+            {% else %}
+                <h2>Aime</h2>
+            {% endif %}
+
+        <article>
+
+        </article>
+        <article>
+            {% if app.user == user %}
+                <h2>Vos Commentaires: {{ user.comments | length }}</h2>
+            {% else %}
+                <h2>Ses Commentaires: {{ user.comments | length }}</h2>
+            {% endif %}
+        </article>
+
+
     </section>
 
-    <h2>Likes</h2>
-
-    <h2>Commentaires</h2>
+    <a style="color:red" href=""><i class="fas fa-times"></i></a> {# TODO : Supprimer son compte #}
 </div>
 
 {% endblock %}
@@ -65,6 +145,7 @@
     {{ parent() }}
     <script>
 
+        // Ajax ShowOnePhoto
             // Get the button that opens the modal
         $(document).ready(function(){
             $(".myBtn").on("click", function(e){

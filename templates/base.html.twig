@@ -19,11 +19,12 @@
 
                 <div>
                     {% if app.user %}
-                    <a href="{{ path('profil', {'id':app.user.id}) }}">{{ app.user.nickname}}</a>
+                    <a href="{{ path('profil', {'id':app.user.id}) }}"><img class="profil_photo" src="{{ asset('img/' ~ app.user.photoProfil ) }}" alt="{{ app.user.nickname }}"> {{ app.user.nickname}}</a>
                     <a href="{{ path('app_logout') }}">Déconnexion</a>
                     {% else %}
-                    <a href="{{ path('app_login') }}">Se connecter</a>
                     <a href="{{ path('app_register') }}">S'inscrire</a>
+                    <a href="{{ path('app_login') }}">Se connecter</a>
+                    
                     {% endif %}
                   </div>
 

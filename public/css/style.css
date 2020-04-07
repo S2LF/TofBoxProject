@@ -12,6 +12,22 @@ a{
     color: inherit;
     text-decoration: inherit;
 }
+nav{
+    display: flex;
+    justify-content: space-between;
+    vertical-align: middle;
+}
+nav div{
+    display: flex;
+    font-size: 1.5em;
+}
+nav div a {
+    align-self: center;
+    padding-left: 1em;
+}
+nav img{
+    vertical-align: bottom;
+}
 .photo-wrap{
     display: flex;
     flex-direction: row;
@@ -35,6 +51,14 @@ figcaption{
 }
 .profil_photo{
     width:30px;
+}
+.profil_user{
+    width:200px;
+}
+.profil_section{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
 }
 
 figure img.photo_view{
@@ -85,7 +109,7 @@ body{
 }
 /* Modal Style */
 
-.modal-wrap {}
+/* .modal-wrap {} */
 
 .header-modal {
     display: flex;

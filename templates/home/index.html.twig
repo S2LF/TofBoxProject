@@ -24,12 +24,8 @@
                             </a>
                         </div>
                         <div>
-                            {% if app.user %}
-                                <a href="{{ path('add_follow', {'id':app.user.id, 'id_follow':photo.user.id}) }}">Follow</a>
-                            {% else %}
-                                <a href="{{ path('app_login') }}">Follow</a>
-                            {% endif %}
-                            Nb Likes: {{ photo.nbLike }}
+                            <i class="far fa-comment"></i> {{ photo.Comments | length }}</a>
+                            <i class="far fa-thumbs-up"></i> {{ photo.nbLike }}
                         </div>
             </figcaption>
         </figure>

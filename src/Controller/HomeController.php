@@ -26,6 +26,7 @@ return $this->render('home/index.html.twig', [
         // ]);
     }
 
+    // TODO ?
     public function isConnected()
     {}
 }

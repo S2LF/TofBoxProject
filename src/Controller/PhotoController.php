@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Photo;
 use App\Form\PhotoType;
+use App\Form\PhotoEditType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
@@ -52,7 +53,7 @@ class PhotoController extends AbstractController
 
         /** @var UploadedFile $imageFile */
         $imageFile = $form->get('photo')->getData();
-        // Rename file with Regex & Add TimeStamp of Creation Date + UniqId
+        // Rename file with SafeName + UniqId
         $safeFileName = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $photo->getTitle());
         $newFilename = $safeFileName.'-'.uniqid().'.'.$imageFile->guessExtension();
 
@@ -69,11 +70,7 @@ class PhotoController extends AbstractController
             $this->addFlash("error", "Une problème est survenu lors de l'upload de l'image");
         }
         $photo->setDateCreation(new \Datetime('now', new \DateTimeZone('Europe/Paris')  ));
-
-        
-        // ->add('nb_like')
-        // ->add('date_update')
-        // ->add('user')
+        $photo->setNbLike('0');
 
         $em->persist($photo);
         $em->flush();
@@ -92,21 +89,27 @@ class PhotoController extends AbstractController
      */
     public function editPhoto(Photo $photo, Request $request, EntityManagerInterface $em)
     {
-        $form = $this->createForm(PhotoType::class, $photo);
+        
+        if( $this->getUser() == $photo->getUser()){
+            $form = $this->createForm(PhotoEditType::class, $photo);
 
-        $form->handleRequest($request);
+            $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()) {
-            $em->flush();
-            $this->addFlash("success", "La photo a bien été modifié !");
-            return $this->redirectToRoute("profil ", array('id' => get_current_user('id')));
-        }
+            if($form->isSubmitted() && $form->isValid()) {
+                $photo->setDateUpdate(new \DateTime('now', new \DateTimeZone('Europe/Paris') ));
+                $em->flush();
+                $this->addFlash("success", "La photo a bien été modifié !");
+                return $this->redirectToRoute("profil", array('id' => $this->getUser()->getId()));
+            } 
 
-        return $this->render('photo/form.html.twig', [
-            "form" => $form->createView(),
-            "photo" => $photo
-        ]);
-
+            return $this->render('photo/form.html.twig', [
+                "form" => $form->createView(),
+                "photo" => $photo
+            ]);
+        } else {
+                $this->addFlash("error", "La photo ne vous appartient pas !");
+                return $this->redirectToRoute('home');
+            }
 
     }
 
@@ -120,7 +123,7 @@ class PhotoController extends AbstractController
         if ( $this->getUser() == $photo->getUser()){
             try {
                 $em->remove($photo);
-                // Si on arrive pas à supprimer la photo il ne faut pas supprimer la photo du dossier
+                // TODO Si on arrive pas à supprimer la photo il ne faut pas supprimer la photo du dossier
                 $fileSystem->remove($this->getParameter('img_directory').$photo->getPath());
                 $em->flush();
                 $this->addFlash("success", "Photo supprimée avec succès !");
@@ -152,4 +155,8 @@ class PhotoController extends AbstractController
         return new Response($html);
 
     }
+
+        // TODO
+        // add like
+        // remove like
 }

@@ -29,7 +29,7 @@ class Photo
     private $description;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="integer")
      */
     private $nb_like;
 

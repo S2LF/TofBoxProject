@@ -24,7 +24,7 @@ class Chat
     private $date_creation;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $date_update;
 

@@ -21,8 +21,15 @@
         </section>
         
         <div class="action-modal">
+            {% if app.user %}
+                <a href="{{ path('add_follow', {'id':app.user.id, 'id_follow':photo.user.id}) }}"><i class="far fa-eye"></i>&nbsp;Follow</a>
+            {% else %}
+                <a href="{{ path('app_login') }}"><i class="far fa-eye"></i>&nbsp;Follow</a>
+            {% endif %}
             <a href=""><i class="fas fa-thumbs-up"></i>&nbsp;Like</a>
         </div>
+        
+        
 
     </div>
 

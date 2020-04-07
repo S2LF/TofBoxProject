@@ -17,13 +17,13 @@ class CategoryController extends AbstractController
         ]);
     }
 
-    public function add()
+    public function add() // TODO
     {}
 
-    public function edit()
+    public function edit() // TODO
     {}
 
-    public function delete()
+    public function delete() // TODO ?
     {}
 
     

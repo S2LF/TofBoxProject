@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modification du profil{% endblock %}
+
+{% block body %}
+    <h1>Modifier son profil</h1>
+
+    {{ form_start(registrationForm) }}
+        {{ form_row(registrationForm.nickname) }}
+        {{ form_row(registrationForm.photo_profil) }}
+        {{ form_row(registrationForm.description) }}
+
+        <button class="btn">Enregistrer</button>
+    {{ form_end(registrationForm) }}
+{% endblock %}
