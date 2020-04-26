@@ -10,7 +10,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
- * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
+ * @UniqueEntity(fields={"email"}, message="Il y a déjà un compte avec cet email.")
  */
 class User implements UserInterface
 {
@@ -53,7 +53,7 @@ class User implements UserInterface
     private $description;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Chat", mappedBy="Users")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Chat", mappedBy="users")
      */
     private $chats;
     
@@ -298,6 +298,8 @@ class User implements UserInterface
         return $this;
     }
 
+
+
     /**
      * @return Collection|Follow[]
      */
@@ -350,10 +352,13 @@ class User implements UserInterface
     public function removePhoto(Photo $photo): self
     {
         if ($this->photos->contains($photo)) {
+
+            // $photo->deletePhoto();
             $this->photos->removeElement($photo);
             // set the owning side to null (unless already changed)
             if ($photo->getUser() === $this) {
                 $photo->setUser(null);
+                
             }
         }
 
@@ -373,4 +378,56 @@ class User implements UserInterface
     }
 
 
+    /**
+     * @var string le token qui servira lors de l'oubli de mot de passe
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    protected $resetToken;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Photo", inversedBy="likeUsers")
+     */
+    private $likes;
+
+    /**
+     * @return string
+     */
+    public function getResetToken(): string
+    {
+        return $this->resetToken;
+    }
+
+    /**
+     * @param string $resetToken
+     */
+    public function setResetToken(?string $resetToken): void
+    {
+        $this->resetToken = $resetToken;
+    }
+
+    /**
+     * @return Collection|Photo[]
+     */
+    public function getLikes(): Collection
+    {
+        return $this->likes;
+    }
+
+    public function addLike(Photo $like): self
+    {
+        if (!$this->likes->contains($like)) {
+            $this->likes[] = $like;
+        }
+
+        return $this;
+    }
+
+    public function removeLike(Photo $like): self
+    {
+        if ($this->likes->contains($like)) {
+            $this->likes->removeElement($like);
+        }
+
+        return $this;
+    }
 }

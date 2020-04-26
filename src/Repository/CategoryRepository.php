@@ -47,4 +47,22 @@ class CategoryRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function getAll(){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager ->createQuery(
+                    "SELECT c
+                        FROM App\Entity\Category c"
+        );
+        return $query->execute();
+    }
+
+    public function deleteOne($catId){
+        $entityManager = $this->getEntityManager();
+        $request = $this->createQueryBuilder('c')
+        ->delete()
+        ->andWhere('c.id ='. $catId)
+        ->getQuery()
+        ->getResult();
+    }
 }

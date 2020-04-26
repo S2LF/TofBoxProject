@@ -29,11 +29,6 @@ class Photo
     private $description;
 
     /**
-     * @ORM\Column(type="integer")
-     */
-    private $nb_like;
-
-    /**
      * @ORM\Column(type="datetime")
      */
     private $date_creation;
@@ -50,7 +45,7 @@ class Photo
 
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="photo")
+     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="photo", cascade={"remove"})
      */
     private $Comments;
 
@@ -65,11 +60,17 @@ class Photo
      */
     private $path;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\User", mappedBy="likes")
+     */
+    private $likeUsers;
+
     public function __construct()
     {
         $this->categories = new ArrayCollection();
         $this->User = new ArrayCollection();
         $this->Comments = new ArrayCollection();
+        $this->likeUsers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -97,18 +98,6 @@ class Photo
     public function setDescription(?string $description): self
     {
         $this->description = $description;
-
-        return $this;
-    }
-
-    public function getNbLike(): ?int
-    {
-        return $this->nb_like;
-    }
-
-    public function setNbLike(?int $nb_like): self
-    {
-        $this->nb_like = $nb_like;
 
         return $this;
     }
@@ -214,6 +203,34 @@ class Photo
     public function setPath(string $path): self
     {
         $this->path = $path;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|LikeUser[]
+     */
+    public function getLikeUsers(): Collection
+    {
+        return $this->likeUsers;
+    }
+
+    public function addLikeUser(User $likeUsers): self
+    {
+        if (!$this->likeUsers->contains($likeUsers)) {
+            $this->likeUsers[] = $likeUsers;
+            $likeUsers->addLike($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLikeUser(User $likeUsers): self
+    {
+        if ($this->likeUsers->contains($likeUsers)) {
+            $this->likeUsers->removeElement($likeUsers);
+            $likeUsers->removeLike($this);
+        }
 
         return $this;
     }

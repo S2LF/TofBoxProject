@@ -1,38 +1,29 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello ChatController!{% endblock %}
+{% block title %}Tof'Box{% endblock %}
 
 {% block body %}
 
-<h1>Démarrer une conversation entre {{currentUser.nickname }} & {{ user2.nickname }}</h1>
+<h1 class="center">Démarrer une conversation entre {{currentUser.nickname }} & {{ user2.nickname }}</h1>
 
-<form action="{{ path('chat_add_message', {'id':user2.id}) }}", method="POST">
-    <textarea name="text" id="text" cols="30" rows="10"></textarea>
-    <input type="submit" value="Envoyer">
-</form>
-
-
-{{ dump(lines) }}
-
-
-    
-    {% for line in lines %}
-
-        <div class="line">
-
-            {% set foo = line|split("|") %}
-            
-
-        </div>
-
+{% for chat in currentUser.chats %}
+    {% for user in chat.users %}
+        {{dump(user) }}
     {% endfor %}
 
+{% endfor %}
 
-{# 
-{{ dump(currentUser) }}
 
-{{ dump(user2)}}
- #}
+<div class="center">
+<form action="{{ path('chat_add_message', {'id':user2.id}) }}", method="POST">
+    <p >
+        <textarea name="text" id="text" cols="30" rows="10"></textarea>
+    </p>
+    <p>
+        <input type="submit" value="Envoyer">
+    </p>
 
+</form>
+</div>
 
 {% endblock %}

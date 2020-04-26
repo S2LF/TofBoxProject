@@ -89,7 +89,7 @@ class Chat
      */
     public function getUsers(): Collection
     {
-        return $this->Users;
+        return $this->users;
     }
 
     public function addUser(User $user): self

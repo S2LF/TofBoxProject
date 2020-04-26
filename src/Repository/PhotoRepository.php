@@ -56,4 +56,25 @@ class PhotoRepository extends ServiceEntityRepository
         );
         return $query->execute();
     }
+
+    public function findLasts($number, $user)
+    {
+        return $this->createQueryBuilder('p')
+            ->orderBy('p.date_creation', 'DESC')
+            ->where( 'p.user = '.$user)
+            ->setMaxResults($number)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function deletePhoto($userId)
+    {
+        return $this->createQueryBuilder('p')
+            ->delete()
+            ->andWhere('p.user = '. $userId)
+            ->getQuery()
+            ->getResult();
+    }
+
 }

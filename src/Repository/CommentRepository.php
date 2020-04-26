@@ -47,4 +47,30 @@ class CommentRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function getAll(){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager ->createQuery(
+                    "SELECT c
+                        FROM App\Entity\Comment c"
+        );
+        return $query->execute();
+    }
+
+    public function getCommentsFromPhotoId($photoId){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager ->createQuery(
+                    "SELECT c
+                        FROM App\Entity\Comment c
+                        WHERE c.photo = $photoId"
+        );
+        return $query->execute();
+    }
+
+    public function deleteComment($commentId){
+        return $this->createQueryBuilder('c')
+        ->delete()
+        ->andWhere('c.id = '. $commentId)
+        ->getQuery()
+        ->getResult();
+    }
 }

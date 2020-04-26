@@ -1,0 +1,20 @@
+
+<div class="center">
+
+    <h1>Êtes-vous sûre de vouloir nous quitter ?</h1>
+    <p>Vous vous êtes inscrit le {{ user.dateCreation | format_datetime('long', 'none', locale='fr') }}</p>
+    <p>Vous avez publié {{ user.photos | length }} photos <br>
+        Si vous supprimer votre compte, vos photos seront supprimés !</p>
+    <p>{{ user.followedUsers | length }} personnes vous suivent actuellement.</p>
+    <p>Vous suivez {{ user.followByUsers | length }} personnes.<br>
+        Si vous supprimer votre compte, ces liens seront supprimés !</p>
+    
+
+</div>
+
+
+
+<div class="sticky">
+    <h2>Confirmer la suppression définitive du compte ?</h2>  <p><a href="{{ path('delete_profil', {'id': user.id } ) }}"><i class="fas fa-trash-alt fa-2x"></i>&nbsp;Supprimer</a></p>
+
+</div>

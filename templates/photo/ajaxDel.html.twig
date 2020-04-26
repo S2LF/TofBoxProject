@@ -1,42 +1,8 @@
 
-<div class="modal-wrap">
 
-    
-    <div class="header-modal">
-        <section>
-            <div class="profil-modal">
-            <a  href="{{ path('profil', {'id':photo.user.id}) }}">
-                <img src="{{ asset('img/' ~ photo.user.photoProfil) }}" alt="{{photo.user.nickname}}">
-            </a>
-        </div>
-       
-        
-        <div>
-            <h1>{{ photo.title }}</h1>
-            <p>par
-            <strong><a  href="{{ path('profil', {'id':photo.user.id}) }}">
-                 {{ photo.user.nickname }}
-            </a></strong></p>
-        </div>
-        </section>
-        
-        <div class="action-modal">
-            {% if app.user %}
-                <a href="{{ path('add_follow', {'id':app.user.id, 'id_follow':photo.user.id}) }}"><i class="far fa-eye"></i>&nbsp;Follow</a>
-            {% else %}
-                <a href="{{ path('app_login') }}"><i class="far fa-eye"></i>&nbsp;Follow</a>
-            {% endif %}
-            <a href=""><i class="fas fa-thumbs-up"></i>&nbsp;Like</a>
-        </div>
-        
-        
+{% include 'photo/ajaxShow.html.twig' %}
 
-    </div>
-
-
-    <figure>
-        <img class="photo_modal" src="{{ asset('img/' ~ photo.path ) }}" alt="{{ photo.title }}">
-    </figure>
-    {# TODO: Commentary & Aside with Category & Likes count & Follows count #}
+<div class="sticky">
+    <h2>Êtes-vous sûre de vouloir supprimer cette photo ?</h2>  <p><a href="{{ path('delete_photo', {'id': photo.id } ) }}"><i class="fas fa-trash-alt fa-2x"></i> Supprimer</a></p>
 
 </div>

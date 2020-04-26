@@ -3,23 +3,44 @@
 {% block title %}Ajout de Photo{% endblock %}
 
 {% block body %}
-    <h1>Ajouter une photo</h1>
 
-    {{ form_start(form) }}
-
-    {{ form_row(form.title) }}
-
-    {% if 'photo/add' in app.request.uri %}
-         {{ form_row(form.photo) }}    
-    {% elseif 'photo/edit' in app.request.uri %}
-        <img src="{{ asset('img/' ~ photo.path ) }}">
-    {% endif %}
    
-    {{ form_row(form.description) }}
 
-    {{ form_row(form.categories)}}
+        {% if 'photo/add' in app.request.uri %}
+            <h1 class="center">Ajouter une photo</h1>
+
+        {% else %}
+            <h1 class="center">Editer une photo</h1>
+        {% endif %}
+
+        {% if 'photo/edit' in app.request.uri %}
+        <div class="center">
+            <img id="photo-edit-view" src="{{ asset('img/' ~ photo.path ) }}">
+        </div>
+
+        {% endif %}
+        <div id="photo-edit-wrap" class="form-wrap">
+        {{ form_start(form) }}
 
 
-    <button class="btn">Envoyer</button>
-{{ form_end(form) }}
+        <p id='title'>{{ form_row(form.title) }}</p>
+        
+
+        {% if 'photo/add' in app.request.uri %}
+            <p>{{ form_row(form.photo) }}</p>
+        {% endif %}
+
+        <p>{{ form_row(form.description) }}
+        </p>
+
+        <p>{{ form_row(form.categories)}}</p>
+
+        <p class="center">
+            <button class="btn">Valider</button>
+        </p> 
+        
+    {{ form_end(form) }}
+
+    </div>
+ 
 {% endblock %}

@@ -19,12 +19,12 @@ class Category
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique=true)
      */
     private $intitule;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Photo", mappedBy="category")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Photo", mappedBy="categories")
      */
     private $photos;
 

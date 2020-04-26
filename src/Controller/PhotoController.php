@@ -3,13 +3,18 @@
 namespace App\Controller;
 
 use App\Entity\Photo;
+use App\Entity\Comment;
 use App\Form\PhotoType;
 use App\Form\PhotoEditType;
+use App\Form\AddCommentType;
+use App\Repository\PhotoRepository;
+use App\Repository\FollowRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
@@ -25,14 +30,6 @@ class PhotoController extends AbstractController
     {
 
         return $this->redirectToRoute("home");
-
-        // $photos = $this->getDoctrine()
-        //             ->getRepository(Photo::class)
-        //             ->getAll();
-
-        // return $this->render('photo/index.html.twig', [
-        //     'photos' => $photos,
-        // ]);
     }
     /**
      * @Route("/add", name="add_photo")
@@ -70,7 +67,6 @@ class PhotoController extends AbstractController
             $this->addFlash("error", "Une problème est survenu lors de l'upload de l'image");
         }
         $photo->setDateCreation(new \Datetime('now', new \DateTimeZone('Europe/Paris')  ));
-        $photo->setNbLike('0');
 
         $em->persist($photo);
         $em->flush();
@@ -86,11 +82,12 @@ class PhotoController extends AbstractController
 
     /**
      * @Route("/edit/{id}", name="edit_photo")
+     * @IsGranted("ROLE_ADMIN")
      */
     public function editPhoto(Photo $photo, Request $request, EntityManagerInterface $em)
     {
         
-        if( $this->getUser() == $photo->getUser()){
+        if( $this->isGranted('ROLE_ADMIN') || $this->getUser() == $photo->getUser() ){
             $form = $this->createForm(PhotoEditType::class, $photo);
 
             $form->handleRequest($request);
@@ -99,7 +96,7 @@ class PhotoController extends AbstractController
                 $photo->setDateUpdate(new \DateTime('now', new \DateTimeZone('Europe/Paris') ));
                 $em->flush();
                 $this->addFlash("success", "La photo a bien été modifié !");
-                return $this->redirectToRoute("profil", array('id' => $this->getUser()->getId()));
+                return $this->redirectToRoute("profil", array('id' => $photo->getUser()->getId()));
             } 
 
             return $this->render('photo/form.html.twig', [
@@ -115,17 +112,18 @@ class PhotoController extends AbstractController
 
     /**
      * @Route("/delete/{id}", name="delete_photo")
+     * @IsGranted("ROLE_ADMIN")
      */
     public function deletePhoto(Photo $photo, EntityManagerInterface $em )
     {
         $fileSystem = new Filesystem();
 
-        if ( $this->getUser() == $photo->getUser()){
+        if ( $this->isGranted('ROLE_ADMIN') || $this->getUser() == $photo->getUser()){
             try {
                 $em->remove($photo);
-                // TODO Si on arrive pas à supprimer la photo il ne faut pas supprimer la photo du dossier
                 $fileSystem->remove($this->getParameter('img_directory').$photo->getPath());
                 $em->flush();
+
                 $this->addFlash("success", "Photo supprimée avec succès !");
             } catch (FileException $e){
                 $this->addFlash("error", "Un problème est survenu lors de la suppression");
@@ -134,29 +132,113 @@ class PhotoController extends AbstractController
         } else {
             $this->addFlash("error", "La photo ne vous appartient pas !");
         }
-        return $this->redirectToRoute("profil", array('id' => $this->getUser()));
+        return $this->redirectToRoute("profil", array('id' => $photo->getUser()->getId()));
     }
 
     /**
-     * @Route("/show/ajax", name="ajax_show", methods={"GET"})
+     * @Route("/show/ajax", name="ajax_show")
      */
-    public function ajax_show(Request $request, EntityManagerInterface $em){
+    public function ajax_show(Request $request, EntityManagerInterface $em, PhotoRepository $prepo, FollowRepository $frepo){
 
         $photoid = $request->query->get("photoid");
         $photo = $em->getRepository(Photo::class)->findOneBy(['id' => $photoid]);
+        $lastsPhotos = $prepo->findLasts(4, $photo->getUser()->getId());
 
+        if($photo->getLikeUsers()->contains($this->getUser())){
+            $isLiking = true;
+        } else {
+            $isLiking = false;
+        };
+
+        // On actualise isFollow
+        if($this->getUser()){
+            $isFollow = $frepo->isFollow($photo->getUser()->getId(), $this->getUser()->getId());
+        } else {
+            // Si il n'y a pas de User courant on renvoie false
+            $isFollow = false;
+        }
 
         $html = $this->renderView("photo/ajaxShow.html.twig", [
-
-            "photo" => $photo
-
+            "lastsPhotos" => $lastsPhotos,
+            "photo" => $photo,
+            "isLiking" => $isLiking,
+            "isFollow" => $isFollow
         ]);
 
         return new Response($html);
 
     }
 
-        // TODO
-        // add like
-        // remove like
+    /**
+     * @Route("/del/ajax", name="ajax_del", methods={"GET"})
+     */
+    public function ajax_del(Request $request, EntityManagerInterface $em, PhotoRepository $prepo){
+        $photoid = $request->query->get("photoid");
+        $photo = $em->getRepository(Photo::class)->findOneBy(['id' => $photoid]);
+        $lastsPhotos = $prepo->findLasts(4, $photo->getUser()->getId());
+
+        if($photo->getLikeUsers()->contains($this->getUser())){
+            $isLiking = true;
+        } else {
+            $isLiking = false;
+        };
+
+
+        $html = $this->renderView("photo/ajaxDel.html.twig", [
+            "lastsPhotos" => $lastsPhotos,
+            "photo" => $photo,
+            "isLiking" => $isLiking
+        ]);
+
+        return new Response($html);
+    }
+
+    /**
+     * @Route("/ajax/like", name="like")
+     */
+    public function Like(Request $request, EntityManagerInterface $em)
+    {
+        $photoid = $request->request->get("photoId");
+        $photo = $em->getRepository(Photo::class)->findOneBy(['id' => $photoid]);
+
+        // Si le CurrentUser like la photo => On Unlike
+        if($photo->getLikeUsers()->contains($this->getUser())){
+            $photo->removeLikeUser($this->getUser());
+            $em->flush();
+        }
+        // Sinon le CurrentUser like la photo
+        elseif(!$photo->getLikeUsers()->contains($this->getUser())){
+            $like = $photo->addLikeUser($this->getUser());
+            $em->persist($like);
+            $em->flush();
+        }
+
+        // On actualise isLiking
+        if($photo->getLikeUsers()->contains($this->getUser())){
+            $isLiking = true;
+        } else {
+            $isLiking = false;
+        };
+
+
+        $html = $this->renderView("photo/ajaxLike.html.twig", [
+            "isLiking" => $isLiking,
+            "photo" => $photo
+        ]);
+
+        
+        return new Response($html);
+    }
+
+
+    /**
+     * @Route("/ajax/report", name="ajax_signal")
+     */
+    public function Report(Request $request){
+        
+
+        $html = $this->renderView("photo/ajaxReport.html.twig");
+        return new Response($html);
+
+    }
 }

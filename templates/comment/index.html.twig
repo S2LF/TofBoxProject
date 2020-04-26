@@ -1,0 +1,108 @@
+
+{% block body %}
+<h3><i class="fas fa-comment">&nbsp;</i>Commentaires: {{ photo.comments | length}}</h3>
+{% for comment in photo.comments %}
+
+<div class="comment-block">
+    <img src="{{ asset('img/'~ comment.user.photoProfil) }}" alt="{{comment.user.nickname }}">
+    <div class="comment">
+        <div class="comment_header">
+            <h4>{{ comment.user.nickname}}</h4> <small>{{ comment.dateComment | timeago }}</small>
+        </div>
+        <p>{{ comment.comment | nl2br}}</p>
+
+        {% if app.user == comment.user %}
+            <div class="comment_action">
+                <a class="commentActionButton" href=""><i class="fas fa-ellipsis-h"></i></a>
+            
+                <div class="commentAction comment_menu">
+                    <a title="Modifier" class="modal-edit-comment" href="" data-id="{{ comment.id }}"><i class="fas fa-edit"></i></a>&nbsp;|&nbsp;
+                    <a title="Supprimer" class="confirm-delete-comment" data-id="{{ comment.id }}" data-photo="{{ photo.id }}" href=""><i class="fas fa-times-circle"></i></a>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+ <div style="clear:both"></div>
+</div>
+
+
+{% endfor %}
+
+{% endblock %}
+
+
+{% block javascripts %}
+
+
+<script>
+
+$(document).ready(function(){
+
+    // Ouverture des Actions EditComment & DeleteComment
+    $(".commentActionButton").on('click', function(e){
+        var index = $(".commentActionButton").index(this)
+        e.preventDefault()
+        console.log(index)
+        if($(".commentAction:eq("+index+")").hasClass('visible')){
+            $(".commentAction:eq("+index+")").hide().removeClass('visible')
+
+            
+
+        } else {
+            $(".commentAction:eq("+index+")").show().addClass('visible')
+        }
+    })
+
+    $(document).click(function(event) {
+        //if you click on anything except the modal itself or the "open modal" link, close the modal
+        if (!$(event.target).closest(".comment-menu, .commentActionButton").length) {
+          $("body").find(".commentAction").hide().removeClass("visible");
+        }
+      })
+
+    // Ajax EditComment
+    $(".modal-edit-comment").on('click', function(e){
+        e.preventDefault()
+            modal2.style.display = "block"
+            // When the modal is shown, we want a fixed body
+            document.body.style.position = 'fixed';
+            document.body.style.top = `-${window.scrollY}px`;
+            $("body").css('padding-right', '1em')
+            $("body").css('width','100%')
+            
+            let commentId = $(this).data("id")
+
+            $.post(
+                "{{ path('ajax_edit') }}",
+                {
+                    "commentId" : commentId
+                },
+                function(data){
+                    $("#myModal2 .modal-body2").html(data)
+                }
+            )
+        })
+
+    // Ajax DeleteComment
+    $(".confirm-delete-comment").on('click', function(e){
+        e.preventDefault()
+        if(confirm("Êtes vous sûre de vouloir supprimer votre commentaire ?")){
+            let commentId = $(this).data("id")
+            let photoId = $(this).data("photo")
+            $.post(
+                "{{ path('delete_comment') }}",
+                {
+                    "commentid" : commentId,
+                    "photoid" : photoId
+                },
+                function(data){
+                    $("#comment_show").html(data)
+                }
+            )
+        }
+    })
+
+})
+
+</script>
+{% endblock %}

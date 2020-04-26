@@ -1,16 +1,42 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Inscription{% endblock %}
+{% block title %}Tof'Box{% endblock %}
 
 {% block body %}
-    <h1>S'inscrire</h1>
+    <h1 class="center">Inscription</h1>
+<div class="form-wrap">
+
 
     {{ form_start(registrationForm) }}
+
+    <div class="form_error">
+        {{ form_errors(registrationForm) }}
+    </div>
+
+    <p>{{ form_label(registrationForm.email) }}
+       {{ form_widget(registrationForm.email) }}</p>
+
+    <p>{{ form_label(registrationForm.nickname) }}
+        {{ form_widget(registrationForm.nickname) }}</p>
+
+    <p>{{ form_label(registrationForm.plainPassword.first) }}
+        {{ form_widget(registrationForm.plainPassword.first) }}</p>
+
+    <p>{{ form_label(registrationForm.plainPassword.second) }}
+        {{ form_widget(registrationForm.plainPassword.second) }}</p>
+
+    <p>{{ form_widget(registrationForm.agreeTerms) }} <label for="registration_form_agreeTerms">&nbsp;&nbsp;En cochant cette case, je déclare avoir lu et accepter les <a class="blue" href="">Conditions d’utilisation</a> et la <a class="blue" href="">Politique de confidentialité</a>.</label>
+    </p>
+{# 
         {{ form_row(registrationForm.email) }}
         {{ form_row(registrationForm.nickname) }}
         {{ form_row(registrationForm.plainPassword) }}
         {{ form_row(registrationForm.agreeTerms) }}
+#}
+    <p class="center">
+            <button class="btn">S'inscrire</button>
+    </p>
 
-        <button class="btn">Register</button>
+</div>
     {{ form_end(registrationForm) }}
 {% endblock %}

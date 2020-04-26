@@ -1,17 +1,58 @@
-header, footer {
-    padding: 1em;
-    background-color: teal;
-    color: white;
-}
-
 * {
     box-sizing: border-box;
 }
+body{
+   /* background-color: #ebebdf; */
+   background-color: #eee;
+    font-family: 'Roboto', sans-serif;
 
+
+    height: 100vh;
+}
 a{
     color: inherit;
     text-decoration: inherit;
 }
+
+header, footer {
+    padding: 0.5em;
+    background-color: teal;
+    color: white;
+}
+
+.center{
+    text-align: center;
+}
+.bold{
+    font-weight: bold;
+}
+.blue{
+    color:blue;
+}
+.blue:hover{
+    text-decoration: underline;
+}
+.relative{
+    position: relative;
+}
+.sticky{
+    position: sticky;
+    bottom:0;
+}
+.block{
+    display: block;
+}
+
+.main-wrap{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height:100%;
+}
+.content{
+    flex:1;
+}
+/* Nav */
 nav{
     display: flex;
     justify-content: space-between;
@@ -23,34 +64,230 @@ nav div{
 }
 nav div a {
     align-self: center;
+}
+/* nav div a:not(:first-child){
     padding-left: 1em;
+} */
+nav div:first-child{
+    font-weight: bold;
+    align-items: center;
 }
 nav img{
     vertical-align: bottom;
+    width: 100px;
 }
+nav h1{
+    font-size:1.5em;
+    margin: 0;
+    font-family: 'Bebas Neue', cursive;
+}
+
+
+/* Home Categories View */
+#home_cat ul{
+    display: flex;
+    list-style: none;
+    margin: 0;
+    justify-content: center;
+    padding-left: 0;
+    background-color: #cccccc;
+    border-top: 2px solid black ;
+    border-bottom: 2px solid black;
+
+}
+#home_cat ul li{
+    padding: 1em;
+    background-image: linear-gradient(to bottom, #75ebeb, #5dcfcf, #44b4b4, #2a9a9a, #008080);
+    margin: 0.5em 0;
+    color:white;
+    font-weight: bold;
+    width: 100px;
+    text-align: center;
+}
+#home_cat ul :not(:first-child) {
+    margin-left: 1em;
+}
+
+
+/* Show Photo View*/
 .photo-wrap{
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: space-around;
+    justify-content: space-evenly;
 }
-figure{
+.photo-wrap figure {
     background-color: #fff;
     text-align: center;
+    height: 356px;
+    width: 387px;
 }
-figcaption{
+.photo-wrap figcaption{
     padding:0 1em 0.5em 1em;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    height:38px;
+}
+.photo-wrap figcaption div{
+    display: flex;
+
+}
+.photo-wrap figcaption div span{
+    align-self: center;
 }
 .photo_view{
     height: 277px;
-    width: 355px;
+    max-width: 355px;
     object-fit: cover;
+    object-position: bottom;
+}
+#cadre_photo{
+    height: 277px;
+    width: 355px;
+    margin: 1em 1em 0.5em 1em; 
+
+}
+img.photo_view.portrait{
+    object-fit: contain;
+}
+.photo_title{
+    position: absolute;
+    bottom: 63px;
+    left:1em;
+    color: white;
+    /* background-color: rgba(0,0,0,0.5); */
+    width: 355px;
+    display: none;
+    padding: 0 1em;
+    background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.6) 81%)
 }
 .profil_photo{
     width:30px;
+    height: 38px;
+    object-fit: contain;
+}
+.span_vertical_align{
+    display: flex;
+    align-items: center;
+    padding-right: 1em;
+}
+.infos{
+    margin: 0 40px;
+    display: flex;
+    justify-content: space-between;
+}
+.infos section{
+    flex-basis: 500px;
+}
+.infos aside article{
+border: 3px dashed #008080;
+padding: 1em;
+margin: 1em;
+}
+.signal{
+    text-align: right;
+    padding: 1em;
+    color:#a9a9a9;
+}
+
+.propos{
+    display: flex;
+    align-items: center;
+}
+.propos h3{
+    padding-right: 1em;
+}
+.lasts {
+    width: 75px;
+}
+.comment-block{
+    border-bottom: 1px solid #ddd;
+    padding-top: 1em ;
+    position: relative;
+}
+.comment-block h4 {
+    margin: 0;
+}
+.comment-block img {
+    width: 50px;
+    float:left;
+    margin-right: 1em;
+}
+.comment{
+    width: calc(100% - 70px);
+    float: left;
+    position: relative;
+}
+.comment_header{
+    display: flex;
+    justify-content: space-between;
+}
+.comment_header small{
+    color: #a9a9a9;
+}
+.comment_action {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+.comment_menu{
+    position: absolute;
+    bottom: -6px;
+    right: -73px;
+    background-color: rgba(0, 128, 128);
+    padding: 0.5em;
+    color: white;
+    border-radius: 10px;
+    display: none;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, .3)
+}
+textarea#comment {
+    width:421px;
+    margin-bottom: 0;
+}
+#comment_textarea p:first-child{
+    margin-bottom: 0;
+}
+#comment_textarea p:last-child{
+    margin-top: 0;
+    margin-right: 0.5em;
+    text-align: right;
+}
+#comment_input {
+    margin-top: 0;
+}
+
+
+/* Ajax Del Photo */
+div.sticky {
+    /* background-color: rgba(0,0,0,0.1); */
+    background-color: rgba(255,255,255,1 );
+    padding:0.5em 2.5em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+div.sticky a {
+    padding: 1em;
+    border-radius: 8px;
+    background-color: #f3f3f4;
+    font-weight: bold;
+}
+div.sticky a i{
+    vertical-align: middle;
+}
+div.sticky a:hover{
+    background-color: red;
+    color: white;
+}
+
+
+/* UserProfil View */
+.user-wrap{
+    max-width: 1269px;
+    margin: auto;
+    text-align: center;
 }
 .profil_user{
     width:200px;
@@ -60,16 +297,97 @@ figcaption{
     flex-wrap: wrap;
     justify-content: space-between;
 }
-
-figure img.photo_view{
-    margin: 1em 1em 0.5em 1em;
-
+.user_action{
+    position: absolute; 
+    right: 2em;
+    background-color: white;
+    border-radius: 7px;
+    padding: 1em;
+    text-align: left;
 }
-body{
-    background-color: #ebebdf;
-    
+#followAjax{
+    margin-bottom: 3em;
+}
+.edit_position{
+    position: absolute;
+    left:370px;
+    bottom:343px;
+    background-color: white;
+}
+.del-position{
+    position: absolute;
+    left: 370px;
+    top: 340px;
+}
+.follow{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+}
+.follow a {
+    display: flex;
+    align-items: center;
+}
+.follow p:not(:first-child){
+    padding-left: 1em;
+}
+.redzone{
+    max-width: 300px;
+    margin: auto;
+    border-radius: 7px;
+    padding: 0.5em;
+    border:3px solid red;
+    margin-bottom: 1em;
+}
+.redzone p a:hover{
+    color: red;
 }
 
+/* figure img.photo_view{
+    margin: 1em 1em 0.5em 1em; 
+}*/
+
+/* Form View */
+.form-wrap{
+    max-width: 250px;
+    margin: auto;
+    background-color: rgba(0,0,0,0.1);
+    padding:0.5em 1em;
+    margin-bottom: 1em;
+    border-radius: 7px;
+}
+#edit-wrap{
+    max-width: 350px;
+}
+#photo-edit-wrap{
+    max-width: 350px;
+}
+#photo-edit-view{
+    width: 60%;
+}
+#title input{
+    width: 300px;
+}
+input, textarea{
+    margin:0.5em 0;
+    padding: 0.5em;
+    resize: vertical;
+  }
+textarea{
+    width: 300px;
+    height: 100px;
+}
+#registration_form_agreeTerms{
+    margin: 0;
+}
+#register_edit_photo_profil{
+    padding: 0;
+}
+.btn {
+    padding: 0.5em;
+}
+/* Success & Error Flashes  */
 .success{
     font-weight: bold;
     color:green;
@@ -78,7 +396,6 @@ body{
     font-size:1.1em;
     text-align: center;
 }
-
 .error{
     font-weight: bold;
     color:red;
@@ -87,9 +404,16 @@ body{
     font-size:1.1em;
     text-align: center;
 }
+form ul li {
+    color: red;
+    list-style: none;
+}
+form ul{
+    padding-left:0;
+}
 
 
-
+/* Main Loader & Modal Loader */
 #loader{
     width: 100vw;
     height: 100vh;
@@ -102,11 +426,12 @@ body{
     top: 0;
     left: 0;
 }
-#loaderModal{
+#loaderModal, #loaderModal2{
     display: flex;
     align-items: center;
-    justify-content: center;    
+    justify-content: center;
 }
+
 /* Modal Style */
 
 /* .modal-wrap {} */
@@ -123,21 +448,30 @@ body{
     display: flex;
     align-items: center;
 }
-.action-modal{
+#action-modal{
     display: flex;
     align-items: center;
 }
-.action-modal a{
+.action{
     padding: 1em;
     background-color:#f3f3f4;
     border-radius: 8px;
-}
 
-.action-modal a:hover{
-    background-color: #e7e7e9;
+    transition: transform .2s;
 }
-.action-modal a:first-of-type{
-    margin-right: 1em;
+#unlike, .unfollow{
+    background-color: rgba(0, 128, 128, 0.8);
+    color:white;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, .3);
+
+} 
+#unlike:hover, #followAjax .unfollow:hover, #followModal.unfollow:hover{
+    background-color:rgb(0, 128, 128);
+
+}
+a.action:hover{
+    background-color: #e7e7e9;
+    transform: scale(1.1);
 }
 
 .header-modal h1, .header-modal p{
@@ -149,14 +483,66 @@ body{
 
     height: 60px;
 }
+.figure_modal {
+    text-align: center;
+}
 .photo_modal {
     width: 100%
 }
+img.photo_modal.portrait, img.photo_modal.square{
+    max-height: 800px;
+    width:initial;
+}
 
 
+ /* Admin button & Admin pages */
+.admin {
+    position: absolute;
+    right: 2em;
+    bottom: 0.5em;
+}
+.admin-wrap{
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    margin: auto;
+}
+table{
+    margin:auto;
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+table, th, td {
+    border: 1px solid black;
+    padding: 0.5em 1em;
+  }
+  thead {
+      background-color: #008080;
+      color: white;
+  }
+  tbody{
+      background-color: white;
+      color:black;
+  }
+  tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+  tbody tr:hover{
+      background-color: #008080;
+      color:white;
+  }
+.cat_del{
+    padding-left: 1.5em;
+}
+.cat_del:hover{
+    color:red;
+}
+.cat_edit:hover{
+    color:rgb(70, 210, 245);
+}
 
  /* The Modal (background) */
- .modal {
+ .modal, .modal2 {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
     z-index: 1; /* Sit on top */
@@ -168,9 +554,11 @@ body{
     background-color: rgb(0,0,0); /* Fallback color */
     background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
   }
-  
+.modal2{
+    z-index: 2;
+}
   /* Modal Content/Box */
-  .modal-content {
+  .modal-content, .modal-content2 {
     background-color: #fefefe;
     margin: 1em auto; /* 15% from the top and centered */
     padding: 20px;
@@ -178,9 +566,11 @@ body{
     width: 60%; /* Could be more or less, depending on screen size */
     border-radius: 7px;
   }
-  
+  .modal-content2{
+      width: 30%;
+  }
   /* The Close Button */
-  .close {
+  .close, .close2 {
     color: #aaa;
     float: right;
     font-size: 28px;
@@ -188,7 +578,7 @@ body{
   }
   
   .close:hover,
-  .close:focus {
+  .close:focus, .close2:hover, .close2:focus {
     color: black;
     text-decoration: none;
     cursor: pointer;

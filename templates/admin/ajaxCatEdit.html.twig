@@ -1,0 +1,30 @@
+<h1 class="center">Renommer une catégorie:</h1>
+<div class="center">
+    {{ form_start(form)}}
+    <p>
+        {{ form_widget(form.intitule)}}
+        
+            <button data-catid="{{ cat.id }}" class="btn">Valider</button>
+        </p> 
+    {{ form_end(form)}}
+</div>
+
+<script>
+    $('button').on('click', function(e) {
+        e.preventDefault()
+
+        let catedit = $('#myModal input').val()
+        let catid = $(this).data("catid")
+
+        $.get(
+            "{{ path('cat_edit') }}",
+            {
+                "catedit" : catedit,
+                "catid" : catid
+            },
+            function(){
+                location.reload()
+            }
+        )
+    })
+</script>

@@ -1,15 +1,41 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Modification du profil{% endblock %}
+{% block title %}Tof'Box{% endblock %}
 
 {% block body %}
-    <h1>Modifier son profil</h1>
+    <h1 class="center">Modifier son profil</h1>
+<div id="edit-wrap" class="form-wrap">
+ 
 
     {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.nickname) }}
-        {{ form_row(registrationForm.photo_profil) }}
-        {{ form_row(registrationForm.description) }}
 
+    <div class="form_error">
+        {{ form_errors(registrationForm) }}
+    </div>
+
+    <p>{{ form_label(registrationForm.nickname) }}
+       {{ form_widget(registrationForm.nickname) }}</p>
+
+    <p>{{ form_label(registrationForm.photo_profil) }}
+        {{ form_widget(registrationForm.photo_profil) }}<br>
+        <small>(JPG/PNG/GIF, max 1Mo)</small>
+    </p>
+
+
+    <p>{{ form_label(registrationForm.description) }}
+        {{ form_widget(registrationForm.description) }}</p>
+
+    {# {{ form_row(form.title) }} #}
+
+        {# {{ form_row(registrationForm.nickname) }} #}
+        {# {{ form_row(registrationForm.photo_profil) }} #}
+        {# {{ form_row(registrationForm.description) }} #}
+
+    <p class="center">
         <button class="btn">Enregistrer</button>
+    </p>
+
     {{ form_end(registrationForm) }}
+</div>
+    
 {% endblock %}

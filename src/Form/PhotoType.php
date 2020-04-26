@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Photo;
 use App\Entity\Category;
+use App\Form\CategoryType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -12,6 +13,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class PhotoType extends AbstractType
 {
@@ -43,8 +46,18 @@ class PhotoType extends AbstractType
                     ])
                 ]
             ])
-            ->add('description', TextType::class)
-            
+            ->add('description', TextareaType::class, [
+                'label' => 'Description de la photo:' ])
+            // ->add('categories', CollectionType::class, [
+            //     'entry_type' => CategoryType::class,
+            //     // 'choice_label' => 'intitule',
+            //     // 'expanded' => true,
+            //     // 'multiple' => true,
+            //     'by_reference' => false,
+            //     'label' => false,
+            //     'allow_add' => true,
+            //     'allow_delete' =>true,
+            // ])   
             ->add('categories', EntityType::class, [
                 'class' => Category::class,
                 'choice_label' => 'intitule',

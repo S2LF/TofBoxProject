@@ -47,4 +47,53 @@ class FollowRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function getAll(){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager ->createQuery(
+                    "SELECT f
+                        FROM App\Entity\Follow f"
+        );
+        return $query->execute();
+    }
+
+
+    public function isFollow($userProfilId, $userCurrentId){
+
+        $request = $this->createQueryBuilder('f')
+                        ->andWhere('f.followedUsers ='. $userProfilId)
+                        ->andWHere('f.followByUsers ='. $userCurrentId)
+                        ->getQuery()
+                        ->getResult();
+        if($request){
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    public function deleteFollow($currentId, $userProfilId){
+        $request = $this->createQueryBuilder('f')
+        ->delete()
+        ->andWhere('f.followByUsers ='. $currentId)
+        ->andWhere('f.followedUsers ='. $userProfilId)
+        ->getQuery()
+        ->getResult();
+    }
+
+
+    public function deleteAllFollow($userId){
+        $request = $this->createQueryBuilder('f')
+            ->delete()
+            ->andWhere('f.followedUsers ='. $userId)
+            ->getQuery()
+            ->getResult();
+
+        $request = $this->createQueryBuilder('f')
+            ->delete()
+            ->andWhere('f.followByUsers ='. $userId)
+            ->getQuery()
+            ->getResult();
+    }          
 }

@@ -36,6 +36,11 @@ class Comment
      */
     private $user;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true, options={"default": false})
+     */
+    private $isEdit;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -85,6 +90,18 @@ class Comment
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getIsEdit(): ?bool
+    {
+        return $this->isEdit;
+    }
+
+    public function setIsEdit(bool $isEdit): self
+    {
+        $this->isEdit = $isEdit;
 
         return $this;
     }

@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tof'Box{% endblock %}
+
+{% block body %}
+
+<h1 class="center h3 mb-3 font-weight-normal">Changer son adresse email</h1>
+
+
+    <div class="form-wrap">
+
+
+        {{ form_start(form) }}
+
+        <p>{{ form_row(form.password) }}</p>
+
+        <p>{{ form_row(form.email.first) }}</p>
+    
+        <p>{{ form_row(form.email.second) }}
+           </p>
+
+        <p class="center">
+                <button class="btn">Enregistrer</button>
+        </p>
+    
+    </div>
+        {{ form_end(form) }}
+
+{% endblock %}

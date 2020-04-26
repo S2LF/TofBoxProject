@@ -2,11 +2,15 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Accueil{% endblock %}</title>
+        <title>{% block title %}Tof'Box{% endblock %}</title>
         {% block stylesheets %}
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet"> 
+        <link href="https://fonts.googleapis.com/css?family=Bebas+Neue&display=swap" rel="stylesheet"> 
         <link rel="stylesheet" href="{{ asset('css/style.css') }}">
         <script src="https://kit.fontawesome.com/64cfa211f1.js" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+
         {% endblock %}
     </head>
     <body>
@@ -14,12 +18,16 @@
             <header>
                 <nav>
                 <div>
-                    <a href="{{ path('photo')  }}">Accueil</a>
+                    <a href="{{ path('home')  }}">
+                    <img src="{{ asset('img/LogoTofBox.png' ) }}" alt="Logo TofBox"></a>
+                    <a href="{{ path('home')  }}"><h1>Tof'Box</h1></a>
                 </div>
 
                 <div>
                     {% if app.user %}
-                    <a href="{{ path('profil', {'id':app.user.id}) }}"><img class="profil_photo" src="{{ asset('img/' ~ app.user.photoProfil ) }}" alt="{{ app.user.nickname }}"> {{ app.user.nickname}}</a>
+                    <a class="span_vertical_align" href="{{ path('profil', {'id':app.user.id}) }}">
+                        <img class="profil_photo" src="{{ asset('img/' ~ app.user.photoProfil ) }}" alt="{{ app.user.nickname }}">
+                        <span>&nbsp;{{ app.user.nickname }}</span></a>
                     <a href="{{ path('app_logout') }}">Déconnexion</a>
                     {% else %}
                     <a href="{{ path('app_register') }}">S'inscrire</a>
@@ -44,16 +52,20 @@
             </div>
             {% endfor %}
             
+            <div class="content">
             {% block body %}
 
                 {% block content %}
                 {% endblock %}
 
             {% endblock %}
-            <footer>
-                <p>Footer</p>
+            </div>
+            <footer class="center relative">
+                <p>&copy;TofBoxProject - 2020</p>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <p class="admin"><a href="{{ path('admin') }}">Espace Admin</a></p>
+                {% endif %}
             </footer>
-
 
             {# BUTTON AJAX
             <!-- Trigger/Open The Modal -->
@@ -73,6 +85,20 @@
                 </div>
             </div>
             <div id="loader"><i class="fas fa-compact-disc fa-spin fa-7x"></i></div>
+
+            <!-- The Modal 2-->
+            <div id="myModal2" class="modal2">
+                <!-- Modal content -->
+                <div class="modal-content2">
+                    <div class="modal-header2">
+                        <span class="close2">&times;</span>
+                    </div>
+                    <div class="modal-body2">
+                        <div id="loaderModal2"><i class=" fas fa-compact-disc fa-spin fa-4x"></i></div>
+                    </div>
+                </div>
+            </div>
+
             {% block javascripts %}
                 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 
@@ -80,22 +106,33 @@
 
                     $(document).ready(function(){
                         $("#loader").fadeOut(500)
+
+
+                        $("figure.relative").hover(
+                        function(){
+                            var index = $("figure.relative").index(this)
+                            $(".photo_title:eq("+index+")").css('display', 'block')
+                        }, function(){
+                            var index = $("figure.relative").index(this)
+                            $(".photo_title:eq("+index+")").css('display', 'none')
+                        })
+
+
+
+
                     })
                     // Get the modal
                     var modal = document.getElementById("myModal")
                     var modalBody = document.getElementsByClassName("modal-body")[0]
                     var btn = document.getElementsByClassName("myBtn")
                 
-                //    console.log(btn)
-                //    var i 
-
-                // for (i = 0; i <= btn.length; i++){
-                // // Get the button that opens the modal
-                // var thisBtn = document.getElementsByClassName("myBtn")[i]
-                //  }
-                
-                $('.myBtn').on('click', function() {
+                $('.myBtn , .myDelBtn , .myDelUserBtn, .cat_edit').on('click', function() {
                     modal.style.display = "block"
+                                            // When the modal is shown, we want a fixed body
+                                            document.body.style.top = `-${window.scrollY}px`;
+                                            document.body.style.position = 'fixed';
+                                            $("body").css('padding-right', '1em')
+                                            $("body").css('width','100%')
                 })
 
                     // Get the <span> element that closes the modal
@@ -106,7 +143,40 @@
                     span.onclick = function() {
                     modal.style.display = "none";
                     modalBody.innerHTML('<div id="loaderModal"><i class="fas fa-compact-disc fa-spin fa-4x"></i></div>')
+                                                // When the modal is hidden...
+                                                const scrollY = document.body.style.top;
+                                                document.body.style.position = '';
+                                                document.body.style.top = '';
+                                                $("body").css('padding-right', '0')
+                                                $("body").css('width','100%')
+                                                window.scrollTo(0, parseInt(scrollY || '0') * -1);
                     }
+
+
+
+                    // Get the modal2
+                    var modal2 = document.getElementById("myModal2")
+                    var modalBody2 = document.getElementsByClassName("modal-body2")[0]
+                    var btn = document.getElementsByClassName("myBtn2")
+
+    
+                    // Get the <span> element that closes the modal
+                        var span2 = document.getElementsByClassName("close2")[0]
+
+
+                        // When the user clicks on <span> (x), close the modal2
+                        // modalBody2 has initial loader
+                        span2.onclick = function() {
+                        modal2.style.display = "none";
+                        modalBody2.innerHTML('<div id="loaderModal"><i class="fas fa-compact-disc fa-spin fa-4x"></i></div>')
+                                                    // When the modal is hidden...
+                                                    const scrollY = document.body.style.top;
+                                                    document.body.style.position = '';
+                                                    document.body.style.top = '';
+                                                    $("body").css('padding-right', '0')
+                                                    $("body").css('width','100%')
+                                                    window.scrollTo(0, parseInt(scrollY || '0') * -1);
+                        }
 
                     // When the user clicks anywhere outside of the modal, close it
                     // modalBody has initial loader
@@ -114,8 +184,53 @@
                         if (event.target == modal) {
                             modal.style.display = "none";
                             modalBody.innerHTML = '<div id="loaderModal"><i class="fas fa-compact-disc fa-spin fa-4x"></i></div>'
+                                                    // When the modal is hidden...
+                                                    const scrollY = document.body.style.top;
+                                                    document.body.style.position = '';
+                                                    document.body.style.top = '';
+                                                    $("body").css('padding-right', '0')
+                                                    $("body").css('width','100%')
+                                                    window.scrollTo(0, parseInt(scrollY || '0') * -1);
+                        }
+                        if (event.target == modal2) {
+                            modal2.style.display = "none";
+                            modalBody2.innerHTML = '<div id="loaderModal2"><i class="fas fa-compact-disc fa-spin fa-4x"></i></div>'
+                                                    // When the modal is hidden...
+                                                    const scrollY = document.body.style.top;
+                                                    document.body.style.position = '';
+                                                    document.body.style.top = '';
+                                                    $("body").css('padding-right', '0')
+                                                    $("body").css('width','100%')
+                                                    window.scrollTo(0, parseInt(scrollY || '0') * -1);
                         }
                     }
+
+
+                    $(window).on('load', function(){
+                        jQuery("img").each(function() {
+                        // Calculate aspect ratio and store it in HTML data- attribute
+                        var aspectRatio = jQuery(this).width()/jQuery(this).height();
+                        jQuery(this).data("aspect-ratio", aspectRatio);
+                            // Conditional statement
+
+                        if(aspectRatio > 1) {
+                            // Image is landscape
+
+                            jQuery( this ).addClass( "landscape" );
+                        } else if (aspectRatio < 1) {
+                            // Image is portrait
+                            jQuery( this ).addClass( "portrait" );;
+                        } else {
+                            // Image is square
+                            jQuery( this ).addClass( "square" );;            
+                        }
+                    })
+
+                    })
+
+
+
+
                 </script>
             {% endblock %}
         </div>

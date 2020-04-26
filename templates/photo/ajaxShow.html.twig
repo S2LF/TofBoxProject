@@ -20,16 +20,219 @@
         </div>
         </section>
         
-        <div class="action-modal">
-            <a href=""><i class="fas fa-thumbs-up"></i>&nbsp;Like</a>
+        <div id="action-modal">
+            {% include "photo/ajaxLike.html.twig" %}
         </div>
 
     </div>
 
-
-    <figure>
+    <figure class="figure_modal">
         <img class="photo_modal" src="{{ asset('img/' ~ photo.path ) }}" alt="{{ photo.title }}">
     </figure>
-    {# TODO: Commentary & Aside with Category & Likes count & Follows count #}
+    
+    <section>
+        <div class="infos">
+            <article>
+                <p>{{ photo.description }}</p>
+            </article>
+            <article>
+                Publié le : {{ photo.dateCreation | format_datetime('long', 'none', locale='fr') }}
+            </article>
+        </div>
+
+    </section>
+
+    <div class="infos">
+        <section>
+            
+
+            <div id="comment_show">
+                {% include "comment/index.html.twig" %}
+            </div>
+
+            {% if app.user %}
+
+            <div class="comment-block">
+                <img src="{{ asset('img/'~ app.user.photoProfil) }}" alt="{{ app.user.nickname }}">
+
+                <div class="comment">
+                    <div class="comment_header"><h4>{{ app.user.nickname }}</h4> </div>
+                    
+                    <div id="comment_textarea">
+                        <form action="">
+                            <p>
+                                <textarea placeholder="Votre commentaire (max. 255 caractères)" name="comment" id="comment" ></textarea>
+                            </p>
+                            <p>
+                                <input id="comment_input" data-photo="{{ photo.id }}" type="submit">
+                            </p>
+                        </form>
+                    </div>
+                </div>
+                <div style="clear:both"></div>
+
+            </div>
+            
+            {% else %}
+                <div>
+                    <p class="center"><a class="blue" href="{{path('app_login') }}">Connectez-vous</a> ou <a class="blue" href="{{path('app_register') }}">inscrivez-vous</a> pour écrire un commentaire</p>
+                </div>
+            {% endif %}
+            
+
+        </section>
+        <aside>
+            <article>
+                <h3><i class="fas fa-tag"></i>&nbsp;Catégories</h3>
+                <p>
+                    {% for cat in photo.categories %}
+                        <a href="{{ path('home_cat', {'id':cat.id}) }}">{{ cat.intitule | capitalize }}</a>
+                    {% endfor %}
+                </p>
+            </article>
+            <article>
+                <div class="propos">
+                    <h3><i class="far fa-address-card"></i>&nbsp;A propos de <a href="{{ path('profil', {'id':photo.user.id}) }}">{{ photo.user.nickname }}</a> </h3>
+                    {% if app.user != photo.user %} 
+                        {% if app.user %}
+                            {% if isFollow == true %}
+                                <a class="action unfollow" href="" id="followModal" data-user="{{ photo.user.id }}"><i class="fas fa-eye"></i>&nbsp;Suivi</a>
+                            {% else %}
+                                <a class="action" href="" id="followModal" data-user="{{ photo.user.id }}"><i class="far fa-eye"></i>&nbsp;<span>Suivre</span></a>
+                            {% endif %}
+                        {% else %}
+                            <a class="action" href="{{ path('app_login') }}"><i class="far fa-eye"></i>&nbsp;Suivre</a>
+                        {% endif %}
+                    {% endif %}
+                </div>
+                <h5>Followers: <span id="followNb_modal">{{photo.user.followByUsers | length }}</span></h5>
+                <h5>Photos: {{ photo.user.photos | length }}</h5>
+                <h6>Ses dernières photos:</h6>
+                {% for LastPhoto in lastsPhotos %}
+                    <img class="lasts" src="{{ asset('img/' ~ LastPhoto.path) }}" alt="{{ LastPhoto.title }}">
+                {% endfor %}
+            </article>
+            <div class="signal">
+                <a href="" id="modal-signal" data-photo="{{ photo.id }}"><small><i class="fas fa-exclamation-triangle"></i>&nbsp;Signaler</small></a>
+            </div>
+
+
+
+            {# <p>
+                {% for follower in photo.user.followByUsers %}
+                    <img src="{{ asset('img/' ~ follower.followedUsers.photoProfil) }}" alt="{{ follower.followedUsers.nickname }}">{{ follower.followedUsers.nickname }}&nbsp;
+                {% endfor %}
+            </p> #}
+        </aside>
+    </div>
+
+
+
 
 </div>
+
+{% block javascripts %}
+
+
+<script>
+
+    // Portrait ou paysage ?
+        jQuery(".photo_modal").each(function() {
+        // Calculate aspect ratio and store it in HTML data- attribute
+        var aspectRatio = jQuery(this).width()/jQuery(this).height();
+        jQuery(this).data("aspect-ratio", aspectRatio);
+            // Conditional statement
+
+        if(aspectRatio > 1) {
+            // Image is landscape
+
+            jQuery( this ).addClass( "landscape" );
+        } else if (aspectRatio < 1) {
+            // Image is portrait
+            jQuery( this ).addClass( "portrait" );;
+        } else {
+            // Image is square
+            jQuery( this ).addClass( "square" );;            
+        }
+
+    })
+
+    // Ajax Comment
+    $("#comment_input").on('click', function(e){
+        e.preventDefault()
+            
+            let comment = $("textarea#comment").val()
+            let photoId = $(this).data("photo")
+            $.post(
+                "{{ path('add_comment') }}",
+                {
+                    "comment" : comment,
+                    "photoId" : photoId
+                },
+                function(data){
+                    $("#comment_show").html(data)
+                    $("textarea#comment").val('')
+                }
+            )
+        })
+        
+    $("#modal-signal").on('click', function(e){
+        e.preventDefault()
+            modal2.style.display = "block"
+            // When the modal is shown, we want a fixed body
+            document.body.style.position = 'fixed';
+            document.body.style.top = `-${window.scrollY}px`;
+            $("body").css('padding-right', '1em')
+            $("body").css('width','100%')
+            
+            let photoId = $(this).data("photo")
+            $.post(
+                "{{ path('ajax_signal') }}",
+                {
+                    "photoId" : photoId
+                },
+                function(data){
+                    $("#myModal2 .modal-body2").html(data)
+                }
+            )
+        })
+
+        // Ajax Follow Switch
+        $('#followModal').on('click', function(e){
+            e.preventDefault()
+
+            let userId = $(this).data("user")
+
+            $.post(
+                "{{ path('follow') }}",
+                {
+                    "userId" : userId
+                },
+                function(data){
+                    if(data.isFollow == true){
+                        $("#followModal").addClass('unfollow')
+                        $("#followModal").html('<i class="fas fa-eye"></i>&nbsp;Suivi')
+                        $("#follow").addClass('unfollow')
+                        $("#follow").html('<i class="fas fa-eye"></i>&nbsp;Suivi')
+                        $("#followNb").html(data.followNb)
+                        $("#followNb_modal").html(data.followNb)
+                        $("#followList").append('<p id="'+data.user.id+'"><a href="/user/profil/'+ data.user.id+'"><img class="profil_photo" src="/img/'+data.user.photoProfil+'" alt="">&nbsp;'+ data.user.nickname +'</a></p>')
+                    } else {
+                        $("#follow").removeClass('unfollow')
+                        $("#follow").html('<i class="far fa-eye"></i>&nbsp;Suivre')
+                        $("#followModal").removeClass('unfollow')
+                        $("#followModal").html('<i class="far fa-eye"></i>&nbsp;Suivre')
+                        $("#followNb").html(data.followNb)
+                        $("#followNb_modal").html(data.followNb)
+                        $("p#"+data.user.id+"").remove()
+                    }
+                }
+            )
+
+
+})
+</script>
+
+
+
+{% endblock %}

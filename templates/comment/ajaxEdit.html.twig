@@ -1,0 +1,39 @@
+<h1 class="center">Modifier un commentaire</h1>
+
+{{ form_start(form) }}
+
+    {{ form_row(form.comment)}}
+
+    <p class="center">
+        <button id="submit_edit_comment" data-id="{{ comment.id }}" data-photo={{ comment.photo.id }} class="btn">Modifier</button>
+    </p> 
+{{ form_end(form)}}
+
+
+<script>
+
+    $("#submit_edit_comment").on('click', function(e){
+        e.preventDefault()
+
+        let comment = $("textarea#add_comment_comment").val()
+        let photoId = $(this).data("photo")
+        let commentId = $(this).data("id")
+
+        $.post(
+            "{{ path('ajax_edit_comment') }}",
+            {
+                "comment" : comment,
+                "commentId" : commentId,
+                "photoId" : photoId
+            },
+            function(data){
+                $("#comment_show").html(data)
+                $("textarea#comment").val('')
+                $("#myModal2").hide()
+                document.getElementsByClassName("modal-body2")[0].innerHTML = '<div class="center" id="loaderModal2"><i class="fas fa-compact-disc fa-spin fa-4x"></i></div>'
+            }
+        )
+
+    })
+
+</script>

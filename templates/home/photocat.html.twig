@@ -1,0 +1,8 @@
+{# 
+{{ dump(category) }}
+{{ dump(category.photos) }} #}
+{# {{ dump(category.photos.categories )}} #}
+
+{% for photos in category.photos %}
+    {{ dump(photos) }}
+{% endfor %}

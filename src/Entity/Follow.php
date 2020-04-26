@@ -6,6 +6,11 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\FollowRepository")
+ * @ORM\Table(name="follow",
+ *      uniqueConstraints={
+ *          @ORM\UniqueConstraint(name="follow_unique",
+ *          columns={"followed_users_id", "follow_by_users_id"})
+ *          })
  */
 class Follow
 {

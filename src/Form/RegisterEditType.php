@@ -17,9 +17,11 @@ class RegisterEditType extends AbstractType
     {
         $builder
 
-            ->add('nickname', TextType::class)
+            ->add('nickname', TextType::class, [
+                'label' => 'Changer de pseudo :'
+            ])
             ->add('photo_profil', FileType::class, [
-                'label' => 'Photo de profil (JPG/PNG/GIF, max 1Mo)',
+                'label' => 'Changer sa photo de profil:',
                 // Unmapped because not associated to any entity property
                 'mapped' => false,
                 // make it optional so you don't have to re-upload the PDF file
@@ -39,7 +41,10 @@ class RegisterEditType extends AbstractType
                     ])
                 ]
             ])
-            ->add('description', TextareaType::class)
+            ->add('description', TextareaType::class, [
+                'label' => 'Un petit mot sur vous:',
+                'required' => false
+            ])
         ;
     }
 

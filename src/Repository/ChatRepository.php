@@ -47,4 +47,26 @@ class ChatRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    /* TODO getAll Chats */
+    public function getAll(){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager ->createQuery(
+                    "SELECT c
+                        FROM App\Entity\Chat c"
+        );
+        return $query->execute();
+    }
+// TODO
+    public function isChatExist($userId, $currentUser)
+    {
+        return $this->createQueryBuilder('c')
+            ->select()
+            ->andWhere('c.users = '. $userId)
+            ->andWhere('c.users = '. $currentUser)
+            ->getQuery()
+            ->getResult();
+    }
+
+
 }

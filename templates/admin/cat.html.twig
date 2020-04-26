@@ -1,0 +1,80 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Admin | Tof'Box{% endblock %}
+
+{% block body %}
+
+<p><a href="{{ path('admin') }}">Retour</a></p>
+
+<h1 class="center">Espace Administrateur</h1>
+<h2 class="center">Gestion des catégories</h2>
+
+
+
+<table class="center">
+    <thead>
+        <th>Intitulé</th>
+        <th>Photos</th>
+
+        <th>Actions</th>
+    </thead>
+    <tbody>
+    {% for cat in categories %}
+        <tr>
+            <td><a href="">{{cat.intitule | capitalize }}</a></td>                 
+            <td>{{ cat.photos |length }}</td>
+            
+            <td><a class="cat_edit" data-cat="{{ cat.id }}" href=""><i  class="fas fa-edit"></i></a><a class="cat_del" href="{{ path('cat_delete', {'id':cat.id }) }}"><i  class="fas fa-times"></i></a></td>
+        </tr>    
+    {% endfor %}
+    </tbody>
+</table>
+
+<div class="center">
+{{ form_start(form)}}
+<p>
+    {{ form_widget(form.intitule)}}
+    
+        <button class="btn">Valider</button>
+    </p> 
+{{ form_end(form)}}
+</div>
+
+
+<!-- TODO : Suggestion Catégorie des Users -->
+
+
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+<script>
+
+$('.cat_del').on('click', function(e){
+
+    if(!confirm("Attention, des photos sont rattachées à cette catégories, êtes vous sûre de vouloir la supprimer ?")){
+        e.preventDefault()
+    }
+
+
+})
+
+$('.cat_edit').on('click', function(e){
+    e.preventDefault()
+
+    let catid = $(this).data("cat")
+    $.get(
+        "{{ path('ajax_cat_edit') }}",
+        {
+            "catid" : catid
+        },
+        function(data){
+            $("#myModal .modal-body").html(data)
+        }
+    )
+})
+
+</script>
+
+
+{% endblock %}

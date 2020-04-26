@@ -1,0 +1,37 @@
+{% if app.user %}
+    
+    {% if isLiking == false %}
+    <a href="" id="like" data-photo="{{ photo.id }}" class="action" ><i class="far fa-thumbs-up"></i>&nbsp;J'aime: {{ photo.likeUsers | length }}</a>
+
+    {% else %}
+    <a href="" id="unlike" data-photo="{{ photo.id }}" class="action" ><i class="fas fa-thumbs-up"></i>&nbsp;J'aime: {{ photo.likeUsers | length }}</a>
+
+    {% endif %}
+
+{% else %}
+
+    <a class="action" href="{{ path('app_login') }}">&nbsp;Like: {{ photo.likeUsers | length }}</a>
+
+{% endif %}
+
+
+<script>
+// Ajax Like
+$('#like, #unlike').on('click', function(e){
+    e.preventDefault()
+
+    let photoId = $(this).data("photo")
+
+    $.post(
+        "{{ path('like') }}",
+        {
+            "photoId" : photoId
+        },
+        function(data){
+            $("#action-modal").html(data)
+        }
+    )
+})
+
+</script>
+
