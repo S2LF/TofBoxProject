@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
@@ -38,10 +39,10 @@ class CommentController extends AbstractController
 
     /**
      * @Route("/ajax/add", name="add_comment")
+     * @IsGranted("ROLE_USER")
      */
     public function add_comment(Request $request, EntityManagerInterface $em)
     {
-        if($this->getUser()){
             $add_comment = $request->request->get("comment");
             $photoId = $request->request->get("photoId");
             $photo = $em->getRepository(Photo::class)->findOneBy(['id' => $photoId]);
@@ -60,15 +61,14 @@ class CommentController extends AbstractController
 
                 return $this->redirectToRoute('show_comment',array('id' => $photo->getId()));
             }
-        } else {
-            return $this->redirectToRoute('app_login');
-        }
 
+            return $this->redirectToRoute('home');
     }
 
 
     /**
      * @Route("/ajax/edit", name="ajax_edit")
+     * @IsGranted("ROLE_USER")
      */
     public function edit_form(Request $request, EntityManagerInterface $em) 
     {
@@ -76,24 +76,24 @@ class CommentController extends AbstractController
         $commentid = $request->request->get("commentId");
         $comment = $em->getRepository(Comment::class)->findOneBy(['id' => $commentid]);
 
-        if(!$this->getUser()){
-            return $this->redirectToRoute('app_login');
-        } else {
 
-            if($this->getUser() == $comment->getUser() || is_granted('ROLE_ADMIN')){
-                $form = $this->createForm(AddCommentType::class, $comment);
 
-                $html = $this->renderView("comment/ajaxEdit.html.twig", [
-                    'form' => $form->createView(),
-                    'comment' => $comment
-                ]);
-                return new Response($html);
-            }
+        if($this->getUser() == $comment->getUser() || $this->getUser()->getRoles('ROLE_ADMIN')){
+            $form = $this->createForm(AddCommentType::class, $comment);
+
+            $html = $this->renderView("comment/ajaxEdit.html.twig", [
+                'form' => $form->createView(),
+                'comment' => $comment
+            ]);
+            return new Response($html);
         }
+
+        return $this->redirectToRoute('home');
     }
 
     /**
      * @Route("/ajax/edit_form", name="ajax_edit_comment")
+     * @IsGranted("ROLE_USER")
      */
     public function edit_comment(Request $request, EntityManagerInterface $em)
     {
@@ -101,10 +101,8 @@ class CommentController extends AbstractController
         $edit_comment = $request->request->get("comment");
         $commentid = $request->request->get('commentId');
         $comment = $em->getRepository(Comment::class)->findOneBy(['id' => $commentid]);
-        if(!$this->getUser()){
-            return $this->redirectToRoute('app_login');
-        } else {
-            if($this->getUser() == $comment->getUser() || is_granted('ROLE_ADMIN')){
+
+            if($this->getUser() == $comment->getUser() || $this->getUser()->getRoles('ROLE_ADMIN')){
 
                 if($edit_comment) {
                         $comment->setComment($edit_comment);
@@ -114,12 +112,14 @@ class CommentController extends AbstractController
                         return $this->redirectToRoute('show_comment',array('id' => $comment->getPhoto()->getId()));
                     }
             }
-        }
+
+            return $this->redirectToRoute('home');
 
     }
 
     /**
      * @Route("/ajax/delete", name="delete_comment")
+     * @IsGranted("ROLE_USER")
      */
     public function delete_comment(Request $request, EntityManagerInterface $em, CommentRepository $crepo)
     {
@@ -128,10 +128,7 @@ class CommentController extends AbstractController
         $photoid = $request->request->get('photoid');
         $photo = $em->getRepository(Photo::class)->findOneBy(['id' => $photoid]);
 
-        if(!$this->getUser()){
-            return $this->redirectToRoute('app_login');
-        } else {
-            if($this->getUser() == $comment->getUser() || is_granted('ROLE_ADMIN')){
+            if($this->getUser() == $comment->getUser() || $this->getUser()->getRoles('ROLE_ADMIN')){
                 $crepo->deleteComment($comment->getId());
                 
                 $html = $this->renderView("comment/index.html.twig", [
@@ -141,9 +138,7 @@ class CommentController extends AbstractController
                 return new Response($html);
             }
 
-        }
-
-
-
+        return $this->redirectToRoute('home');
+            
     }
 }

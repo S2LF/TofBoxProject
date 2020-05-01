@@ -5,26 +5,38 @@
 {% block body %}
 
 <h1 class="center">Espace Administrateur</h1>
+
+<h2 class="center">Informations générales</h2>
+
 <div class="center admin-wrap">
     <div>
-        <h3>Utilisateurs inscrits: {{ users | length }}</h3>
+        <h3>{{ users | length }} Utilisateurs inscrits</h3>
         <p><a href="{{  path('admin_users') }}">Gérer les utilisateurs</a></p>
     </div>
     <div>
-        <h3>Photos publiées: {{ photos | length }}</h3>
+        <h3>{{ photos | length }} Photos publiées</h3>
     </div>
     <div>
-        <h3>Commentaires: {{ comments | length }}</h3>
+        <h3>{{ comments | length }} Commentaires écrits</h3>
     </div>
     <div>
-        <h3>Catégories: {{ categories | length }} </h3>
+        <h3>{{ categories | length }} Catégories</h3>
         <p><a href="{{ path('admin_categories') }}">Gérer les catégories</a></p>
     </div>
 
     <!-- TODO : Signalements -->
     <div>
-        <h3>Signalement:  </h3> 
-        <p><a href="">Gérer les signalements</a></p>
+        <h3>{{ reports | length }} Signalements</h3>
+        <p><a href="{{ path('admin_reports') }}">Gérer les signalements</a></p>
+        {% if activeReports | length == 0 %}
+        
+        <h4 class="green">Actif: {{ activeReports | length }}</h4>
+
+        {% else %}
+        <h4 class="red">Actif: {{ activeReports | length }}</h4>
+
+        {% endif %}
+
     </div>
 </div>
 

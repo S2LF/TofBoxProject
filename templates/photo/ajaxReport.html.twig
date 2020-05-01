@@ -1,28 +1,72 @@
 <h1 class="center">Signaler une photo</h1>
 
-<div class="center">
+<div class="center form-wrap" id="form-report-wrap">
 
 <form action="">
     <p>
-        <label for="motif">Motif du signalement</label>
-        <select name="motif" id="motif" value="choisissez un motif">
-        <option value="choq">Photo mal catégorisé</option>
-        <option value="categ">Contenu choquant</option>
-        <option value="auteur">Non respect du droit d'auteur</option>
-        <option value="commentaire">Commentaire non respectueux</option>
-        <option value="autre">Autre</option>
+        <label for="motif">Motif du signalement*</label>
+        <select name="motif" id="motif" required>
+            <option value="" selected disabled hidden>Choisissez un motif</option>
+            <option value="Photo mal catégorisé">Photo mal catégorisé</option>
+            <option value="Contenu choquant">Contenu choquant</option>
+            <option value="Non respect du droit d'auteur">Non respect du droit d'auteur</option>
+            <option value="Commentaire non respectueux">Commentaire non respectueux</option>
+            <option value="Autre">Autre</option>
         </select>
+        <p id="motif_error" class="red hidden">Ce champ est obligatoire</p>
+
     </p>
     <p>
-        <label for="">Commentaires</label>
-        <textarea name="" id="" cols="30" rows="10"></textarea>  
+        <label for="commentReport">Commentaires</label>
+        <textarea name="commentReport" id="commentReport" cols="30" rows="10" placeholder="Votre commentaire (max. 255 caractères)"></textarea>  
     </p>
     <p>
-        <input type="submit" value="Envoyer">
+        <p id="connect_error" class="red hidden">Vous devez être connecté envoyer un signalement</p>
+        <input data-photo="{{ photoId }}" data-is-authenticated ="{{ app.user ? 'true' : 'false' }}" type="submit" id="reportValid" value="Envoyer">
     </p>
 </form>
 
 </div>
 
-// TODO : Ajax Report => espace Admin !
+<!-- TODO : Ajax Report => espace Admin ! -->
 
+<script>
+
+    $("#reportValid").on('click', function(e){
+
+        e.preventDefault()
+        let select = $("#motif").val()
+        let commentReport = $("#commentReport").val()
+        let photoId = $(this).data("photo")
+
+        if($(this).data("is-authenticated") == true){
+            if(!select == ""){
+                if(confirm('Êtes-vous sûre vouloir signaler cette photo ?')){
+
+                    
+                    $.post(
+                            "{{ path('ajax_add_report') }}",
+                            {
+                                "select" : select,
+                                "commentReport" : commentReport,
+                                "photoId" : photoId,
+                            },
+                            function(){
+                                location.reload()
+                            }
+                        )
+                }
+            } else {
+                $("#motif_error").show()
+            }
+        }else{
+            $("#connect_error").show()
+        }
+
+
+
+
+    })
+
+
+</script>

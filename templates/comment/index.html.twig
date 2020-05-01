@@ -11,7 +11,7 @@
         </div>
         <p>{{ comment.comment | nl2br}}</p>
 
-        {% if app.user == comment.user %}
+        {% if app.user == comment.user or is_granted('ROLE_ADMIN') %}
             <div class="comment_action">
                 <a class="commentActionButton" href=""><i class="fas fa-ellipsis-h"></i></a>
             

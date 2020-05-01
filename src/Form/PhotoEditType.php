@@ -20,7 +20,7 @@ class PhotoEditType extends AbstractType
     {
         $builder
             ->add('title', TextType::class, [
-                'label' => 'Titre de la photo'
+                'label' => 'Titre de la photo*'
             ])
 
             ->add('description', TextareaType::class, [
@@ -32,6 +32,7 @@ class PhotoEditType extends AbstractType
                 'choice_label' => 'intitule',
                 'expanded' => true,
                 'multiple' => true,
+                'attr' => [ 'class' => 'category_form' ]
             ])
             
         ;

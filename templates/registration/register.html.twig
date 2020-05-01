@@ -13,19 +13,15 @@
         {{ form_errors(registrationForm) }}
     </div>
 
-    <p>{{ form_label(registrationForm.email) }}
-       {{ form_widget(registrationForm.email) }}</p>
+    <p>{{ form_row(registrationForm.email) }}</p>
 
-    <p>{{ form_label(registrationForm.nickname) }}
-        {{ form_widget(registrationForm.nickname) }}</p>
+    <p>{{ form_row(registrationForm.nickname) }}</p>
 
-    <p>{{ form_label(registrationForm.plainPassword.first) }}
-        {{ form_widget(registrationForm.plainPassword.first) }}</p>
+    <p>{{ form_row(registrationForm.plainPassword.first) }}</p>
 
-    <p>{{ form_label(registrationForm.plainPassword.second) }}
-        {{ form_widget(registrationForm.plainPassword.second) }}</p>
+    <p>{{ form_row(registrationForm.plainPassword.second) }}</p>
 
-    <p>{{ form_widget(registrationForm.agreeTerms) }} <label for="registration_form_agreeTerms">&nbsp;&nbsp;En cochant cette case, je déclare avoir lu et accepter les <a class="blue" href="">Conditions d’utilisation</a> et la <a class="blue" href="">Politique de confidentialité</a>.</label>
+    <p>{{ form_errors(registrationForm.agreeTerms) }}{{ form_widget(registrationForm.agreeTerms) }} <label for="registration_form_agreeTerms">&nbsp;&nbsp;En cochant cette case, je déclare avoir lu et accepter les <a class="blue" href="{{ path('app_terms') }}">Conditions d’utilisation</a> et la <a class="blue" href="{{ path('app_policy') }}">Politique de confidentialité</a>.</label>
     </p>
 {# 
         {{ form_row(registrationForm.email) }}

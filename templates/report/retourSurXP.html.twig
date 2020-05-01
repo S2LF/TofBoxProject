@@ -1,0 +1,155 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajout de Photo{% endblock %}
+
+{% block body %}
+
+<h1 class="center">Retour sur votre expérience</h1>
+
+<p class="center">Afin de récolter des informations sur votre expérience en tant qu'utilisateur, il est important pour moi que vous remplissiez ce formulaire.
+</p>
+<p class="center">
+Les conditions d'utilisations et la politique de confidentialité sont en cours de rédaction et amenés à évoluer.<br>
+Le site en est à sa première version, le design est encore à parfaire et il manque quelques fonctionnalités.<br>
+</p>
+
+<div class="retour-wrap">
+{{ form_start(form)}}
+
+    <h2 class="center">Expérience utilisateur</h2>
+
+
+
+    <p>
+        {{ form_row(form.juger)}}
+    </p>
+
+    <p>
+        {{ form_row(form.fluide)}}
+    </p>
+
+    <p>
+        {{ form_row(form.boutons)}}
+    </p>
+
+    <p>
+        {{ form_label(form.xp_propositions) }}<br>
+        {{ form_widget(form.xp_propositions)}}
+    </p>
+
+
+
+    <h2 class="center">Photos</h2>
+
+    <p>
+        {{ form_row(form.photo)}}
+    </p>
+
+    <p>
+        {{ form_row(form.upload)}}
+    </p>
+
+    <p>
+        {{ form_row(form.like)}}
+    </p>
+
+
+    <p>
+    {{ form_label(form.photo_propositions) }}<br>
+    {{ form_widget(form.photo_propositions)}}
+
+    </p>
+
+
+
+    <h2 class="center">Espace utilisateur</h2>
+
+    <p>
+        {{ form_row(form.user)}}
+    </p>
+
+    <p>
+        {{ form_row(form.follow)}}
+    </p>
+
+    <p>
+        {{ form_label(form.user_propositions) }}<br>
+        {{ form_widget(form.user_propositions)}}
+        
+    </p>
+
+        <h2 class="center">Design</h2>
+
+        <p>
+            {{ form_row(form.design)}}
+        </p>
+        <p>
+            {{ form_row(form.valeur)}}
+        </p>
+
+      <p>
+        {{ form_label(form.design_propositions) }}<br>
+        {{ form_widget(form.design_propositions)}}
+    </p>
+        <h3 class="center">Conditions d'utilisation & Politique de confidentialité</h3>
+        <p>
+            <label>Avez-vous lu les <a href='{{ path('app_terms') }}' class='blue' target='_blank'>conditions d'utilisation</a> & la <a href='{{ path('app_policy') }}' class='blue' target='_blank'>politique de confidentialité</a> du site ?</label>
+            {{ form_widget(form.rgpd)}}
+        </p>
+        <p>
+            {{ form_row(form.claire)}}
+        </p>
+        <p>
+            {{ form_label(form.rgpd_propositions) }}<br>
+            {{ form_widget(form.rgpd_propositions)}}
+        </p>
+
+    <h3 class="center">Suggestions</h3>
+
+    <p>
+        {{ form_label(form.sug_propositions) }}<br>
+        {{ form_widget(form.sug_propositions)}}
+    </p>
+
+    <p class="center">
+        <i class="love fas fa-heart fa-2x"></i> Merci pour vos retours <i class="love fas fa-heart fa-2x"></i>
+    </p>
+    <p class="center">
+        <button class="btn" id="retourXP">Envoyer !</button>
+
+    </p>
+{{ form_end(form) }}
+   
+</div>
+
+ 
+{% endblock %}
+
+{# 
+    
+    Pol de confid ; Si oui, est-ce qu'ELLE ETAIT
+    Qu'est-ce qu'il MANQUERAIT
+
+    agréable à regarder
+    le site met-il les photos en valeur ?
+
+
+    
+    #}
+{% block javascripts %}
+{{ parent() }}
+
+<script>
+
+    $("#retourXP").hover(
+        function(){
+            $(".love").css('color', 'red')
+        }, function(){
+            $(".love").css('color', 'initial')
+        })
+
+
+</script>
+
+
+{% endblock %}

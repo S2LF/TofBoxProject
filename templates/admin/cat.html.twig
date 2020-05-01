@@ -9,8 +9,17 @@
 <h1 class="center">Espace Administrateur</h1>
 <h2 class="center">Gestion des catégories</h2>
 
+<div class="admin-cat-wrap">
 
+<div id="param_cat"> {# TODO: Input change this ! #}
 
+    <section>
+        <h3 class="center">Paramètres des catégories</h3>
+        <p>Par défaut les catégories apparaissent si elle contiennent au moins 1 photos</p>
+    </section>
+</div>
+
+<div>
 <table class="center">
     <thead>
         <th>Intitulé</th>
@@ -30,19 +39,43 @@
     </tbody>
 </table>
 
-<div class="center">
-{{ form_start(form)}}
-<p>
-    {{ form_widget(form.intitule)}}
-    
-        <button class="btn">Valider</button>
-    </p> 
-{{ form_end(form)}}
 </div>
 
 
-<!-- TODO : Suggestion Catégorie des Users -->
 
+<div >
+    <section id="suggest_cat"> 
+        <!-- TODO : Suggestion Catégorie des Users -->
+        <h3 class="center">Catégories suggérées <br> par les utilisateurs</h3>
+        
+
+        <div>
+            {% if nb_suggests == null %}
+
+                <p>Pas de catégorie suggéré</p>
+
+            {% else %}
+                {% for sug, nb in nb_suggests %}
+                <div>
+                    <p>{{ sug | capitalize }} ({{ nb }})</p><p><a class="suggest_cat_del red" href="{{path('cat_delete_suggest', {'key':sug}) }}"><i  class="fas fa-times"></i></a></p>
+                </div>
+                {% endfor %}
+            {% endif %}
+
+
+        </div>
+
+        {{ form_start(form)}}
+        <p>
+            {{ form_errors(form.intitule) }}
+            {{ form_widget(form.intitule)}}
+            
+                <button class="btn">Valider</button>
+            </p> 
+        {{ form_end(form)}}
+    </section>
+</div>
+</div>
 
 {% endblock %}
 

@@ -7,52 +7,8 @@
     {# Gestion des catégories #}
     {% include 'category/index.html.twig' %}
 
-{# 
-    {{ dump(app.request) }}
-    {{ dump(app.request.uri) }} #}
 
-
-{% if '/cat' in app.request.uri %}
-
-<h1 class="center" >Catégorie {{ photos.intitule | capitalize }}</h1>
-<div class="photo-wrap">    
-{% for photo in photos.photos %}
-
-<figure>
-
-    <a class="myBtn" data-photo="{{ photo.id }}" href="">
-        <img class="photo_view" src="{{ asset('img/' ~ photo.path ) }}" alt="{{ photo.title }}">
-    </a>
-    
-    <figcaption>
-                <div>
-                    <a class="span_vertical_align" href="{{ path('profil', {'id':photo.user.id}) }}">
-
-                        <img class="profil_photo" src="{{ asset('img/' ~ photo.user.photoProfil) }}" alt="{{photo.user.nickname}}">
-                        <span>&nbsp;{{ photo.user.nickname }}</span>
-
-                    </a>
-                </div>
-                <div>
-                    <span>
-                        <i class="far fa-comment"></i> {{ photo.Comments | length }}
-                        &nbsp;
-                        <i class="far fa-thumbs-up"></i> {{ photo.likeUsers | length }}
-                    </span>
-                    
-                    
-                </div>
-    </figcaption>
-</figure>
-
-
-
-{% endfor %}
-
-</div>
-
-
-{% else %}
+<section id="content_photo_cat">
 
     {# Affichage des photos #}
     <h1 class="center">Bienvenue sur Tof'Box</h1>
@@ -61,18 +17,14 @@
 
 
     <figure class="relative">
-       
+        <a class="myBtn" data-photo="{{ photo.id }}" href="">
+
             <div id="cadre_photo">
-                <a class="myBtn" data-photo="{{ photo.id }}" href="">
                     <img class="photo_view" src="{{ asset('img/' ~ photo.path ) }}" alt="{{ photo.title }}">
                     <div class="photo_title"><h3>{{ photo.title }}</h3></div>
-                </a>
             </div>
+        </a>
 
-
-            
-
-        
         <figcaption>
                     <div>
                         <a class="span_vertical_align" href="{{ path('profil', {'id':photo.user.id}) }}">
@@ -97,12 +49,9 @@
     {% endfor %}
     </div>
 
-{% endif %}
 
-
-
+</section>
 {% endblock %}
-
 {% block javascripts %}
     {{ parent() }}
     <script>
@@ -125,8 +74,26 @@
             })
         })
 
-        
-    </script>
+        // Ajax Catégories
+        $(".item_cat a").on('click', function(e){
+            e.preventDefault()
+    
+            $catId = $(this).data('cat')
+    
+            $.post(
+                "{{ path('home_cat') }}",
+                {
+                    "catId" : $catId
+                },
+                function(data){
 
+                    $("section#content_photo_cat").html(data)
+
+                }
+            )
+    
+        })
+    
+    </script>
 {% endblock %}
 

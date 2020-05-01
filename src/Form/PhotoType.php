@@ -21,16 +21,18 @@ class PhotoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('title', TextType::class)
+            ->add('title', TextType::class, [
+                'label' => 'Titre*:'
+            ])
             ->add('photo', FileType::class, [
-                'label' => 'Photo (JPG/PNG/GIF, max 1Mo)',
+                'label' => 'Photo (JPG/PNG/GIF, max 1Mo)*',
 
                 // Unmapped because not associated to any entity property
                 'mapped' => false,
                 
                 // make it optional so you don't have to re-upload the PDF file
                 // every time you edit the Product details
-                'required' => false,
+                'required' => true,
 
                 // unmapped fields can't define their validation using annotations
                 // in the associated entity, so you can use the PHP constraint classes
@@ -48,17 +50,9 @@ class PhotoType extends AbstractType
             ])
             ->add('description', TextareaType::class, [
                 'label' => 'Description de la photo:' ])
-            // ->add('categories', CollectionType::class, [
-            //     'entry_type' => CategoryType::class,
-            //     // 'choice_label' => 'intitule',
-            //     // 'expanded' => true,
-            //     // 'multiple' => true,
-            //     'by_reference' => false,
-            //     'label' => false,
-            //     'allow_add' => true,
-            //     'allow_delete' =>true,
-            // ])   
+ 
             ->add('categories', EntityType::class, [
+                'label' => 'Catégorie(s):',
                 'class' => Category::class,
                 'choice_label' => 'intitule',
                 'expanded' => true,

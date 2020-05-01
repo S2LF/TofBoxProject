@@ -230,15 +230,4 @@ class PhotoController extends AbstractController
         return new Response($html);
     }
 
-
-    /**
-     * @Route("/ajax/report", name="ajax_signal")
-     */
-    public function Report(Request $request){
-        
-
-        $html = $this->renderView("photo/ajaxReport.html.twig");
-        return new Response($html);
-
-    }
 }

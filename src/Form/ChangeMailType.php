@@ -18,7 +18,7 @@ class ChangeMailType extends AbstractType
     {
         $builder
         ->add('password', PasswordType::class,[
-            'label' => 'Mot de passe actuel :',
+            'label' => 'Mot de passe actuel* :',
             'mapped' => false,
             'constraints' => [
                 new NotBlank([
@@ -35,12 +35,12 @@ class ChangeMailType extends AbstractType
                 // this is read and encoded in the controller
                 'mapped' => false,
                 'label'=> ' ',
-                'invalid_message' => 'Les emails doivent correspondre',
-                'first_options' => ['label' => 'Nouvel email :'],
-                'second_options' => ['label' => 'Confirmer le nouvel email :'],
+                'invalid_message' => 'Les emails doivent correspondrent',
+                'first_options' => ['label' => 'Nouvel email* :'],
+                'second_options' => ['label' => 'Confirmer le nouvel email* :'],
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Veuille saisir un email',
+                        'message' => 'Veuillez saisir un email',
                     ]),
                 ],
             ])

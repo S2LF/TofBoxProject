@@ -1,10 +1,30 @@
+
+
+
+
 <div id="home_cat">
-    <ul>
-                <a href="{{ path('home') }}"><li>Tout voir</li></a>
-        {% for cat in categories %}
-            {% if cat.photos|length >= 1 %}
-                <a href="{{ path('home_cat', {'id':cat.id}) }}"><li>{{ cat.intitule | capitalize }}</li></a>
-            {% endif %}
-        {% endfor %}
-    </ul>
+    <div class="center slick slider">
+        <div class="item_cat">
+            <a href="" data-cat="home">
+                <div class="droit">
+                    Tout voir
+                </div>
+            </a>
+        </div>
+{% for cat in categories %}
+    {% if cat.photos|length >= 1 %}
+
+        <div class="item_cat">
+
+            <a href="" data-cat="{{ cat.id }}">
+                <div class="droit">
+                    {{ cat.intitule | capitalize }}
+                </div>
+            </a>
+        </div>
+        
+    {% endif %}
+{% endfor %}
+    </div>
 </div>
+

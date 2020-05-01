@@ -9,16 +9,19 @@
 <h1 class="center">Espace Administrateur</h1>
 <h2 class="center">Gestion des utilisateurs</h2>
 
+<p class="center">Pour modifier ou modifier un utilisateur est accessible depuis le profil de cet utilisateur</p>
+
 <table class="center">
     <thead>
         <th>Pseudo</th>
         <th>E-mail</th>
         <th>Photos</th>
         <th>Commentaires postés</th>
-        <th>Likes</th>
+        <th>J'aimes</th>
         <th>Suit</th>
         <th>Suivi par</th>
-        <th>Actions</th>
+        <th>Rôle</th>
+        {# <th>Actions</th> #}
     </thead>
     <tbody>
     {% for user in users %}
@@ -30,10 +33,20 @@
             <td>{{ user.likes | length }}</td>
             <td>{{ user.followByUsers | length }}</td>
             <td>{{ user.followedUsers | length }}</td>
-            <td><a href="{{ path('user_edit', {'id':user.id}) }}"><i class="fas fa-user-edit"></i></a>&nbsp;<a <a class="myDelUserBtn" data-user='{{ user.id }}' href=""><i class="fas fa-user-times"></i></a></td>
+            {% if 'ROLE_ADMIN' in user.roles %}
+                {% if user == app.user %}
+                <td><i class="fas fa-chess-king"></i></td>
+                {% else %}
+                <td><i class="fas fa-chess-king"></i>&nbsp;&nbsp;&nbsp;|&nbsp;<a href="{{ path('grade_admin', {'id':user.id}) }}"><i class="fas fa-angle-double-down"></i></a></td>
+                {% endif %}
+            {% else %}
+            <td><i class="fas fa-chess-pawn"></i>&nbsp;&nbsp;&nbsp;|&nbsp;<a href="{{ path('grade_admin', {'id':user.id}) }}"><i class="fas fa-angle-double-up"></i></a></td> {# TODO : ADMIN & UNADMIN#}
+            {% endif %}
+            {# <td><a href="{{ path('user_edit', {'id':user.id}) }}"><i class="fas fa-user-edit"></i></a>&nbsp;&nbsp;&nbsp;|&nbsp;<a <a class="myDelUserBtn" data-user='{{ user.id }}' href=""><i class="fas fa-user-times"></i></a></td> #}
         </tr>    
     {% endfor %}
     </tbody>
+    <caption><i class="fas fa-chess-king"></i>&nbsp;Admin | <i class="fas fa-chess-pawn"></i>&nbsp;Utilisateur</caption>
 </table>
 
 

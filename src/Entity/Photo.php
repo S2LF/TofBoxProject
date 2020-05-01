@@ -65,12 +65,18 @@ class Photo
      */
     private $likeUsers;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Report", mappedBy="photo")
+     */
+    private $reports;
+
     public function __construct()
     {
         $this->categories = new ArrayCollection();
         $this->User = new ArrayCollection();
         $this->Comments = new ArrayCollection();
         $this->likeUsers = new ArrayCollection();
+        $this->reports = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -230,6 +236,37 @@ class Photo
         if ($this->likeUsers->contains($likeUsers)) {
             $this->likeUsers->removeElement($likeUsers);
             $likeUsers->removeLike($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Report[]
+     */
+    public function getReports(): Collection
+    {
+        return $this->reports;
+    }
+
+    public function addReport(Report $report): self
+    {
+        if (!$this->reports->contains($report)) {
+            $this->reports[] = $report;
+            $report->setPhoto($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReport(Report $report): self
+    {
+        if ($this->reports->contains($report)) {
+            $this->reports->removeElement($report);
+            // set the owning side to null (unless already changed)
+            if ($report->getPhoto() === $this) {
+                $report->setPhoto(null);
+            }
         }
 
         return $this;

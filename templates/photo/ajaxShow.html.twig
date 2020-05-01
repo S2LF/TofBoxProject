@@ -36,7 +36,7 @@
                 <p>{{ photo.description }}</p>
             </article>
             <article>
-                Publié le : {{ photo.dateCreation | format_datetime('long', 'none', locale='fr') }}
+                <p>Publié le : {{ photo.dateCreation | format_datetime('long', 'none', locale='fr') }}</p>
             </article>
         </div>
 
@@ -82,13 +82,15 @@
 
         </section>
         <aside>
-            <article>
+            <article class="show_category">
                 <h3><i class="fas fa-tag"></i>&nbsp;Catégories</h3>
-                <p>
+                <ul>
                     {% for cat in photo.categories %}
+                    <li>
                         <a href="{{ path('home_cat', {'id':cat.id}) }}">{{ cat.intitule | capitalize }}</a>
+                    </li>
                     {% endfor %}
-                </p>
+                </ul>
             </article>
             <article>
                 <div class="propos">
@@ -175,7 +177,7 @@
                 }
             )
         })
-        
+    // Ajax Modal Report
     $("#modal-signal").on('click', function(e){
         e.preventDefault()
             modal2.style.display = "block"
@@ -189,7 +191,7 @@
             $.post(
                 "{{ path('ajax_signal') }}",
                 {
-                    "photoId" : photoId
+                    "photoId" : photoId,
                 },
                 function(data){
                     $("#myModal2 .modal-body2").html(data)

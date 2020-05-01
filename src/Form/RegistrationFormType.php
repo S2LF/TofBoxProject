@@ -21,10 +21,10 @@ class RegistrationFormType extends AbstractType
     {
         $builder
             ->add('email', EmailType::class, [
-                'label' => 'Email'
+                'label' => 'Email*:'
             ])
             ->add('nickname', TextType::class, [
-                'label' => 'Pseudo'
+                'label' => 'Pseudo*:'
             ])
             ->add('plainPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
@@ -33,11 +33,11 @@ class RegistrationFormType extends AbstractType
                 'mapped' => false,
                 'label'=> ' ',
                 'invalid_message' => 'Les mots de passe doivent correspondre',
-                'first_options' => ['label' => 'Mot de passe'],
-                'second_options' => ['label' => 'Confirmer le mot de passe'],
+                'first_options' => ['label' => 'Mot de passe*:'],
+                'second_options' => ['label' => 'Confirmer le mot de passe*:'],
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Veuillez entrer un mot de pass',
+                        'message' => 'Veuillez entrer un mot de passe',
                     ]),
                     new Length([
                         'min' => 6,
@@ -47,17 +47,12 @@ class RegistrationFormType extends AbstractType
                     ]),
                 ],
             ])
-            // ->add('plainPassword', RepeatedType::class, [
-            //     'type' => PasswordType::class,
-            //     'invalid_message' => 'Vos mot de passe doivent correspondre',
-            //     'required' => 'true',
-            //     'label' => 'Répétez mot de passe'
-            // ])
+
             ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
                 'constraints' => [
                     new IsTrue([
-                        'message' => 'Vous devez accepter les modalités d\'inscription.',
+                        'message' => "Vous devez accepter les conditions d'inscription.",
                     ]),
                 ],
             ])

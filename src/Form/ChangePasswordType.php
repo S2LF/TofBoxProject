@@ -18,7 +18,7 @@ class ChangePasswordType extends AbstractType
     {
         $builder
             ->add('oldPassword', PasswordType::class,[
-                'label' => 'Mot de passe actuel :',
+                'label' => 'Mot de passe actuel* :',
                 'mapped' => false,
                 'constraints' => [
                     new NotBlank([
@@ -36,8 +36,8 @@ class ChangePasswordType extends AbstractType
                 'mapped' => false,
                 'label'=> ' ',
                 'invalid_message' => 'Les mots de passe doivent correspondre',
-                'first_options' => ['label' => 'Nouveau mot de passe'],
-                'second_options' => ['label' => 'Confirmer le nouveau mot de passe'],
+                'first_options' => ['label' => 'Nouveau mot de passe*'],
+                'second_options' => ['label' => 'Confirmer le nouveau mot de passe*'],
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Veuillez entrer un mot de pass',

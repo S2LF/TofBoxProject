@@ -33,7 +33,15 @@
         <p>{{ form_row(form.description) }}
         </p>
 
-        <p>{{ form_row(form.categories)}}</p>
+
+        <p class="category_form">
+            {% for i in form.categories %}
+                
+                {{form_widget(i) }}&nbsp;{{form_label(i) }}<br>
+            {% endfor %}    
+            {# {{ form_row(form.categories) }} #}
+        
+        </p>
 
         <p class="center">
             <button class="btn">Valider</button>

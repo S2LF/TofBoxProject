@@ -7,10 +7,15 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
         <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet"> 
         <link href="https://fonts.googleapis.com/css?family=Bebas+Neue&display=swap" rel="stylesheet"> 
-        <link rel="stylesheet" href="{{ asset('css/style.css') }}">
         <script src="https://kit.fontawesome.com/64cfa211f1.js" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js" integrity="sha256-NXRS8qVcmZ3dOv3LziwznUHPegFhPZ1F/4inU7uC8h0=" crossorigin="anonymous"></script>
+        <link rel="stylesheet" type="text/css" href="{{ asset('slick/slick.css') }}"/>
+        <link rel="stylesheet" type="text/css" href="{{ asset('slick/slick-theme.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 
+
+        <script type="text/javascript" src="{{asset('slick/slick.min.js') }}"></script>
         {% endblock %}
     </head>
     <body>
@@ -19,7 +24,7 @@
                 <nav>
                 <div>
                     <a href="{{ path('home')  }}">
-                    <img src="{{ asset('img/LogoTofBox.png' ) }}" alt="Logo TofBox"></a>
+                    <img src="{{ asset('img/global/LogoTofBox.png' ) }}" alt="Logo TofBox"></a>
                     <a href="{{ path('home')  }}"><h1>Tof'Box</h1></a>
                 </div>
 
@@ -30,7 +35,7 @@
                         <span>&nbsp;{{ app.user.nickname }}</span></a>
                     <a href="{{ path('app_logout') }}">Déconnexion</a>
                     {% else %}
-                    <a href="{{ path('app_register') }}">S'inscrire</a>
+                    <a class="mr-1" href="{{ path('app_register') }}">S'inscrire</a>
                     <a href="{{ path('app_login') }}">Se connecter</a>
                     
                     {% endif %}
@@ -53,7 +58,10 @@
             {% endfor %}
             
             <div class="content">
+                
             {% block body %}
+
+            
 
                 {% block content %}
                 {% endblock %}
@@ -61,7 +69,7 @@
             {% endblock %}
             </div>
             <footer class="center relative">
-                <p>&copy;TofBoxProject - 2020</p>
+                <p>&copy;TofBoxProject 2020 - Version 1.0.0</p>
                 {% if is_granted('ROLE_ADMIN') %}
                     <p class="admin"><a href="{{ path('admin') }}">Espace Admin</a></p>
                 {% endif %}
@@ -100,11 +108,21 @@
             </div>
 
             {% block javascripts %}
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-
                 <script>
 
                     $(document).ready(function(){
+
+                        // Slick
+                        $(".slick").slick({
+                            infinite: true,
+                            slidesToShow: 9,
+                            slidesToScroll: 1,
+                            responsive:true,
+                            arrow:true,
+                            prevArrow:"<button type='button' class='slick-prev pull-left'><i class='fa fa-angle-left fa-2x aria-hidden='true'></i></button>",
+                            nextArrow:"<button type='button' class='slick-next pull-right'><i class='fa fa-angle-right' aria-hidden='true'></i></button>"
+                          });
+
                         $("#loader").fadeOut(500)
 
 
@@ -126,7 +144,7 @@
                     var modalBody = document.getElementsByClassName("modal-body")[0]
                     var btn = document.getElementsByClassName("myBtn")
                 
-                $('.myBtn , .myDelBtn , .myDelUserBtn, .cat_edit').on('click', function() {
+                $('.myBtn , .myDelBtn , .myDelUserBtn, .cat_edit, .report_photo').on('click', function() {
                     modal.style.display = "block"
                                             // When the modal is shown, we want a fixed body
                                             document.body.style.top = `-${window.scrollY}px`;

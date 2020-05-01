@@ -1,0 +1,90 @@
+<h1 class="center">Suggérer des catégories</h1>
+
+<div class="center form-wrap" id="form-suggest-wrap">
+
+<form action="" name="suggest_form" id="suggest_form">
+    <div id="suggest">
+        <p>
+            <label for="intitule">Intitulé</label>
+            <input type="text" id="intitule">
+        </p>
+        
+    </div>
+    <p><a id="add" href="">En suggérer d'autres ?</a></p>
+
+
+    <p>
+        <input type="submit" id="suggestValid" value="Envoyer">
+    </p>
+</form>
+
+</div>
+
+<script>
+
+    $(document).ready(function(){
+        
+      
+        var i = 1;
+        $('#add').on('click', function(e){
+            e.preventDefault()
+            i++
+            $('#suggest').append('<p class="'+i+'"><label for="intitule">Intitulé</label><input type="text" id="intitule'+i+'">&nbsp;&nbsp;<a class="del" id="'+i+'"><i class="red fas fa-times"></i></a></p>')
+        })
+
+        $("#suggest").on('click', '.del', function(e){
+            e.preventDefault()
+            let val = $(this).attr('id')
+            $("p."+val+"").remove()
+        })
+
+
+        $("#suggestValid").on('click', function(e){
+            e.preventDefault()
+
+            let suggests = []
+
+
+
+            $("input[type='text']").each(function(i, v){
+                if($(this).val() != ''){
+
+                suggests.push($(this).val())
+                }
+            })
+
+
+
+        if(suggests != ''){
+
+            $.post(
+                "{{ path('ajax_form_suggest') }}",
+                {
+                    'suggests' : suggests
+                },
+                function(data){
+
+                $("#myModal2").hide()
+                document.getElementsByClassName("modal-body2")[0].innerHTML = '<div class="center" id="loaderModal2"><i class="fas fa-compact-disc fa-spin fa-4x"></i></div>'
+                const scrollY = document.body.style.top;
+                document.body.style.position = '';
+                document.body.style.top = '';
+                $("body").css('padding-right', '0')
+                $("body").css('width','100%')
+                window.scrollTo(0, parseInt(scrollY || '0') * -1);
+                }
+            )
+
+        }
+
+
+
+
+
+        })
+
+
+
+    })
+
+</script>

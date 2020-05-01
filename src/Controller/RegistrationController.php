@@ -10,10 +10,13 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
+/**
+ * @Route("register")
+ */
 class RegistrationController extends AbstractController
 {
     /**
-     * @Route("/register", name="app_register")
+     * @Route("/", name="app_register")
      */
     public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
     {
@@ -46,4 +49,21 @@ class RegistrationController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/terms-of-service", name="app_terms")
+     */
+    public function terms()
+    {
+        return $this->render('registration/termsOfService.html.twig');
+    }
+
+    /**
+     * @Route("/privacy-policy", name="app_policy")
+     */
+    public function policy()
+    {
+        return $this->render('registration/privacyPolicy.html.twig');
+    }
 }
+
+
