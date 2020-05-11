@@ -144,7 +144,7 @@
                     var modalBody = document.getElementsByClassName("modal-body")[0]
                     var btn = document.getElementsByClassName("myBtn")
                 
-                $('.myBtn , .myDelBtn , .myDelUserBtn, .cat_edit, .report_photo').on('click', function() {
+                $('.myBtn, .myBtn_all , .myDelBtn , .myDelUserBtn, .cat_edit, .report_photo').on('click', function() {
                     modal.style.display = "block"
                                             // When the modal is shown, we want a fixed body
                                             document.body.style.top = `-${window.scrollY}px`;
@@ -225,20 +225,19 @@
 
 
                     $(window).on('load', function(){
-                        jQuery("img").each(function() {
+                        jQuery("section figure img").each(function() {
                         // Calculate aspect ratio and store it in HTML data- attribute
-                        var aspectRatio = jQuery(this).width()/jQuery(this).height();
+                       let aspectRatio = jQuery(this).width()/jQuery(this).height();
                         jQuery(this).data("aspect-ratio", aspectRatio);
                             // Conditional statement
 
                         if(aspectRatio > 1) {
                             // Image is landscape
-
                             jQuery( this ).addClass( "landscape" );
                         } else if (aspectRatio < 1) {
                             // Image is portrait
                             jQuery( this ).addClass( "portrait" );;
-                        } else {
+                        } else if (aspectRatio == 1){
                             // Image is square
                             jQuery( this ).addClass( "square" );;            
                         }

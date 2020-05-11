@@ -138,24 +138,33 @@
 
 <script>
 
-    // Portrait ou paysage ?
-        jQuery(".photo_modal").each(function() {
-        // Calculate aspect ratio and store it in HTML data- attribute
-        var aspectRatio = jQuery(this).width()/jQuery(this).height();
-        jQuery(this).data("aspect-ratio", aspectRatio);
-            // Conditional statement
 
-        if(aspectRatio > 1) {
-            // Image is landscape
+        setTimeout(function(){
+                // Portrait ou paysage ?
+            jQuery("div#myModal figure img").each(function() {
 
-            jQuery( this ).addClass( "landscape" );
-        } else if (aspectRatio < 1) {
-            // Image is portrait
-            jQuery( this ).addClass( "portrait" );;
-        } else {
-            // Image is square
-            jQuery( this ).addClass( "square" );;            
-        }
+                // Calculate aspect ratio and store it in HTML data- attribute
+                var aspectRatio = jQuery(this).width()/jQuery(this).height();
+                console.log(aspectRatio)
+                jQuery(this).data("aspect-ratio", aspectRatio);
+                // Conditional statement
+
+                if(aspectRatio > 1) {
+                    // Image is landscape
+
+                    jQuery( this ).addClass( "landscape" );
+                } else if (aspectRatio < 1) {
+                    // Image is portrait
+                    jQuery( this ).addClass( "portrait" );;
+                } else if (aspectRatio == 1) {
+                    // Image is square
+                    jQuery( this ).addClass( "square" );;            
+                }
+
+        },0);
+
+
+
 
     })
 
