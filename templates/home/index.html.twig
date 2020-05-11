@@ -58,9 +58,9 @@
 
             // Get the button that opens the modal
         $(document).ready(function(){
-            $(".myBtn").on("click", function(e){
+            $("section#content_photo_cat").on("click", '.myBtn', function(e){
                 e.preventDefault()
-                
+
                 let photoid = $(this).data("photo")
                 $.get(
                     "{{ path('ajax_show') }}",
@@ -69,6 +69,7 @@
                     },
                     function(data){
                         $("#myModal .modal-body").html(data)
+                        $("#myModal").show()
                     }
                 )
             })
@@ -91,8 +92,10 @@
 
                 }
             )
-    
+
         })
+
+
     
     </script>
 {% endblock %}

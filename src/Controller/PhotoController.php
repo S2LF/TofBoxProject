@@ -82,7 +82,7 @@ class PhotoController extends AbstractController
 
     /**
      * @Route("/edit/{id}", name="edit_photo")
-     * @IsGranted("ROLE_ADMIN")
+     * @IsGranted("ROLE_USER")
      */
     public function editPhoto(Photo $photo, Request $request, EntityManagerInterface $em)
     {
@@ -112,7 +112,7 @@ class PhotoController extends AbstractController
 
     /**
      * @Route("/delete/{id}", name="delete_photo")
-     * @IsGranted("ROLE_ADMIN")
+     * @IsGranted("ROLE_USER")
      */
     public function deletePhoto(Photo $photo, EntityManagerInterface $em )
     {

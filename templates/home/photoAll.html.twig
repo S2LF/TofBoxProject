@@ -37,3 +37,25 @@
 
     {% endfor %}
     </div>
+
+<script>
+    jQuery("section#content_photo_cat figure img").each(function() {
+        // Calculate aspect ratio and store it in HTML data- attribute
+        let aspectRatio = jQuery(this).width()/jQuery(this).height();
+        jQuery(this).data("aspect-ratio", aspectRatio);
+        // Conditional statement
+
+        if(aspectRatio > 1) {
+            // Image is landscape
+            jQuery( this ).addClass( "landscape" );
+        } else if (aspectRatio < 1) {
+            // Image is portrait
+            jQuery( this ).addClass( "portrait" );;
+        } else if (aspectRatio == 1){
+            // Image is square
+            jQuery( this ).addClass( "square" );;
+        }
+    })
+</script>
+
+

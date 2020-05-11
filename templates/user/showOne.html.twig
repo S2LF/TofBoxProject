@@ -75,7 +75,17 @@
                             <div class="photo_title"><h3>{{ photo.title }}</h3></div>
                     </div>
                 </a>
-        
+                {% if app.user == user or is_granted('ROLE_ADMIN') %}
+                {# EditButton #}
+                <div class="edit_position">
+                    <a href="{{ path('edit_photo', {'id':photo.id}) }}"><i class=" fas fa-pen-square fa-2x"></i></a>
+                </div>
+
+                {# Modal Supr#}
+                <div class="del-position">
+                    <a class="myDelBtn" data-photo="{{ photo.id}}" href=""><i class="fas fa-trash-alt fa-2x"></i></a>
+                </div>
+                {% endif %}
                 <figcaption>
                             <div>
                                 <a class="span_vertical_align" href="{{ path('profil', {'id':photo.user.id}) }}">

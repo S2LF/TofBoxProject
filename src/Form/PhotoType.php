@@ -49,7 +49,9 @@ class PhotoType extends AbstractType
                 ]
             ])
             ->add('description', TextareaType::class, [
-                'label' => 'Description de la photo:' ])
+                'label' => 'Description de la photo:',
+                'required' => false
+])
  
             ->add('categories', EntityType::class, [
                 'label' => 'Catégorie(s):',
