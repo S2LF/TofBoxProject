@@ -17,7 +17,7 @@
             {% include "user/ajaxFollow.html.twig" %}
 
             {% if app.user == user %}
-            <p><a class="action" href="{{ path('retour_form', {'id':user.id}) }}">Retour sur expérience</a></p> 
+            <p><a class="action" href="{{ path('retour_form', {'id':user.id})  }}">Retour sur expérience</a></p> 
             <p><a class="action" id="suggestCat" href="" >Suggérer des catégories</p></a>
  
             {% endif %}
@@ -38,7 +38,15 @@
 
     <figure>
         
-    <img class="profil_user" src="{{ asset('img/' ~ user.photoProfil ) }}" alt="">
+    <img  src="{{ asset('img/' ~ user.photoProfil ) |imagine_filter('polar') }}" alt="">
+    <img  src="{{ asset('img/' ~ user.photoProfil ) |imagine_filter('carre') }}" alt="">
+    <img  src="{{ asset('img/' ~ user.photoProfil ) |imagine_filter('bg') }}" alt="">
+    <img  src="{{ asset('img/' ~ user.photoProfil ) |imagine_filter('show') }}" alt="">
+
+
+    <img  src="{{ asset('img/' ~ user.photoProfil ) }}" alt="">
+
+
     </figure>
 
     {% if app.user == user or is_granted('ROLE_ADMIN') %}
