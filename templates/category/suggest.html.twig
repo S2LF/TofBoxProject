@@ -1,6 +1,9 @@
 <h1 class="center">Suggérer des catégories</h1>
 
+<p class="success hidden">Vos suggestions ont bien été enregistrées. Merci pour vos propositions.<br>Cette fenêtre se fermera automatiquement dans quelques secondes</p>
+
 <div class="center form-wrap" id="form-suggest-wrap">
+
 
 <form action="" name="suggest_form" id="suggest_form">
     <div id="suggest">
@@ -56,23 +59,22 @@
 
 
         if(suggests != ''){
-
+            $("p.hidden").show()
             $.post(
                 "{{ path('ajax_form_suggest') }}",
                 {
                     'suggests' : suggests
                 },
                 function(data){
-
+                
                 $("#myModal2").hide()
                 document.getElementsByClassName("modal-body2")[0].innerHTML = '<div class="center" id="loaderModal2"><i class="fas fa-compact-disc fa-spin fa-4x"></i></div>'
                 const scrollY = document.body.style.top;
                 document.body.style.position = '';
                 document.body.style.top = '';
-                $("body").css('padding-right', '0')
-                $("body").css('width','100%')
+                $("body").removeAttr('style')
                 window.scrollTo(0, parseInt(scrollY || '0') * -1);
-                }
+}
             )
 
         }

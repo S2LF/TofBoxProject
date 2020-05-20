@@ -24,14 +24,14 @@
                 <nav>
                 <div>
                     <a href="{{ path('home')  }}">
-                    <img src="{{ asset('img/global/LogoTofBox.png' ) }}" alt="Logo TofBox"></a>
+                    <img class="logo_tofbox" src="{{ asset('img/global/LogoTofBox.png' ) }}" alt="Logo TofBox"></a>
                     <a href="{{ path('home')  }}"><h1>Tof'Box</h1></a>
                 </div>
 
                 <div>
                     {% if app.user %}
                     <a class="span_vertical_align" href="{{ path('profil', {'id':app.user.id}) }}">
-                        <img class="profil_photo" src="{{ asset('img/' ~ app.user.photoProfil ) }}" alt="{{ app.user.nickname }}">
+                        <img {# class="profil_photo" #} src="{{ asset('img/' ~ app.user.photoProfil ) |imagine_filter('photoProfilNav')  }}" alt="{{ app.user.nickname }}">
                         <span>&nbsp;{{ app.user.nickname }}</span></a>
                     <a href="{{ path('app_logout') }}">Déconnexion</a>
                     {% else %}
@@ -45,7 +45,7 @@
             </header>
 
 
-            {# Flash messages #}
+             {# Flash messages #}
             {% for message in app.flashes('success') %}
             <div class="success">
                 {{ message }}
@@ -61,10 +61,6 @@
                 
             {% block body %}
 
-            
-
-                {% block content %}
-                {% endblock %}
 
             {% endblock %}
             </div>
@@ -165,8 +161,9 @@
                                                 const scrollY = document.body.style.top;
                                                 document.body.style.position = '';
                                                 document.body.style.top = '';
-                                                $("body").css('padding-right', '0')
-                                                $("body").css('width','100%')
+                                                $("body").removeAttr('style')
+                                                //$("body").css('padding-right', '0')
+                                                //$("body").css('width','100%')
                                                 window.scrollTo(0, parseInt(scrollY || '0') * -1);
                     }
 
@@ -191,8 +188,9 @@
                                                     const scrollY = document.body.style.top;
                                                     document.body.style.position = '';
                                                     document.body.style.top = '';
-                                                    $("body").css('padding-right', '0')
-                                                    $("body").css('width','100%')
+                                                    $("body").removeAttr('style')
+                                                    //$("body").css('padding-right', '0')
+                                                    //$("body").css('width','100%')
                                                     window.scrollTo(0, parseInt(scrollY || '0') * -1);
                         }
 
@@ -206,8 +204,9 @@
                                                     const scrollY = document.body.style.top;
                                                     document.body.style.position = '';
                                                     document.body.style.top = '';
-                                                    $("body").css('padding-right', '0')
-                                                    $("body").css('width','100%')
+                                                    $("body").removeAttr('style')
+                                                    //$("body").css('padding-right', '0')
+                                                    //$("body").css('width','100%')
                                                     window.scrollTo(0, parseInt(scrollY || '0') * -1);
                         }
                         if (event.target == modal2) {
@@ -217,33 +216,12 @@
                                                     const scrollY = document.body.style.top;
                                                     document.body.style.position = '';
                                                     document.body.style.top = '';
-                                                    $("body").css('padding-right', '0')
-                                                    $("body").css('width','100%')
+                                                    $("body").removeAttr('style')
+                                                    //$("body").css('padding-right', '0')
+                                                    //$("body").css('width','100%')
                                                     window.scrollTo(0, parseInt(scrollY || '0') * -1);
                         }
                     }
-
-
-                    $(window).on('load', function(){
-                        jQuery("section figure img").each(function() {
-                        // Calculate aspect ratio and store it in HTML data- attribute
-                       let aspectRatio = jQuery(this).width()/jQuery(this).height();
-                        jQuery(this).data("aspect-ratio", aspectRatio);
-                            // Conditional statement
-
-                        if(aspectRatio > 1) {
-                            // Image is landscape
-                            jQuery( this ).addClass( "landscape" );
-                        } else if (aspectRatio < 1) {
-                            // Image is portrait
-                            jQuery( this ).addClass( "portrait" );;
-                        } else if (aspectRatio == 1){
-                            // Image is square
-                            jQuery( this ).addClass( "square" );;            
-                        }
-                    })
-
-                    })
 
 
 

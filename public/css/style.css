@@ -101,7 +101,7 @@ nav div:first-child{
     font-weight: bold;
     align-items: center;
 }
-nav img{
+nav .logo_tofbox{
     vertical-align: bottom;
     width: 100px;
 }
@@ -122,6 +122,8 @@ nav h1{
     color:white;*/
     font-weight: bold; 
 
+    border-radius: 7px;
+
     background:#069;
       -webkit-transform:skew(-30deg);
       -moz-transform:skew(-30deg);
@@ -129,6 +131,10 @@ nav h1{
       tranform:skew(-30deg);
     margin-left:2em;
     box-shadow: 5px 5px 7px rgba(0, 0, 0, .6);
+    transition: scale 0.5s;
+}
+.item_cat:hover{
+    scale: 1.1;
 }
 .droit{
     padding: 1em;
@@ -198,22 +204,29 @@ div.item_cat:nth-child(4n+4){
     object-position: bottom;
 }
 #cadre_photo{
-    height: 277px;
+    min-height: 277px;
     width: 355px;
     margin: 1em 1em 0.5em 1em; 
+    display: flex;
+    justify-content: center;
+}
+#cadre_photo .relative{
+    align-self: center;
 }
 img.photo_view.portrait{
     object-fit: contain;
 }
 .photo_title{
     position: absolute;
-    bottom: 63px;
-    left:1em;
+    bottom: 4px;
+
+    /* bottom: 63px;
+    left:1em; */
     color: var(--white-color);
     /* background-color: rgba(0,0,0,0.5); */
-    width: 355px;
+    width: 100%;
     display: none;
-    padding: 0 1em;
+    /* padding: 0 1em; */
     background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.6) 81%)
 }
 .profil_photo{
@@ -669,7 +682,7 @@ table, th, td {
 /* Slick  */
   .slider {
     width: 90.3%;
-    margin: 0.75em auto 0.5em;
+    margin: 0 auto 0.5em;
 }
 .slick-slide {
   margin: 0px 20px;
@@ -683,7 +696,8 @@ table, th, td {
   font-size: 30px;
 }
 .slick-list{
-    height: 61px;
+    /* height: 61px; */
+    padding: 1em 0;
 }
 /*
 .slick-slide {
@@ -706,4 +720,26 @@ table, th, td {
 }
 input[type=radio] + label {
     padding:1em 1em 1em 0.25em;
+}
+
+/* Pagination */
+.pagination{
+    margin-top: 1em;
+}
+.current {
+    background-color: var(--header-color);
+    color: white;    
+}
+.page{
+    color: var(--header-color);
+}
+.page a, .current{
+    text-align: center;
+    padding: 0.5em 0.75em;
+    border:1px solid var(--header-color);
+    font-weight: bold;    
+}
+.previous, .first, .next, .last {
+    padding: 0 0.5em;
+    
 }

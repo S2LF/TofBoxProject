@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\ChangeMailType;
 use App\Form\ChangePasswordType;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -161,7 +162,7 @@ class SecurityController extends AbstractController
       /**
       * @Route("/change_email/{id}", name="app_change_email")
       */
-      public function changeEmail(Request $request, EntityManagerInterface $em, User $user)
+      public function changeEmail(Request $request, EntityManagerInterface $em, User $user, UserRepository $urepo)
       {
         if($this->getUser() == $user || $this->isGranted('ROLE_ADMIN')){
 
@@ -171,16 +172,16 @@ class SecurityController extends AbstractController
 
             if($form->isSubmitted() && $form->isValid()) {
 
-
-                $user->setEmail($form->get('email')->getData());
-                try{
+                if($urepo->isAlreadyExistEmail($form->get('email')->getData()) == 0){
+                    $user->setEmail($form->get('email')->getData());
                     $em->flush();
                     $this->addFlash('success', 'Votre email a bien été mis à jours');
-                }catch(UniqueConstraintViolationException $e) {
-                    $this->addFlash('error', "Cet email est déjà utilisé");
+                    return $this->redirectToRoute('app_logout');
                 }
+
                 return $this->redirectToRoute('profil', ['id' => $user->getId()]);
             } else {
+                $this->addFlash('error', 'Cet email est déjà utilisé !');
                 // On envoie vers le form
                 return $this->render('security/change_mail.html.twig', [ 
                     'user' => $user,
@@ -189,7 +190,6 @@ class SecurityController extends AbstractController
         } else {
             $this->addFlash('error', "Vous n'êtes pas autorisé à faire cela");
         }
-        return $this->redirectToRoute('profil', ['id' => $user->getId()]);
-        
+  
       }
 }

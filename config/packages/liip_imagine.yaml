@@ -32,24 +32,38 @@ liip_imagine:
             filters:
                 scale: # Filtre "Thumbnail"
                     dim: [355, 277] # Taille de l'image de sortie
-                background: 
-                    color: '#ffffff'
-                    size: [355, 277]
-                    position: center
+                # background: 
+                #     color: '#ffc0cb'
+                #     size: [355, 277]
+                #     position: center
 
         show:
-            quality: 85
+            quality: 90
             filters:
                 scale:
-                    dim: [1019, 610]
-                background:
-                    color: '#ffffff'
-                    size: [1019,610]
-                    position: center
+                    dim: [1019, 800]
+                # background:
+                #     color: '#ffffff'
+                #     size: [1019,800]
+                #     position: center
 
-        # photo_profil_nav:
+        photoProfilNav:
+            quality: 75 # Qualité de l'image
+            filters: # Liste des filtres à appliquer
+                thumbnail: # Filtre "Thumbnail"
+                    size: [35, 35] # Taille de l'image de sortie
+                    mode: outbound # Découpage de l'image
 
+        photo_profil_bg:
+            quality: 75 # Qualité de l'image
+            filters: # Liste des filtres à appliquer
+                thumbnail: # Filtre "Thumbnail"
+                    size: [30, 30] # Taille de l'image de sortie
+                    mode: outbound # Découpage de l'image
 
-        # photo_profil_bg:
-
-        # photo_profil:
+        photo_profil:
+            quality: 85
+            filters:
+                thumbnail:
+                    size: [400, 400]
+                    mode: outbound

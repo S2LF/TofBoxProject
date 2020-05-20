@@ -5,7 +5,7 @@
 <div id="home_cat">
     <div class="center slick slider">
         <div class="item_cat">
-            <a href="" data-cat="home">
+            <a href="{{path('home') }}">
                 <div class="droit">
                     Tout voir
                 </div>
@@ -16,7 +16,7 @@
 
         <div class="item_cat">
 
-            <a href="" data-cat="{{ cat.id }}">
+            <a href="{{ path('home_cat', {'cat_id' : cat.id}) }}">
                 <div class="droit">
                     {{ cat.intitule | capitalize }}
                 </div>

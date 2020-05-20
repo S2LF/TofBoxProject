@@ -27,7 +27,7 @@
     </div>
 
     <figure class="figure_modal">
-        <img class="photo_modal" src="{{ asset('img/' ~ photo.path ) }}" alt="{{ photo.title }}">
+        <img {# class="photo_modal" #} src="{{ asset('img/' ~ photo.path ) |imagine_filter('show') }}" alt="{{ photo.title }}">
     </figure>
     
     <section>
@@ -87,7 +87,7 @@
                 <ul>
                     {% for cat in photo.categories %}
                     <li>
-                        <a href="{{ path('home_cat', {'id':cat.id}) }}">{{ cat.intitule | capitalize }}</a>
+                        <a href="{{ path('home_cat', {'cat_id':cat.id}) }}">{{ cat.intitule | capitalize }}</a>
                     </li>
                     {% endfor %}
                 </ul>
@@ -139,34 +139,6 @@
 <script>
 
 
-        setTimeout(function(){
-                // Portrait ou paysage ?
-            jQuery("div#myModal figure img").each(function() {
-
-                // Calculate aspect ratio and store it in HTML data- attribute
-                var aspectRatio = jQuery(this).width()/jQuery(this).height();
-                console.log(aspectRatio)
-                jQuery(this).data("aspect-ratio", aspectRatio);
-                // Conditional statement
-
-                if(aspectRatio > 1) {
-                    // Image is landscape
-
-                    jQuery( this ).addClass( "landscape" );
-                } else if (aspectRatio < 1) {
-                    // Image is portrait
-                    jQuery( this ).addClass( "portrait" );;
-                } else if (aspectRatio == 1) {
-                    // Image is square
-                    jQuery( this ).addClass( "square" );;            
-                }
-
-        },0);
-
-
-
-
-    })
 
     // Ajax Comment
     $("#comment_input").on('click', function(e){
