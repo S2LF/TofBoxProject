@@ -50,7 +50,6 @@ class CategoryController extends AbstractController
 
         $suggests = $request->request->get("suggests");
 
-        try {
         $file = new FileSystem();
         $path = $this->getParameter('private_directory').'cat_suggest/suggests.txt';
 
@@ -90,11 +89,7 @@ class CategoryController extends AbstractController
             }
         }
 
-            $this->addFlash('success', "Vos suggestions ont bien été enregistré");
-
-        } catch( FileException $e) {
-            $this->addFlash("error", "Un problème est survenu lors de l'enregistrement des suggestions");
-        }
+            $this->addFlash("success", "Vos suggestions ont bien été enregistré");
 
         return $this->redirectToRoute('profil', ['id' => $this->getUser()->getId()]);
 

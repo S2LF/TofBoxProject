@@ -72,7 +72,7 @@ class PhotoController extends AbstractController
         $em->flush();
 
         $this->addFlash("success", "La photo a bien été ajouté, merci !");
-        return $this->redirectToRoute('home');
+        return $this->redirectToRoute('user_photos', array('id' => $photo->getUser()->getId()) );
         }
 
         return $this->render('photo/form.html.twig', [
@@ -96,7 +96,7 @@ class PhotoController extends AbstractController
                 $photo->setDateUpdate(new \DateTime('now', new \DateTimeZone('Europe/Paris') ));
                 $em->flush();
                 $this->addFlash("success", "La photo a bien été modifié !");
-                return $this->redirectToRoute("profil", array('id' => $photo->getUser()->getId()));
+                return $this->redirectToRoute('user_photos', array('id' => $photo->getUser()->getId()));
             } 
 
             return $this->render('photo/form.html.twig', [
@@ -132,7 +132,7 @@ class PhotoController extends AbstractController
         } else {
             $this->addFlash("error", "La photo ne vous appartient pas !");
         }
-        return $this->redirectToRoute("profil", array('id' => $photo->getUser()->getId()));
+        return $this->redirectToRoute('user_photos', array('id' => $photo->getUser()->getId()));
     }
 
     /**
