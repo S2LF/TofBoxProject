@@ -1,0 +1,177 @@
+
+
+
+/* Reponsive en dessous de 1100px */
+@media screen and (max-width:1100px){
+
+    /* Ajax Photos View */
+
+    .infos{
+        flex-direction: column-reverse;
+    }
+    .infos aside article{
+        margin: 1em 0;
+    }
+    .slider{
+        width:90.3%;
+    }
+
+    /* User Profil */
+    .profil_section{
+        flex-direction: column;
+        justify-content: center;
+    }
+    .profil_section article, #followBy{
+        align-self: center;
+    }
+
+    /* Ajax Del Photos */
+    .sticky h2{
+        flex: 1;
+    }
+    .sticky a{
+        flex: 0.5;
+    }
+}
+
+/* Reponsive en dessous de 640px */
+@media screen and (max-width:768px){
+    .slider{
+        width:84.3%;
+    }
+    .user_action_mobile{
+        padding-top: 2em;
+        display: block;
+        max-width: 300px;
+        margin: auto;
+    }
+    .user_photos h1{
+        margin: 1em 0;
+    }
+    .user_action{
+        display: none;
+    }
+    .modal-content{
+        width: 80%;
+    }
+    .nav_user{
+        cursor: pointer;
+    }
+    .nav_log{
+        display: none;
+    }
+    .nav-button{
+        display: block;
+    }
+    .nav_log_mobile{
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 84px;
+        right: 0;
+        z-index: 1;
+        background-color: var(--header-color);
+        /* padding: 0 0.5em 0.5em 0.5em; */
+        border-left: 2px solid black;
+        border-bottom: 2px solid black;
+        font-size: 1em;
+        border-bottom-left-radius: 7px;
+        overflow: hidden;
+        height: 0;  
+    }
+    #log_mobile{
+        transition: height 1s;
+    }
+    .visible{
+        height: 100%;
+    }
+}
+
+/* Reponsive en dessous de 640px */
+@media screen and (max-width:380px){
+    body{
+        font-size: 16px;
+    }
+    .slider{
+        width:50.3%;
+    }
+    .photo-wrap figure{
+        width: 325px;
+    }
+    #cadre_photo{
+        width: initial;
+    }
+    .photo-wrap figure img{
+        max-width: 100%;
+    }
+    .infos section{
+        flex-basis: initial 
+    }
+    .header-modal{
+        margin: 0;
+    }
+    .figure_modal{
+        margin: 1em 0;
+    }
+    .modal-content{
+        width: 90%;
+    }
+    .modal-body{
+        padding-top: 2em;
+    }
+    .descr{
+        flex-direction: column;
+        margin: 0;
+    }
+    .infos{
+        margin: 0;
+    }
+    .modal-content2{
+        width: 90%;
+    }
+    #commentReport{
+        width: 250px;
+    }
+    .action{
+        padding: 0.75em;
+    }
+    #content_photo_cat h1{
+        padding: 0 1em;
+    }
+    .header-modal section, .propos h3{
+        flex: 1;
+    }
+    .user-wrap figure img{
+        width: 100%;
+    }
+    .follow{
+        width: auto;
+    }
+    .follow p{
+        margin: 0 1em;
+    }
+
+    .edit_position, .del-position{
+        left: 265px;
+    }
+
+    #photo_edit_description{
+        width: 250px;
+    }
+    #edit-wrap, #photo-edit-wrap, #form-report-wrap{
+        max-width: 300px;    }
+    #photo-edit-view{
+        width: 80%;
+    }
+    div.sticky{
+        display: block;
+    }
+    div.sticky a{
+        background-color: red;
+        color: white;
+    }
+
+    .admin{
+        position: static;
+    }
+}
