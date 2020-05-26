@@ -28,3 +28,9 @@ services:
     # please note that last definitions always *replace* previous ones
     App\Twig\AppExtension:
         tags: ['twig.extension']
+
+    App\EventListener\LoginListener:
+        tags:
+            - { name: 'kernel.event_listener', event: 'security.interactive_login'}
+
+            
