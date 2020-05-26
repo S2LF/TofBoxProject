@@ -53,7 +53,7 @@ class CategoryRepository extends ServiceEntityRepository
         $query = $entityManager->createQuery(
             "SELECT p
             FROM App\Entity\Photo p
-            JOIN App\Entity\Category c
+            LEFT JOIN p.categories c
             WHERE c.id = ". $cat
         );
         return $query;
