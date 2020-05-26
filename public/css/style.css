@@ -445,13 +445,27 @@ div.sticky a:hover{
 }
 .actionzone{
     padding: 1em;
-    background-color: white;
     border-radius: 7px;
     margin-bottom: 2em;
+    border:3px solid #57a99a;
+    box-shadow: 5px 5px 7px rgba(0, 0, 0, .6)
+}
+.actionzone a{
+    box-shadow: 0 3px 8px rgba(0, 0, 0, .3);
+    background-color: #57a99a;
+    padding: 1em;
+    color: white;
+    border-radius: 7px;
+}
+div.actionzone p a:hover{
+    background-color: var(--button-hover-color);
+    transform: scale(1.1);
+    
 }
 .actionzone p:not(:last-child){
     margin-bottom: 3em;
 }
+
 
 .edit_position{
     position: absolute;
@@ -478,6 +492,7 @@ div.sticky a:hover{
 .follow p{
     margin: 0;
 }
+
 .redzone{
     max-width: 300px;
     margin: auto;
@@ -485,6 +500,7 @@ div.sticky a:hover{
     padding: 0.5em;
     border:3px solid red;
     margin-bottom: 1em;
+    box-shadow: 5px 5px 7px rgba(0, 0, 0, .6);
 }
 .redzone p a:hover{
     color: red;
@@ -842,12 +858,4 @@ input[type=radio] + label {
     -ms-filter: blur(5px);
     
     filter: blur(5px);
-}
-.pas-flou{
-    -webkit-filter: blur(0);
-    -moz-filter: blur(0);
-    -o-filter: blur(0);
-    -ms-filter: blur(0);
-    
-    filter: blur(0);
 }
