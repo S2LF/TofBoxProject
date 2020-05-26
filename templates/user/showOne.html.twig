@@ -15,7 +15,7 @@
     <div class="user_action" >
         <div class="actionzone">
             {% include "user/ajaxFollow.html.twig" %}
-
+            <p><a class="action" href="{{ path('user_photos', {'id':user.id}) }}">Voir ses photos</a></p>
             {% if app.user == user %}
             <p><a class="action" href="{{ path('retour_form', {'id':user.id})  }}">Retour sur expérience</a></p> 
             <p><a class="action" id="suggestCat" href="" >Suggérer des catégories</p></a>

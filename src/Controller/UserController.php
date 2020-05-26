@@ -38,11 +38,11 @@ class UserController extends AbstractController
     /**
      * @Route("/photos/{id}", name="user_photos")
      */
-    public function user_photos(User $user,Request $request, PaginatorInterface $paginator, EntityManagerInterface $em, FollowRepository $frepo)
+    public function user_photos(Request $request, PaginatorInterface $paginator, EntityManagerInterface $em, FollowRepository $frepo)
     {
         $id = $request->attributes->get('id');
         
-        $currentUser = $em->getRepository(User::class)->findOneBy(['id' => $id]);
+        $user = $em->getRepository(User::class)->findOneBy(['id' => $id]);
 
         $photos_user = $paginator->paginate(
             $this->getDoctrine()->getRepository(Photo::class)->getPhotosFromUser($id),
