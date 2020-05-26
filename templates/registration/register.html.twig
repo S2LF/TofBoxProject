@@ -3,7 +3,9 @@
 {% block title %}Tof'Box{% endblock %}
 
 {% block body %}
-    <h1 class="center">Inscription</h1>
+<h1 class="center">Bienvenue sur Tof'Box</h1>
+
+    <h2 class="center">Inscription</h2>
 <div class="form-wrap">
 
 
@@ -21,18 +23,19 @@
 
     <p>{{ form_row(registrationForm.plainPassword.second) }}</p>
 
-    <p>{{ form_errors(registrationForm.agreeTerms) }}{{ form_widget(registrationForm.agreeTerms) }} <label for="registration_form_agreeTerms">&nbsp;&nbsp;En cochant cette case, je déclare avoir lu et accepter les <a class="blue" href="{{ path('app_terms') }}">Conditions d’utilisation</a> et la <a class="blue" href="{{ path('app_policy') }}">Politique de confidentialité</a>.</label>
+    <p>{{ form_errors(registrationForm.agreeTerms) }}{{ form_widget(registrationForm.agreeTerms) }} <label for="registration_form_agreeTerms">&nbsp;&nbsp;En cochant cette case, je déclare avoir lu et accepter les <a class="blue" target="blank" href="{{ path('app_terms') }}">Conditions d’utilisation</a> et la <a class="blue" target="blank" href="{{ path('app_policy') }}">Politique de confidentialité</a>.</label>
     </p>
-{# 
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.nickname) }}
-        {{ form_row(registrationForm.plainPassword) }}
-        {{ form_row(registrationForm.agreeTerms) }}
-#}
+
     <p class="center">
             <button class="btn">S'inscrire</button>
     </p>
 
-</div>
+
     {{ form_end(registrationForm) }}
+
+    <div class="center">
+        <a href="{{path('app_login') }}">Déjà inscrit ?</a>
+
+    </div>
+</div>
 {% endblock %}

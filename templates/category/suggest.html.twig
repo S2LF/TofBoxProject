@@ -67,14 +67,14 @@
                 },
                 function(data){
                 
-                $("#myModal2").hide()
-                document.getElementsByClassName("modal-body2")[0].innerHTML = '<div class="center" id="loaderModal2"><i class="fas fa-compact-disc fa-spin fa-4x"></i></div>'
+                $("#myModal").hide()
+                document.getElementsByClassName("modal-body")[0].innerHTML = '<div class="center" id="loaderModal2"><i class="fas fa-compact-disc fa-spin fa-4x"></i></div>'
                 const scrollY = document.body.style.top;
                 document.body.style.position = '';
                 document.body.style.top = '';
                 $("body").removeAttr('style')
                 window.scrollTo(0, parseInt(scrollY || '0') * -1);
-}
+                }
             )
 
         }

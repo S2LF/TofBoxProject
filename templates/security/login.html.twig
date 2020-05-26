@@ -6,8 +6,9 @@
 {% if error %}
 <div class="error alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
 {% endif %}
+<h1 class="center">Bienvenue sur Tof'Box</h1>
 
-<h1 class="center h3 mb-3 font-weight-normal">Veuillez vous connecter</h1>
+<h2 class="center h3 mb-3 font-weight-normal">Veuillez vous connecter</h2>
 
     <form method="post">
 
@@ -54,8 +55,10 @@
 
     </form>
 
-    <div class="center">
-        <a href="{{ path('app_forgotten_password') }}">Mot de passe oublié ?</a>
+    <div class="center"><br>
+        <a href="{{ path('app_forgotten_password') }}">Mot de passe oublié ?</a><br><br>
+        <a href="{{path('app_register') }}">Pas encore inscrit ?</a>
+
     </div>
 </div>
 {% endblock %}

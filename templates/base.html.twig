@@ -2,7 +2,28 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Tof'Box{% endblock %}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <!-- Primary Meta Tags -->
+<meta name="title" content="Tof'Box - Réseau social de partage de photographies.">
+<meta name="description" content="Inscrivez-vous et partager avec d'autres vos photos. Tof'Box est le projet d'étude réalisé par un développeur web en devenir.">
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.tofbox.sylvainallain.fr/">
+<meta property="og:title" content="Tof'Box - Réseau social de partage de photographies.">
+<meta property="og:description" content="Inscrivez-vous et partager avec d'autres vos photos. Tof'Box est le projet d'étude réalisé par un développeur web en devenir.">
+<meta property="og:image" content="{{ asset('img/global/TofBoxMeta.png') }}">
+
+<!-- Twitter -->
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://www.tofbox.sylvainallain.fr/">
+<meta property="twitter:title" content="Tof'Box - Réseau social de partage de photographies.">
+<meta property="twitter:description" content="Inscrivez-vous et partager avec d'autres vos photos. Tof'Box est le projet d'étude réalisé par un développeur web en devenir.">
+<meta property="twitter:image" content="{{ asset('img/global/TofBoxMeta.png') }}">
+
+
+        <title>{% block title %}Tof'Box - Réseau social de partage de photographies.{% endblock %}</title>
         {% block stylesheets %}
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
         <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet"> 
@@ -10,9 +31,14 @@
         <script src="https://kit.fontawesome.com/64cfa211f1.js" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js" integrity="sha256-NXRS8qVcmZ3dOv3LziwznUHPegFhPZ1F/4inU7uC8h0=" crossorigin="anonymous"></script>
+        <link rel="stylesheet" type="text/css" href="{{ asset('knacss/knacss.css') }}"/>
+
         <link rel="stylesheet" type="text/css" href="{{ asset('slick/slick.css') }}"/>
         <link rel="stylesheet" type="text/css" href="{{ asset('slick/slick-theme.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ asset('slick/slick.css') }}"/>
         <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/responsive.css') }}">
+
 
 
         <script type="text/javascript" src="{{asset('slick/slick.min.js') }}"></script>
@@ -20,26 +46,44 @@
     </head>
     <body>
         <div class="main-wrap">
-            <header>
+            <header class="relative">
                 <nav>
-                <div>
-                    <a href="{{ path('home')  }}">
-                    <img class="logo_tofbox" src="{{ asset('img/global/LogoTofBox.png' ) }}" alt="Logo TofBox"></a>
-                    <a href="{{ path('home')  }}"><h1>Tof'Box</h1></a>
-                </div>
+                    <div class="logo">
+                        <a href="{{ path('home')  }}">
+                        <img class="logo_tofbox" src="{{ asset('img/global/LogoTofBox.png' ) }}" alt="Logo TofBox"></a>
+                        <a href="{{ path('home')  }}"><h1>Tof'Box</h1></a>
+                    </div>
 
-                <div>
                     {% if app.user %}
-                    <a class="span_vertical_align" href="{{ path('profil', {'id':app.user.id}) }}">
-                        <img {# class="profil_photo" #} src="{{ asset('img/' ~ app.user.photoProfil ) |imagine_filter('photoProfilNav')  }}" alt="{{ app.user.nickname }}">
+                    {# <a class="span_vertical_align" href="{{ path('profil', {'id':app.user.id}) }}">
+                        <img src="{{ asset('img/' ~ app.user.photoProfil ) |imagine_filter('photoProfilNav')  }}" alt="{{ app.user.nickname }}">
                         <span>&nbsp;{{ app.user.nickname }}</span></a>
-                    <a href="{{ path('app_logout') }}">Déconnexion</a>
+                    <a href="{{ path('app_logout') }}">Déconnexion</a> #}
+
+                    <div class="nav_user"><img {# class="profil_photo" #} src="{{ asset('img/' ~ app.user.photoProfil ) |imagine_filter('photoProfilNav')  }}" alt="{{ app.user.nickname }}">
+                        <span class="bold">&nbsp;{{ app.user.nickname }} <i class="fa fa-caret-down"></i></span>
+                        <div class="subnav">
+                            <a href="{{ path('profil', {'id':app.user.id}) }}">Mon profil</a>
+                            <a href="{{ path('user_photos', {'id':app.user.id})}}">Mes photos</a>
+                            <a href="{{ path('app_logout') }}">Se déconnecter</a>
+                        </div>
+                    </div>
+
+
                     {% else %}
-                    <a class="mr-1" href="{{ path('app_register') }}">S'inscrire</a>
-                    <a href="{{ path('app_login') }}">Se connecter</a>
-                    
+                    <button class="nav-button" type="button" role="button" aria-label="open/close navigation"><i></i></button>
+
+                    <div class="nav_log_mobile" id="log_mobile">
+                        <a class="mr-1" href="{{ path('app_register') }}">S'inscrire</a>
+                        <a href="{{ path('app_login') }}">Se connecter</a>
+                    </div>
+
+                    <div class="nav_log">
+                        <a class="mr-1" href="{{ path('app_register') }}">S'inscrire</a>
+                        <a href="{{ path('app_login') }}">Se connecter</a>
+                    </div>
                     {% endif %}
-                  </div>
+                  
 
                 </nav>
             </header>
@@ -65,7 +109,7 @@
             {% endblock %}
             </div>
             <footer class="center relative">
-                <p>&copy;TofBoxProject 2020 - Version 1.0.0</p>
+                <p>&copy;TofBoxProject 2020 - Version 1.2.1</p>
                 {% if is_granted('ROLE_ADMIN') %}
                     <p class="admin"><a href="{{ path('admin') }}">Espace Admin</a></p>
                 {% endif %}
@@ -111,12 +155,50 @@
                         // Slick
                         $(".slick").slick({
                             infinite: true,
-                            slidesToShow: 9,
+                            slidesToShow: 8,
                             slidesToScroll: 1,
                             responsive:true,
                             arrow:true,
+                            speed: 1000,
                             prevArrow:"<button type='button' class='slick-prev pull-left'><i class='fa fa-angle-left fa-2x aria-hidden='true'></i></button>",
-                            nextArrow:"<button type='button' class='slick-next pull-right'><i class='fa fa-angle-right' aria-hidden='true'></i></button>"
+                            nextArrow:"<button type='button' class='slick-next pull-right'><i class='fa fa-angle-right' aria-hidden='true'></i></button>",
+                            responsive: [
+                            {
+                              breakpoint: 1400,
+                              settings: {
+                                slidesToShow: 6     
+
+                              }
+                            },
+                            {
+                              breakpoint: 1070,
+                              settings: {
+                                slidesToShow: 5
+                              }
+                            },
+                            {
+                              breakpoint: 860,
+                              settings: {
+                                slidesToShow: 4
+                              }
+                            },
+                            {
+                              breakpoint: 641,
+                              settings: {
+                                slidesToShow: 3,
+                                slidesToScroll: 3,
+                              }
+                            },
+                            {
+                              breakpoint: 380,
+                              settings: {
+                                slidesToShow: 1,
+                                slidesToScroll: 1,
+                              }
+                            }
+
+                          ]
+                            
                           });
 
                         $("#loader").fadeOut(500)
@@ -138,7 +220,6 @@
                     // Get the modal
                     var modal = document.getElementById("myModal")
                     var modalBody = document.getElementsByClassName("modal-body")[0]
-                    var btn = document.getElementsByClassName("myBtn")
                 
                 $('.myBtn, .myBtn_all , .myDelBtn , .myDelUserBtn, .cat_edit, .report_photo').on('click', function() {
                     modal.style.display = "block"
@@ -147,6 +228,7 @@
                                             document.body.style.position = 'fixed';
                                             $("body").css('padding-right', '1em')
                                             $("body").css('width','100%')
+                                            $(".content, header, footer").addClass('flou')
                 })
 
                     // Get the <span> element that closes the modal
@@ -154,45 +236,40 @@
 
                     // When the user clicks on <span> (x), close the modal
                     // modalBody has initial loader
-                    span.onclick = function() {
-                    modal.style.display = "none";
-                    modalBody.innerHTML('<div id="loaderModal"><i class="fas fa-compact-disc fa-spin fa-4x"></i></div>')
-                                                // When the modal is hidden...
-                                                const scrollY = document.body.style.top;
-                                                document.body.style.position = '';
-                                                document.body.style.top = '';
-                                                $("body").removeAttr('style')
-                                                //$("body").css('padding-right', '0')
-                                                //$("body").css('width','100%')
-                                                window.scrollTo(0, parseInt(scrollY || '0') * -1);
-                    }
+
+                    $('.close').on('click', function(){
+
+                        const scrollY = document.body.style.top;
+                        document.body.style.position = '';
+                        document.body.style.top = '';
+                        // When the modal is hidden...
+                        $("#myModal").hide()
+                        $("body").removeAttr('style')
+                        //$("body").css('padding-right', '0')
+                        //$("body").css('width','100%')
+                        window.scrollTo(0, parseInt(scrollY || '0') * -1);
+                        $(".content, header, footer").removeClass('flou')
+
+                    })
+                    $('.close2').on('click', function(){
+
+                        // When the modal is hidden...
+                        $("#myModal2").hide()
+                        //$("body").css('padding-right', '0')
+                        //$("body").css('width','100%')
+                        window.scrollTo(0, parseInt(scrollY || '0') * -1);
+                        $(".content, header, footer").removeClass('flou')
 
 
+                    })
 
                     // Get the modal2
                     var modal2 = document.getElementById("myModal2")
                     var modalBody2 = document.getElementsByClassName("modal-body2")[0]
-                    var btn = document.getElementsByClassName("myBtn2")
 
-    
+
                     // Get the <span> element that closes the modal
                         var span2 = document.getElementsByClassName("close2")[0]
-
-
-                        // When the user clicks on <span> (x), close the modal2
-                        // modalBody2 has initial loader
-                        span2.onclick = function() {
-                        modal2.style.display = "none";
-                        modalBody2.innerHTML('<div id="loaderModal"><i class="fas fa-compact-disc fa-spin fa-4x"></i></div>')
-                                                    // When the modal is hidden...
-                                                    const scrollY = document.body.style.top;
-                                                    document.body.style.position = '';
-                                                    document.body.style.top = '';
-                                                    $("body").removeAttr('style')
-                                                    //$("body").css('padding-right', '0')
-                                                    //$("body").css('width','100%')
-                                                    window.scrollTo(0, parseInt(scrollY || '0') * -1);
-                        }
 
                     // When the user clicks anywhere outside of the modal, close it
                     // modalBody has initial loader
@@ -208,24 +285,71 @@
                                                     //$("body").css('padding-right', '0')
                                                     //$("body").css('width','100%')
                                                     window.scrollTo(0, parseInt(scrollY || '0') * -1);
+                                                    $(".content, header, footer").removeClass('flou')
+
                         }
                         if (event.target == modal2) {
                             modal2.style.display = "none";
                             modalBody2.innerHTML = '<div id="loaderModal2"><i class="fas fa-compact-disc fa-spin fa-4x"></i></div>'
                                                     // When the modal is hidden...
-                                                    const scrollY = document.body.style.top;
-                                                    document.body.style.position = '';
-                                                    document.body.style.top = '';
-                                                    $("body").removeAttr('style')
                                                     //$("body").css('padding-right', '0')
                                                     //$("body").css('width','100%')
                                                     window.scrollTo(0, parseInt(scrollY || '0') * -1);
+                                                    $(".content, header, footer").removeClass('flou')
+
                         }
                     }
 
+                    // Responsive menu on click
+                    if ($(window).width() <= 768 ){
+                        $('.nav_user').on('click', function(){
+                            if($('.subnav').hasClass('flex')){
+                                $('.subnav').css('display', 'none').removeClass('flex')
+                            } else {
+                                $('.subnav').css('display', 'flex').addClass('flex')
+
+                            }
+                        })
+
+                    }
+
+                    /**!
+                    Navigation Button Toggle class
+                    */
+                    (function() {
+
+                        // old browser or not ?
+                        if ( !('querySelector' in document && 'addEventListener' in window) ) {
+                        return;
+                        }
+                        window.document.documentElement.className += ' js-enabled';
+                        
+                        function toggleNav() {
+                        
+                        // Define targets by their class or id
+                        var button = document.querySelector('.nav-button');
+                        var target = document.querySelector('body > nav');
+                        
+                        // click-touch event
+                        if ( button ) {
+                        button.addEventListener('click',
+                        function (e) {
+                            button.classList.toggle('is-active');
+                            target.classList.toggle('is-opened');
+                            e.preventDefault();
+                        }, false );
+                        }
+                        } // end toggleNav()
+                        
+                        toggleNav();
+                        }());
 
 
+                    $('.nav-button').on('click', function(){
 
+                        $('.nav_log_mobile').toggleClass('visible')
+
+                    })
                 </script>
             {% endblock %}
         </div>

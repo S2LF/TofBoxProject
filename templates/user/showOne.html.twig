@@ -55,74 +55,6 @@
     {% endif %}
 
 
-    <h2>Photos: {{ user.photos | length }} </h2> 
-
-    {% if app.user == user or is_granted('ROLE_ADMIN') %}
-        <h3><a href="{{ path('add_photo') }}">{#  <i class="far fa-image fa-2x"></i> #} Ajouter une photo</a></h3>
-    {% endif %}
-</div>
-    <div class="photo-wrap">
-        {% if user.photos | length >= 1 %}
-             {% for photo in user.photos %}
-
-
-             <figure class="relative">
-                <a class="myBtn" data-photo="{{ photo.id }}" href="">
-        
-                    <div id="cadre_photo">
-                        <div class="relative">
-                                                <img {# class="photo_view" #} src="{{ asset('img/' ~ photo.path ) |imagine_filter('bg') }}" alt="{{ photo.title }}">
-                            <div class="photo_title"><h3>{{ photo.title }}</h3></div>
-                        </div>
-                    </div>
-                </a>
-                {% if app.user == user or is_granted('ROLE_ADMIN') %}
-                {# EditButton #}
-                <div class="edit_position">
-                    <a href="{{ path('edit_photo', {'id':photo.id}) }}"><i class=" fas fa-pen-square fa-2x"></i></a>
-                </div>
-
-                {# Modal Supr#}
-                <div class="del-position">
-                    <a class="myDelBtn" data-photo="{{ photo.id}}" href=""><i class="fas fa-trash-alt fa-2x"></i></a>
-                </div>
-                {% endif %}
-                <figcaption>
-                            <div>
-                                <a class="span_vertical_align" href="{{ path('profil', {'id':photo.user.id}) }}">
-        
-                                    <img  src="{{ asset('img/' ~ photo.user.photoProfil) |imagine_filter('photo_profil_bg') }}" alt="{{photo.user.nickname}}">
-                                    <span>&nbsp;{{ photo.user.nickname }}</span>
-        
-                                </a>
-                            </div>
-                            <div>
-                                <span>
-                                    <i class="far fa-comment"></i> {{ photo.Comments | length }}
-                                    &nbsp;
-                                    <i class="far fa-thumbs-up"></i> {{ photo.likeUsers | length }}
-                                </span>
-                                
-                                
-                            </div>
-                </figcaption>
-            </figure>
-
-            {% endfor %}
-        {% else %}
-            {% if app.user == user %}
-            <div>
-                <p>Vous n'avez publié aucune photo</p>
-            </div>
-            {% else %}
-            <div>
-                <p>L'utilisateur n'a publié aucune photo</p>
-            </div>
-            {% endif %}
-
-        {% endif %}    
-           
-    </div>
 
 
     <div class="user-wrap">
@@ -131,7 +63,7 @@
 
         <article>
            
-            {% if app.user == user %}
+            {% if app.user == user or is_granted('ROLE_ADMIN') %}
                 <h2>Vous suivez: {{ user.followByUsers | length }}</h2>
 
                 <div class="follow">
@@ -146,7 +78,7 @@
         </article>
         <article id="followBy">
             
-            {% if app.user == user %}
+            {% if app.user == user or is_granted('ROLE_ADMIN') %}
                 <h2>Vous êtes suivis par: {{ user.followedUsers | length }}</h2>
                 <div class="follow" id="followList">
                     {% for followBy in user.followedUsers %}
@@ -160,7 +92,29 @@
 
         </article>
     </section>
+    <div class="user_action_mobile" >
+        <div class="actionzone">
+            {% include "user/ajaxFollow.html.twig" %}
 
+            {% if app.user == user %}
+            <p><a class="action" href="{{ path('retour_form', {'id':user.id})  }}">Retour sur expérience</a></p> 
+            <p><a class="action" id="suggestCat" href="" >Suggérer des catégories</p></a>
+ 
+            {% endif %}
+            {# TODO : Chat - Conversation 
+            <p><a class="action" href="{{ path('chat', {'id': user.id} ) }}">Démarrer une conversation</a></p>
+            #}
+        </div>
+
+        {% if app.user == user or is_granted('ROLE_ADMIN') %}
+            <fieldset class="redzone">
+                <legend class="red bold">&nbsp;Danger Zone&nbsp;</legend>
+                <p><a href="{{ path('app_change_email', {'id':user.id}) }}"><i class="far fa-envelope"></i> Changer son e-mail</a></p>
+                <p><a href="{{ path('app_change_password', {'id':user.id}) }}"><i class="fas fa-key"></i> Changer son mot de passe</a></p>
+                <p><a class="myDelUserBtn" data-user='{{ user.id }}' href=""><i class="fas fa-user-times"></i> Supprimer son compte</a></p>
+            </fieldset>
+        {% endif %}
+    </div>
 
 
 </div>
@@ -213,6 +167,9 @@
         $(".myDelUserBtn").on("click", function(e){
             e.preventDefault()
 
+            $(".content, header, footer").removeClass('flou')
+
+
             let userId = $(this).data("user")
             $.get(
                 "{{ path('delete_profil_ajax') }}",
@@ -220,8 +177,8 @@
                     "userId": userId
                 },
                 function(data){
-                    
                     $("#myModal .modal-body").html(data)
+
                 }
             )
         })
@@ -261,17 +218,19 @@
         $('#suggestCat').on('click', function(e){
             e.preventDefault()
 
-            modal2.style.display = "block"
+            modal.style.display = "block"
             // When the modal is shown, we want a fixed body
             document.body.style.position = 'fixed';
             document.body.style.top = `-${window.scrollY}px`;
             $("body").css('padding-right', '1em')
             $("body").css('width','100%')
+            $(".mobal-header, .modal-body").css('blur', '0')
+            $(".content, header, footer").removeClass('flou')
 
             $.post(
                 "{{ path('suggest_cat') }}",
                 function(data){
-                    $("#myModal2 .modal-body2").html(data)
+                    $("#myModal .modal-body").html(data)
 
                 }
             )

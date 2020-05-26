@@ -26,12 +26,13 @@ a{
     text-decoration: inherit;
 }
 header, footer {
-    padding: 0.5em;
     background-color: var(--header-color);
     color: white;
 }
 footer{
     margin-top:3em;
+    padding: 0.5em;
+
 }
 
 /* ------ GLOBAL RULE ------ */
@@ -66,6 +67,7 @@ footer{
 .hidden{
     display: none;
 }
+
 .mr-1{
     margin-right: 1em;
 }
@@ -83,16 +85,52 @@ footer{
     padding:0 1em 0 0;
 }
 
-
 /* Nav */
 nav{
     display: flex;
     justify-content: space-between;
     vertical-align: middle;
+    border-bottom: 2px solid var(--black-color) ;
 }
-nav div{
+.nav_user{
     display: flex;
-    font-size: 1.5em;
+    align-items: center;
+    font-size: 1.2em;
+    padding: 0.5em 1em;
+}
+.nav_log{
+    display: flex;
+    align-items: center;
+font-size: 1.2em;
+padding: 0.5em 1em;
+}
+.subnav{
+    /* display: flex; */
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 83px;
+    right: 0;
+    z-index: 1;
+    background-color: var(--header-color);
+    /* padding: 0 0.5em 0.5em 0.5em; */
+    border-left: 2px solid black;
+    border-bottom: 2px solid black;
+    font-size: 1em;
+    border-bottom-left-radius: 7px;
+}
+.nav_user:hover .subnav {
+    display: flex;
+}
+.subnav a{
+    padding: 0.25em 0.5em;
+}
+.subnav a:hover{
+    width:100%;
+    text-align:center;
+}
+.subnav a:hover{
+    background-color: var(--button-hover-color);
 }
 nav div a {
     align-self: center;
@@ -101,27 +139,42 @@ nav div:first-child{
     font-weight: bold;
     align-items: center;
 }
-nav .logo_tofbox{
-    vertical-align: bottom;
+.logo{  
+    display: flex;
+    padding: 0.5em;
+}
+.logo .logo_tofbox{ 
     width: 100px;
 }
-nav h1{
-    font-size:1.5em;
+.logo h1{
+    font-size:2em;
     margin: 0;
     font-family: 'Bebas Neue', cursive;
+}
+
+
+.nav_log_mobile a{
+    align-items: center;
+    font-size: 1.2em;
+    padding: 0.5em 1em;
+}
+.nav-button{
+    padding-right: 3.5em;
+}
+.nav-button, .nav_log_mobile{
+    display: none;
 }
 
 /* Home Categories View */
 #home_cat {
     background-color: var(--catbg-color);
-    border-top: 2px solid var(--black-color) ;
     border-bottom: 2px solid var(--black-color);
 }
 .item_cat{
     /* background-image: linear-gradient(to bottom, #75ebeb, #5dcfcf, #44b4b4, #2a9a9a, #008080);
     color:white;*/
     font-weight: bold; 
-
+    width: 157px;
     border-radius: 7px;
 
     background:#069;
@@ -216,6 +269,11 @@ div.item_cat:nth-child(4n+4){
 img.photo_view.portrait{
     object-fit: contain;
 }
+.figure_modal img{
+    max-width: 100%;
+}
+
+
 .photo_title{
     position: absolute;
     bottom: 4px;
@@ -239,6 +297,11 @@ img.photo_view.portrait{
     align-items: center;
     padding-right: 1em;
 }
+.descr{
+    margin: 0 40px;
+    display: flex;
+    justify-content: space-between;
+}
 .infos{
     margin: 0 40px;
     display: flex;
@@ -251,7 +314,8 @@ img.photo_view.portrait{
 border: 3px dashed var(--header-color);
 padding: 1em;
 margin: 1em;
-width: 350px;
+/* width: 350px; */
+width: 100%;
 }
 .show_category ul{
     display: flex;
@@ -320,7 +384,8 @@ width: 350px;
     box-shadow: 0 3px 8px rgba(0, 0, 0, .3)
 }
 textarea#comment {
-    width:421px;
+    /* width:421px; */
+    width: 100%;
     margin-bottom: 0;
 }
 #comment_textarea p:first-child{
@@ -423,6 +488,21 @@ div.sticky a:hover{
 }
 .redzone p a:hover{
     color: red;
+}
+
+/* User Photos View*/
+.user_photos h1{
+    margin: 3em;
+}
+.user_photos .user_action{
+    top:7em;
+}
+.user_photos_wrap figure{
+    margin-top: 1.5em ;
+    margin-bottom: 1.5em;
+}
+.user_action_mobile{
+    display: none;
 }
 
 /* Form View */
@@ -650,6 +730,8 @@ table, th, td {
     overflow: auto; /* Enable scroll if needed */
     background-color: rgb(0,0,0); /* Fallback color */
     background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+
+    
 }
 .modal2{
     z-index: 2;
@@ -681,8 +763,8 @@ table, th, td {
 
 /* Slick  */
   .slider {
-    width: 90.3%;
-    margin: 0 auto 0.5em;
+    width: 92%;
+    margin: 0 auto;
 }
 .slick-slide {
   margin: 0px 20px;
@@ -697,7 +779,7 @@ table, th, td {
 }
 .slick-list{
     /* height: 61px; */
-    padding: 1em 0;
+    padding: 0.5em 0 0.75em 0;
 }
 /*
 .slick-slide {
@@ -724,7 +806,7 @@ input[type=radio] + label {
 
 /* Pagination */
 .pagination{
-    margin-top: 1em;
+    margin-top: 3em;
 }
 .current {
     background-color: var(--header-color);
@@ -742,4 +824,30 @@ input[type=radio] + label {
 .previous, .first, .next, .last {
     padding: 0 0.5em;
     
+}
+
+/* KnaCSS surcharge*/
+
+.checkbox{
+    vertical-align: top;
+    margin-top: 0;
+    width: 1em;
+    height: 1em;
+}
+
+.flou{
+    -webkit-filter: blur(5px);
+    -moz-filter: blur(5px);
+    -o-filter: blur(5px);
+    -ms-filter: blur(5px);
+    
+    filter: blur(5px);
+}
+.pas-flou{
+    -webkit-filter: blur(0);
+    -moz-filter: blur(0);
+    -o-filter: blur(0);
+    -ms-filter: blur(0);
+    
+    filter: blur(0);
 }
