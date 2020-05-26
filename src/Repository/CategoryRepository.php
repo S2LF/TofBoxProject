@@ -48,18 +48,6 @@ class CategoryRepository extends ServiceEntityRepository
     }
     */
 
-    public function getPhotosFromCat($cat){
-        $entityManager = $this->getEntityManager();
-        $query = $entityManager->createQuery(
-            "SELECT p
-            FROM App\Entity\Photo p
-            JOIN App\Entity\Category c
-            WHERE c.id = ". $cat
-        );
-        return $query;
-    }
-
-
     public function getAll(){
         $entityManager = $this->getEntityManager();
         $query = $entityManager ->createQuery(
@@ -68,8 +56,6 @@ class CategoryRepository extends ServiceEntityRepository
         );
         return $query->execute();
     }
-
-
 
     public function deleteOne($catId){
         $entityManager = $this->getEntityManager();

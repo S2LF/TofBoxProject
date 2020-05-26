@@ -251,4 +251,26 @@ class AdminController extends AbstractController
 
     }
     
-}
+
+
+    /**
+     * @Route("/user/grade/{id}", name="grade_admin")
+     */
+     public function grade_admin(User $user, EntityManagerInterface $em)
+     {
+        // Sécurity Forbidden setRoles ADMIN
+        if($user->getRoles(['ROLE_ADMIN'])){
+            $user->setRoles([]);
+            $em->flush();
+        } elseif (!$user->getRoles(['ROLE_ADMIN'])) {
+            $user->setRoles(["ROLE_ADMIN"]);
+            $em->flush();
+        }
+
+        $this->addFlash('success', "La modification a bien été pris en compte");
+        return $this->redirectToRoute('admin_users');
+     }
+
+
+
+    }

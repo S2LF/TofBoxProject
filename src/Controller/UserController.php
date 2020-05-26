@@ -3,14 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Entity\Photo;
 use App\Entity\Follow;
 use App\Form\RegisterEditType;
 use App\Form\RegistrationFormType;
 use App\Repository\PhotoRepository;
 use App\Repository\FollowRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -34,33 +32,6 @@ class UserController extends AbstractController
         ]);
     }
 
-
-    /**
-     * @Route("/photos/{id}", name="user_photos")
-     */
-    public function user_photos(User $user,Request $request, PaginatorInterface $paginator, EntityManagerInterface $em, FollowRepository $frepo)
-    {
-        $id = $request->attributes->get('id');
-        
-        $currentUser = $em->getRepository(User::class)->findOneBy(['id' => $id]);
-
-        $photos_user = $paginator->paginate(
-            $this->getDoctrine()->getRepository(Photo::class)->getPhotosFromUser($id),
-            $request->query->getInt('page', 1),
-            12
-        );
-        if($this->getUser()){
-            $isFollow = $frepo->isFollow($id, $this->getUser()->getId());
-        } else {
-            $isFollow = false;
-        }
-
-        return $this->render('user/showPhotos.html.twig', [
-            'isFollow' => $isFollow,
-            'photos' => $photos_user,
-            'user' => $user
-        ]);
-    }
 
 
     /**

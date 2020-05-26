@@ -45,20 +45,32 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         );
         return $query->execute();
     }
-
-
-    public function isAlreadyExistEmail($email)
+    // /**
+    //  * @return User[] Returns an array of User objects
+    //  */
+    /*
+    public function findByExampleField($value)
     {
-        $qb = $this->createQueryBuilder('u');
-        $qb->select('count(u)');
-        $qb->setParameter('val', $email);
-        $qb->andWhere('u.email = :val');
-        $count = $qb->getQuery()->getSingleScalarResult();
-        return $count;
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.exampleField = :val')
+            ->setParameter('val', $value)
+            ->orderBy('u.id', 'ASC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+        ;
     }
-    
-    
+    */
 
-
-
+    /*
+    public function findOneBySomeField($value): ?User
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.exampleField = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+    */
 }
