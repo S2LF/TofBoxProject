@@ -43,7 +43,8 @@ class RetourXPType extends AbstractType
                 'multiple' => false
             ])
             ->add('xp_propositions', TextareaType::class, [
-                'label' => 'Auriez-vous des propositions ?' ])
+                'label' => 'Auriez-vous des propositions ?',
+                            'required' => false ])
 
 
 
@@ -75,7 +76,8 @@ class RetourXPType extends AbstractType
                 'multiple' => false
             ])
             ->add('photo_propositions', TextareaType::class, [
-                'label' => 'Auriez-vous des propositions ?' ])
+                'label' => 'Auriez-vous des propositions ?',
+                            'required' => false])
                 
 
             ->add('user', ChoiceType::class,[
@@ -97,7 +99,8 @@ class RetourXPType extends AbstractType
                 'multiple' => false
             ])
             ->add('user_propositions', TextareaType::class, [
-                'label' => 'Auriez-vous des propositions ?' ])
+                'label' => 'Auriez-vous des propositions ?',
+                            'required' => false])
 
 
             ->add('design', ChoiceType::class,[
@@ -119,7 +122,8 @@ class RetourXPType extends AbstractType
                 'multiple' => false
             ])
             ->add('design_propositions', TextareaType::class, [
-                'label' => 'Auriez-vous des propositions ?' ])
+                'label' => 'Auriez-vous des propositions ?',
+                            'required' => false])
 
             ->add('rgpd', ChoiceType::class,[
                 'label' => "",
@@ -140,10 +144,12 @@ class RetourXPType extends AbstractType
                 'multiple' => false
             ])
             ->add('rgpd_propositions', TextareaType::class, [
-                'label' => 'Auriez-vous des propositions ?' ])
+                'label' => 'Auriez-vous des propositions ?',
+                            'required' => false])
 
             ->add('sug_propositions', TextareaType::class, [
-                'label' => 'Auriez-vous des propositions pour améliorer le site ?' ])
+                'label' => 'Auriez-vous des propositions pour améliorer le site ?',
+                            'required' => false])
             ;
     }
 

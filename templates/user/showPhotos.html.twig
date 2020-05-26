@@ -1,0 +1,207 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<div class="user-wrap user_photos">
+
+    <div class="user_action" >
+        <div class="actionzone">
+            {% include "user/ajaxFollow.html.twig" %}
+
+            {% if app.user == user or is_granted('ROLE_ADMIN') %}
+            <p><a class="action" href="{{ path('add_photo') }}">Ajouter une photo</a></p> 
+            <p><a class="action" id="suggestCat" href="" >Suggérer des catégories</p></a>
+            {% endif %}
+            {# TODO : Chat - Conversation 
+            <p><a class="action" href="{{ path('chat', {'id': user.id} ) }}">Démarrer une conversation</a></p>
+            #}
+        </div>
+
+    </div>
+
+    <h1 class="">Photos de {{ user.nickname }}: {{ user.photos | length }} </h1> 
+
+
+    <div class="user_action_mobile" >
+        <div class="actionzone">
+            {% include "user/ajaxFollow.html.twig" %}
+
+            {% if app.user == user or is_granted('ROLE_ADMIN') %}
+            <p><a class="action" href="{{ path('add_photo') }}">Ajouter une photo</a></p> 
+            <p><a class="action" id="suggestCat" href="" >Suggérer des catégories</p></a>
+            {% endif %}
+            {# TODO : Chat - Conversation 
+            <p><a class="action" href="{{ path('chat', {'id': user.id} ) }}">Démarrer une conversation</a></p>
+            #}
+        </div>
+
+    </div>
+</div>
+    <div class="photo-wrap user_photos_wrap">
+        {% if user.photos | length >= 1 %}
+             {% for photo in photos %}
+
+
+             <figure class="relative">
+                <a class="myBtn" data-photo="{{ photo.id }}" href="">
+        
+                    <div id="cadre_photo">
+                        <div class="relative">
+                                                <img {# class="photo_view" #} src="{{ asset('img/' ~ photo.path ) |imagine_filter('bg') }}" alt="{{ photo.title }}">
+                            <div class="photo_title"><h3>{{ photo.title }}</h3></div>
+                        </div>
+                    </div>
+                </a>
+                {% if app.user == user or is_granted('ROLE_ADMIN') %}
+                {# EditButton #}
+                <div class="edit_position">
+                    <a href="{{ path('edit_photo', {'id':photo.id}) }}"><i class=" fas fa-pen-square fa-2x"></i></a>
+                </div>
+
+                {# Modal Supr#}
+                <div class="del-position">
+                    <a class="myDelBtn" data-photo="{{ photo.id}}" href=""><i class="fas fa-trash-alt fa-2x"></i></a>
+                </div>
+                {% endif %}
+                <figcaption>
+                            <div>
+                                <a class="span_vertical_align" href="{{ path('profil', {'id':photo.user.id}) }}">
+        
+                                    <img  src="{{ asset('img/' ~ photo.user.photoProfil) |imagine_filter('photo_profil_bg') }}" alt="{{photo.user.nickname}}">
+                                    <span>&nbsp;{{ photo.user.nickname }}</span>
+        
+                                </a>
+                            </div>
+                            <div>
+                                <span>
+                                    <i class="far fa-comment"></i> {{ photo.Comments | length }}
+                                    &nbsp;
+                                    <i class="far fa-thumbs-up"></i> {{ photo.likeUsers | length }}
+                                </span>
+                                
+                                
+                            </div>
+                </figcaption>
+            </figure>
+
+            {% endfor %}
+        {% else %}
+            {% if app.user == user %}
+            <div>
+                <p>Vous n'avez publié aucune photo</p>
+            </div>
+            {% else %}
+            <div>
+                <p>L'utilisateur n'a publié aucune photo</p>
+            </div>
+            {% endif %}
+
+        {% endif %}    
+           
+    </div>
+
+
+    <div class="center pagination">
+        {{knp_pagination_render(photos)}}
+    </div>
+
+
+
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+
+<script>
+
+    $(document).ready(function(){
+
+
+    // Ajax ShowOnePhoto
+        // Get the button that opens the modal
+        $(".myBtn").on("click", function(e){
+            e.preventDefault()
+            
+            let photoid = $(this).data("photo")
+            $.get(
+                "{{ path('ajax_show') }}",
+                {
+                    "photoid" : photoid
+                },
+                function(data){
+                    $("#myModal .modal-body").html(data)
+                }
+            )
+        })
+
+        // Ajax DeleteOnePhoto
+        $(".myDelBtn").on("click", function(e){
+            e.preventDefault()
+
+            let photoid = $(this).data("photo")
+            $.get(
+                "{{ path('ajax_del') }}",
+                {
+                    "photoid": photoid
+                },
+                function(data){
+                    
+                    $("#myModal .modal-body").html(data)
+                }
+            )
+        })
+
+        // Ajax Follow Switch
+        $('#follow').on('click', function(e){
+            e.preventDefault()
+
+            let userId = $(this).data("user")
+
+            $.post(
+                "{{ path('follow') }}",
+                {
+                    "userId" : userId
+                },
+                function(data){
+                    if(data.isFollow == true){
+                        $("#followModal").addClass('unfollow')
+                        $("#followModal").html('<i class="fas fa-eye"></i>&nbsp;Suivi')
+                        $("#follow").addClass('unfollow')
+                        $("#follow").html('<i class="fas fa-eye"></i>&nbsp;Suivi')
+                        $("#followNb").html(data.followNb)
+                        $("#followList").append('<p id="'+data.user.id+'"><a href="/user/'+ data.user.id+'"><img class="profil_photo" src="/img/'+data.user.photoProfil+'" alt="">&nbsp;'+ data.user.nickname +'</a></p>')
+                    } else {
+                        $("#followModal").removeClass('unfollow')
+                        $("#followModal").html('<i class="far fa-eye"></i>&nbsp;Suivre')
+                        $("#follow").removeClass('unfollow')
+                        $("#follow").html('<i class="far fa-eye"></i>&nbsp;Suivre')
+                        $("#followNb").html(data.followNb)
+                        $("p#"+data.user.id+"").remove()
+                    }
+                }
+            )
+        })
+
+        $('#suggestCat').on('click', function(e){
+            e.preventDefault()
+
+            modal.style.display = "block"
+            // When the modal is shown, we want a fixed body
+            document.body.style.position = 'fixed';
+            document.body.style.top = `-${window.scrollY}px`;
+            $("body").css('padding-right', '1em')
+            $("body").css('width','100%')
+
+            $.post(
+                "{{ path('suggest_cat') }}",
+                function(data){
+                    $("#myModal .modal-body").html(data)
+
+                }
+            )
+
+        })
+
+    })
+</script>
+{% endblock %}

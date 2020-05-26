@@ -1,9 +1,8 @@
 
-    {# Affichage des photos #}
-    <h1 class="center">Bienvenue sur Tof'Box</h1>
-    <div class="photo-wrap">    
-    {% for photo in photos %}
-
+{# Affichage des photos #}
+<h1 class="center">Bienvenue sur Tof'Box</h1>
+<div class="photo-wrap">
+{% for photo in photos %}
 
     <figure class="relative">
         <a class="myBtn" data-photo="{{ photo.id }}" href="">
@@ -29,11 +28,16 @@
                             &nbsp;
                             <i class="far fa-thumbs-up"></i> {{ photo.likeUsers | length }}
                         </span>
-                        
-                        
                     </div>
         </figcaption>
     </figure>
 
-    {% endfor %}
-    </div>
+{% endfor %}
+
+
+
+</div>
+<div class="center pagination">
+    {{knp_pagination_render(photos)}}
+</div>
+

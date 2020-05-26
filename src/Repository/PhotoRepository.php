@@ -57,6 +57,26 @@ class PhotoRepository extends ServiceEntityRepository
         return $query->execute();
     }
 
+    public function getAllPages(){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager ->createQuery(
+                    "SELECT p
+                        FROM App\Entity\Photo p
+                        ORDER BY p.date_creation DESC"
+        );
+        return $query;
+    }
+
+    public function getPhotosFromUser($userId){
+
+        return $this->createQueryBuilder('p')
+        ->where( 'p.user = '.$userId)
+        ->orderBy('p.date_creation', 'DESC')
+        ->getQuery()
+        ;
+     }
+
+
     public function findLasts($number, $user)
     {
         return $this->createQueryBuilder('p')

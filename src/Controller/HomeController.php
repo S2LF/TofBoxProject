@@ -6,6 +6,7 @@ use App\Entity\Photo;
 use App\Entity\Category;
 use App\Repository\PhotoRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -19,7 +20,7 @@ class HomeController extends AbstractController
     /**
      * @Route("/", name="home")
      */
-    public function index()
+    public function index(PaginatorInterface $paginator, Request $request)
     {
 
         // Get all categories
@@ -28,9 +29,19 @@ class HomeController extends AbstractController
         ->getAll();
 
         // Get all photos
-        $photos = $this->getDoctrine()
-        ->getRepository(Photo::class)
-        ->getAll();
+
+        $photos = $paginator->paginate(
+            $this->getDoctrine()->getRepository(Photo::class)->getAllPages(),
+            $request->query->getInt('page', 1),
+            12
+        );
+        // ->getRepository(Photo::class)
+        // ->getAll();
+
+
+        // $photos = $this->getDoctrine()
+        // ->getRepository(Photo::class)
+        // ->getAll();
 
         return $this->render('home/index.html.twig', [
             'photos' => $photos,
@@ -39,57 +50,40 @@ class HomeController extends AbstractController
     }
 
 
+
+
     /**
-     * @Route("/ajax/home_cat", name="home_cat")
+     * @Route("/home_cat/{cat_id}", name="home_cat")
      */
-    public function getPhotosByCategory(Request $request, EntityManagerInterface $em){
+    public function getPhotosByCategory(Request $request, PaginatorInterface $paginator, EntityManagerInterface $em){
 
-        $catId = $request->request->get("catId");
-            // $catId = $request->attributes->get("id");
+        $catId = $request->attributes->get("cat_id");
 
-        if($catId == 'home'){
-
-            // Get all photos
-            $photos = $this->getDoctrine()
-            ->getRepository(Photo::class)
-            ->getAll();
-
-
-            $html = $this->renderView('home/photoAll.html.twig', [
-                'photos' => $photos,
-                            ]);
-
-            return new Response($html);
-
-        } else {
-
-            $category = $em->getRepository(Category::class)->findOneBy(['id' => $catId ]);
+         $category = $em->getRepository(Category::class)->findOneBy(['id' => $catId ]);
 
             // Get all categories
-            $categories = $this->getDoctrine()
+             $categories = $this->getDoctrine()
             ->getRepository(Category::class)
             ->getAll();
 
-            $html = $this->renderView('home/photocat.html.twig', [
-                'photos' => $category,
+
+            // Get all categories
+            // $categories = $this->getDoctrine()
+            // ->getRepository(Category::class)
+            // ->getPhotosFromCat();
+            // ->getAll();
+
+            $photos = $paginator->paginate(
+                $this->getDoctrine()->getRepository(Category::class)->getPhotosFromCat($catId),
+                $request->query->getInt('page', 1),
+                12
+            );
+
+            return $this->render('home/photocat.html.twig', [
+                'photos' => $photos,
+                'category' => $category,
                 'categories' => $categories,
             ]);
 
-            return new Response($html);
         }
-
-        // $html = $this->renderView("home/ajaxLike.html.twig", [
-        //     "isLiking" => $isLiking,
-        //     "photo" => $photo
-        // ]);
-
-        
-
-    }
-
-
-
-
-
-
 }

@@ -20,7 +20,8 @@
         <th>J'aimes</th>
         <th>Suit</th>
         <th>Suivi par</th>
-        <th>Rôle</th>
+        <th>Création du compte</th>
+        <th>Dernière connexion</th>
         {# <th>Actions</th> #}
     </thead>
     <tbody>
@@ -33,20 +34,19 @@
             <td>{{ user.likes | length }}</td>
             <td>{{ user.followByUsers | length }}</td>
             <td>{{ user.followedUsers | length }}</td>
-            {% if 'ROLE_ADMIN' in user.roles %}
-                {% if user == app.user %}
-                <td><i class="fas fa-chess-king"></i></td>
+            <td>{{ user.dateCreation | format_datetime('short', 'none', locale='fr') }} ( {{ user.dateCreation | timeago }} )
+            </td>
+            <td>
+                {% if user.lastLogin != null %}
+                {{ user.lastLogin | format_datetime('short', 'none', locale='fr') }} ( {{ user.lastLogin | timeago }} )
                 {% else %}
-                <td><i class="fas fa-chess-king"></i>&nbsp;&nbsp;&nbsp;|&nbsp;<a href="{{ path('grade_admin', {'id':user.id}) }}"><i class="fas fa-angle-double-down"></i></a></td>
+                N/A
                 {% endif %}
-            {% else %}
-            <td><i class="fas fa-chess-pawn"></i>&nbsp;&nbsp;&nbsp;|&nbsp;<a href="{{ path('grade_admin', {'id':user.id}) }}"><i class="fas fa-angle-double-up"></i></a></td> {# TODO : ADMIN & UNADMIN#}
-            {% endif %}
-            {# <td><a href="{{ path('user_edit', {'id':user.id}) }}"><i class="fas fa-user-edit"></i></a>&nbsp;&nbsp;&nbsp;|&nbsp;<a <a class="myDelUserBtn" data-user='{{ user.id }}' href=""><i class="fas fa-user-times"></i></a></td> #}
-        </tr>    
+            
+            </td>
+           </tr>    
     {% endfor %}
     </tbody>
-    <caption><i class="fas fa-chess-king"></i>&nbsp;Admin | <i class="fas fa-chess-pawn"></i>&nbsp;Utilisateur</caption>
 </table>
 
 

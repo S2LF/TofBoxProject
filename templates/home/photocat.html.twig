@@ -1,40 +1,79 @@
+{% extends 'base.html.twig' %}
 
-<h1 class="center" >Catégorie {{ photos.intitule | capitalize }}</h1>
-<div class="photo-wrap">    
-{% for photo in photos.photos %}
+{% block title %}Tof'Box{% endblock %}
 
-<figure class="relative">
-    <a class="myBtn" data-photo="{{ photo.id }}" href="">
+{% block body %}
 
-        <div id="cadre_photo">
-                <img class="photo_view" src="{{ asset('img/' ~ photo.path ) }}" alt="{{ photo.title }}">
-                <div class="photo_title"><h3>{{ photo.title }}</h3></div>
-        </div>
-    </a>
+{# Gestion des catégories #}
+{% include 'category/index.html.twig' %} 
 
-    <figcaption>
-                <div>
-                    <a class="span_vertical_align" href="{{ path('profil', {'id':photo.user.id}) }}">
+<section id="content_photo_cat">
 
-                        <img class="profil_photo" src="{{ asset('img/' ~ photo.user.photoProfil) }}" alt="{{photo.user.nickname}}">
-                        <span>&nbsp;{{ photo.user.nickname }}</span>
+    <h1 class="center" >Catégorie {{ category.intitule | capitalize }}</h1>
+    <div class="photo-wrap">    
+    {% for photo in photos %}
 
-                    </a>
+    <figure class="relative">
+        <a class="myBtn" data-photo="{{ photo.id }}" href="">
+
+            <div id="cadre_photo">
+                <div class="relative">
+                                        <img src="{{ asset('img/' ~ photo.path ) |imagine_filter('bg') }}" alt="{{ photo.title }}">
+                    <div class="photo_title"><h3>{{ photo.title }}</h3></div>
                 </div>
-                <div>
-                    <span>
-                        <i class="far fa-comment"></i> {{ photo.Comments | length }}
-                        &nbsp;
-                        <i class="far fa-thumbs-up"></i> {{ photo.likeUsers | length }}
-                    </span>
-                    
-                    
-                </div>
-    </figcaption>
-</figure>
+            </div>
+        </a>
 
+        <figcaption>
+                    <div>
+                        <a class="span_vertical_align" href="{{ path('profil', {'id':photo.user.id}) }}">
 
+                            <img src="{{ asset('img/' ~ photo.user.photoProfil) |imagine_filter('photo_profil_bg') }}" alt="{{photo.user.nickname}}">
+                            <span>&nbsp;{{ photo.user.nickname }}</span>
 
-{% endfor %}
+                        </a>
+                    </div>
+                    <div>
+                        <span>
+                            <i class="far fa-comment"></i> {{ photo.Comments | length }}
+                            &nbsp;
+                            <i class="far fa-thumbs-up"></i> {{ photo.likeUsers | length }}
+                        </span>
+                        
+                    </div>
+        </figcaption>
+    </figure>
 
-</div>
+    {% endfor %}
+    </div>
+    <div class="center pagination">
+        {{knp_pagination_render(photos)}}
+    </div>
+</section>
+
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+
+            // Get the button that opens the modal
+        $(document).ready(function(){
+            $('.myBtn').on("click", function(e){
+                e.preventDefault()
+
+                let photoid = $(this).data("photo")
+                $.get(
+                    "{{ path('ajax_show') }}",
+                    {
+                        "photoid" : photoid
+                    },
+                    function(data){
+                        $("#myModal .modal-body").html(data)
+                        $("#myModal").show()
+                    }
+                )
+            })
+        })
+    
+    </script>
+{% endblock %}

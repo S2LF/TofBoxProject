@@ -11,17 +11,18 @@
 <section id="content_photo_cat">
 
     {# Affichage des photos #}
-    <h1 class="center">Bienvenue sur Tof'Box</h1>
+    <h1 class="center">Photos les plus récentes </h1>
     <div class="photo-wrap">    
     {% for photo in photos %}
 
 
     <figure class="relative">
         <a class="myBtn" data-photo="{{ photo.id }}" href="">
-
             <div id="cadre_photo">
-                    <img class="photo_view" src="{{ asset('img/' ~ photo.path ) }}" alt="{{ photo.title }}">
+                <div class="relative">
+                                        <img {# class="photo_view" #} src="{{ asset('img/' ~ photo.path ) |imagine_filter('bg') }}" alt="{{ photo.title }}">
                     <div class="photo_title"><h3>{{ photo.title }}</h3></div>
+                </div>
             </div>
         </a>
 
@@ -29,7 +30,7 @@
                     <div>
                         <a class="span_vertical_align" href="{{ path('profil', {'id':photo.user.id}) }}">
 
-                            <img class="profil_photo" src="{{ asset('img/' ~ photo.user.photoProfil) }}" alt="{{photo.user.nickname}}">
+                            <img {# class="profil_photo" #} src="{{ asset('img/' ~ photo.user.photoProfil) |imagine_filter('photo_profil_bg') }}" alt="{{photo.user.nickname}}">
                             <span>&nbsp;{{ photo.user.nickname }}</span>
 
                         </a>
@@ -49,6 +50,9 @@
     {% endfor %}
     </div>
 
+    <div class="center pagination">
+        {{knp_pagination_render(photos)}}
+    </div>
 
 </section>
 {% endblock %}
@@ -58,9 +62,9 @@
 
             // Get the button that opens the modal
         $(document).ready(function(){
-            $(".myBtn").on("click", function(e){
+            $("section#content_photo_cat").on("click", '.myBtn', function(e){
                 e.preventDefault()
-                
+
                 let photoid = $(this).data("photo")
                 $.get(
                     "{{ path('ajax_show') }}",
@@ -69,29 +73,10 @@
                     },
                     function(data){
                         $("#myModal .modal-body").html(data)
+                        $("#myModal").show()
                     }
                 )
             })
-        })
-
-        // Ajax Catégories
-        $(".item_cat a").on('click', function(e){
-            e.preventDefault()
-    
-            $catId = $(this).data('cat')
-    
-            $.post(
-                "{{ path('home_cat') }}",
-                {
-                    "catId" : $catId
-                },
-                function(data){
-
-                    $("section#content_photo_cat").html(data)
-
-                }
-            )
-    
         })
     
     </script>
