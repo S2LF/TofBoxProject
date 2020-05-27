@@ -25,6 +25,9 @@ class PhotoController extends AbstractController
 {
     /**
      * @Route("/", name="photo")
+     * 
+     * Redirect to homepage
+     * Not use in the project
      */
     public function index()
     {
@@ -33,6 +36,11 @@ class PhotoController extends AbstractController
     }
     /**
      * @Route("/add", name="add_photo")
+     * 
+     * Display form to add photo
+     * Get this form
+     * Rename and move img
+     * Set informations
      */
     public function add(Request $request, EntityManagerInterface $em)
     {
@@ -83,6 +91,10 @@ class PhotoController extends AbstractController
     /**
      * @Route("/edit/{id}", name="edit_photo")
      * @IsGranted("ROLE_USER")
+     * 
+     * Check if User can edit this photo
+     * Display edit photo form
+     * Save informations
      */
     public function editPhoto(Photo $photo, Request $request, EntityManagerInterface $em)
     {
@@ -113,6 +125,9 @@ class PhotoController extends AbstractController
     /**
      * @Route("/delete/{id}", name="delete_photo")
      * @IsGranted("ROLE_USER")
+     * 
+     * Check if User can delete this photo
+     * Remove photo & remove file
      */
     public function deletePhoto(Photo $photo, EntityManagerInterface $em )
     {
@@ -137,6 +152,15 @@ class PhotoController extends AbstractController
 
     /**
      * @Route("/show/ajax", name="ajax_show")
+     * 
+     * Ajax request
+     * 
+     * get photo & last 4 photos
+     * get isLiking status
+     * get isFollow status
+     * 
+     * Display photo in a modal
+     * 
      */
     public function ajax_show(Request $request, EntityManagerInterface $em, PhotoRepository $prepo, FollowRepository $frepo){
 
@@ -171,8 +195,12 @@ class PhotoController extends AbstractController
 
     /**
      * @Route("/del/ajax", name="ajax_del", methods={"GET"})
+     * 
+     * Display photos modal 
+     * Need to confirm to delete pthis hoto
+     * 
      */
-    public function ajax_del(Request $request, EntityManagerInterface $em, PhotoRepository $prepo){
+    public function ajax_del(Request $request, EntityManagerInterface $em, PhotoRepository $prepo, FollowRepository $frepo){
         $photoid = $request->query->get("photoid");
         $photo = $em->getRepository(Photo::class)->findOneBy(['id' => $photoid]);
         $lastsPhotos = $prepo->findLasts(4, $photo->getUser()->getId());
@@ -183,11 +211,20 @@ class PhotoController extends AbstractController
             $isLiking = false;
         };
 
+                // On actualise isFollow
+                if($this->getUser()){
+                    $isFollow = $frepo->isFollow($photo->getUser()->getId(), $this->getUser()->getId());
+                } else {
+                    // Si il n'y a pas de User courant on renvoie false
+                    $isFollow = false;
+                }
 
         $html = $this->renderView("photo/ajaxDel.html.twig", [
             "lastsPhotos" => $lastsPhotos,
             "photo" => $photo,
-            "isLiking" => $isLiking
+            "isLiking" => $isLiking,
+            "isFollow" => $isFollow
+
         ]);
 
         return new Response($html);
@@ -195,6 +232,9 @@ class PhotoController extends AbstractController
 
     /**
      * @Route("/ajax/like", name="like")
+     * 
+     * Ajax request
+     * Get Like status & change this status
      */
     public function Like(Request $request, EntityManagerInterface $em)
     {

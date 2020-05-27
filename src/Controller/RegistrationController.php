@@ -17,6 +17,9 @@ class RegistrationController extends AbstractController
 {
     /**
      * @Route("/", name="app_register")
+     * 
+     * Display registration form
+     * Create User
      */
     public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
     {
@@ -51,6 +54,8 @@ class RegistrationController extends AbstractController
 
     /**
      * @Route("/terms-of-service", name="app_terms")
+     * 
+     * Display terms
      */
     public function terms()
     {
@@ -59,6 +64,8 @@ class RegistrationController extends AbstractController
 
     /**
      * @Route("/privacy-policy", name="app_policy")
+     * 
+     * Display policy
      */
     public function policy()
     {

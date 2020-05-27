@@ -19,6 +19,10 @@ class HomeController extends AbstractController
 {
     /**
      * @Route("/", name="home")
+     * 
+     * Get photos with pagination
+     * Get categories for slide
+     * Display home page
      */
     public function index(PaginatorInterface $paginator, Request $request)
     {
@@ -35,13 +39,6 @@ class HomeController extends AbstractController
             $request->query->getInt('page', 1),
             12
         );
-        // ->getRepository(Photo::class)
-        // ->getAll();
-
-
-        // $photos = $this->getDoctrine()
-        // ->getRepository(Photo::class)
-        // ->getAll();
 
         return $this->render('home/index.html.twig', [
             'photos' => $photos,
@@ -54,6 +51,10 @@ class HomeController extends AbstractController
 
     /**
      * @Route("/home_cat/{cat_id}", name="home_cat")
+     * 
+     * Get current category
+     * Get photos from this category with pagination
+     * Get categories for slide
      */
     public function getPhotosByCategory(Request $request, PaginatorInterface $paginator, EntityManagerInterface $em){
 
@@ -65,13 +66,6 @@ class HomeController extends AbstractController
              $categories = $this->getDoctrine()
             ->getRepository(Category::class)
             ->getAll();
-
-
-            // Get all categories
-            // $categories = $this->getDoctrine()
-            // ->getRepository(Category::class)
-            // ->getPhotosFromCat();
-            // ->getAll();
 
             $photos = $paginator->paginate(
                 $this->getDoctrine()->getRepository(Category::class)->getPhotosFromCat($catId),

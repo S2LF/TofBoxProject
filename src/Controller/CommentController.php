@@ -20,17 +20,14 @@ class CommentController extends AbstractController
 {
     /**
      * @Route("/{id}", name="show_comment")
+     * 
+     * Get photo and render view for display comments
      */
     public function index(Request $request, EntityManagerInterface $em)
     {
         $photoId = $request->attributes->get('id');
 
         $photo = $em->getRepository(Photo::class)->findOneBy(['id' => $photoId]);
-
-        // $comments = $this->getDoctrine()
-        //     ->getRepository(Comment::class)
-        //     ->getCommentsFromPhotoId($photo);
-
 
         return $this->render('comment/index.html.twig', [
             'photo' => $photo,
@@ -40,6 +37,9 @@ class CommentController extends AbstractController
     /**
      * @Route("/ajax/add", name="add_comment")
      * @IsGranted("ROLE_USER")
+     * 
+     * Ajax request
+     * Add comment
      */
     public function add_comment(Request $request, EntityManagerInterface $em)
     {
@@ -69,6 +69,9 @@ class CommentController extends AbstractController
     /**
      * @Route("/ajax/edit", name="ajax_edit")
      * @IsGranted("ROLE_USER")
+     * 
+     * Ajax requet
+     * Edit comment form
      */
     public function edit_form(Request $request, EntityManagerInterface $em) 
     {
@@ -94,6 +97,9 @@ class CommentController extends AbstractController
     /**
      * @Route("/ajax/edit_form", name="ajax_edit_comment")
      * @IsGranted("ROLE_USER")
+     * 
+     * Ajax request
+     * Edit comment
      */
     public function edit_comment(Request $request, EntityManagerInterface $em)
     {
@@ -120,6 +126,9 @@ class CommentController extends AbstractController
     /**
      * @Route("/ajax/delete", name="delete_comment")
      * @IsGranted("ROLE_USER")
+     * 
+     * Ajax request
+     * Delete comment
      */
     public function delete_comment(Request $request, EntityManagerInterface $em, CommentRepository $crepo)
     {

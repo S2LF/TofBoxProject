@@ -16,6 +16,9 @@ class CategoryController extends AbstractController
 {
     /**
      * @Route("/", name="category")
+     * Defaut path
+     * 
+     * Don't use in my project
      */
     public function index()
     {
@@ -33,6 +36,8 @@ class CategoryController extends AbstractController
     /**
      * @Route("/suggest", name="suggest_cat")
      * @IsGranted("ROLE_USER")
+     * 
+     * Render view for suggest category
      */
     public function suggest_cat()
     {
@@ -44,6 +49,8 @@ class CategoryController extends AbstractController
     /**
      * @Route("/ajax/suggest_return", name="ajax_form_suggest")
      * @IsGranted("ROLE_USER")
+     * 
+     * Get suggests, create file if needed and add suggests at the end of this file
      */
     public function form_suggest_cat(Request $request)
     {
@@ -84,8 +91,6 @@ class CategoryController extends AbstractController
                 // On écrase l'array existant et on met le nouveau
                 file_put_contents($path, $s);
 
-
-            // $file->appendToFile($path, $suggests);
             }
         }
 

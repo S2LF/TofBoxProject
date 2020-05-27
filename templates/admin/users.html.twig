@@ -6,49 +6,50 @@
 
 <p><a href="{{ path('admin') }}">Retour</a></p>
 
-<h1 class="center">Espace Administrateur</h1>
-<h2 class="center">Gestion des utilisateurs</h2>
+<h1 class="center title">Espace Administrateur</h1>
+<h2 class="center title">Gestion des utilisateurs</h2>
 
 <p class="center">Pour modifier ou modifier un utilisateur est accessible depuis le profil de cet utilisateur</p>
 
-<table class="center">
-    <thead>
-        <th>Pseudo</th>
-        <th>E-mail</th>
-        <th>Photos</th>
-        <th>Commentaires postés</th>
-        <th>J'aimes</th>
-        <th>Suit</th>
-        <th>Suivi par</th>
-        <th>Création du compte</th>
-        <th>Dernière connexion</th>
-        {# <th>Actions</th> #}
-    </thead>
-    <tbody>
-    {% for user in users %}
-        <tr>
-            <td><a class="bold" href="{{ path('profil', {'id':user.id }) }}">{{ user.nickname }}</a></td>
-            <td>{{ user.email }}</td>
-            <td>{{ user.photos |length }}</td>
-            <td>{{ user.comments | length }}</td>
-            <td>{{ user.likes | length }}</td>
-            <td>{{ user.followByUsers | length }}</td>
-            <td>{{ user.followedUsers | length }}</td>
-            <td>{{ user.dateCreation | format_datetime('short', 'none', locale='fr') }} ( {{ user.dateCreation | timeago }} )
-            </td>
-            <td>
-                {% if user.lastLogin != null %}
-                {{ user.lastLogin | format_datetime('short', 'none', locale='fr') }} ( {{ user.lastLogin | timeago }} )
-                {% else %}
-                N/A
-                {% endif %}
-            
-            </td>
-           </tr>    
-    {% endfor %}
-    </tbody>
-</table>
-
+<div class="responsive_table">
+    <table class="center">
+        <thead>
+            <th>Pseudo</th>
+            <th>E-mail</th>
+            <th>Photos</th>
+            <th>Commentaires postés</th>
+            <th>J'aimes</th>
+            <th>Suit</th>
+            <th>Suivi par</th>
+            <th>Création du compte</th>
+            <th>Dernière connexion</th>
+            {# <th>Actions</th> #}
+        </thead>
+        <tbody>
+        {% for user in users %}
+            <tr>
+                <td><a class="bold" href="{{ path('profil', {'id':user.id }) }}">{{ user.nickname }}</a></td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.photos |length }}</td>
+                <td>{{ user.comments | length }}</td>
+                <td>{{ user.likes | length }}</td>
+                <td>{{ user.followByUsers | length }}</td>
+                <td>{{ user.followedUsers | length }}</td>
+                <td>{{ user.dateCreation | format_datetime('short', 'none', locale='fr') }} ( {{ user.dateCreation | timeago }} )
+                </td>
+                <td>
+                    {% if user.lastLogin != null %}
+                    {{ user.lastLogin | format_datetime('short', 'none', locale='fr') }} ( {{ user.lastLogin | timeago }} )
+                    {% else %}
+                    N/A
+                    {% endif %}
+                
+                </td>
+            </tr>    
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
 
 
 {% endblock %}

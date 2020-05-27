@@ -31,9 +31,24 @@ header, footer {
 }
 footer{
     margin-top:3em;
-    padding: 0.5em;
-
+    padding: 1em;
 }
+footer h2{
+    font-family: 'Bebas Neue', cursive;
+    margin-bottom: 0;
+    font-size: 2em;
+}
+footer h3{
+    margin-top:0;
+}
+
+.title{
+    font-family: 'Lobster', cursive;
+    font-size: 2.5em;
+    padding: 0.75em;
+    color: #303030;
+}
+
 
 /* ------ GLOBAL RULE ------ */
 .center{
@@ -90,7 +105,7 @@ nav{
     display: flex;
     justify-content: space-between;
     vertical-align: middle;
-    border-bottom: 2px solid var(--black-color) ;
+    /* border-bottom: 2px solid var(--black-color) ; */
 }
 .nav_user{
     display: flex;
@@ -113,9 +128,7 @@ padding: 0.5em 1em;
     right: 0;
     z-index: 1;
     background-color: var(--header-color);
-    /* padding: 0 0.5em 0.5em 0.5em; */
-    border-left: 2px solid black;
-    border-bottom: 2px solid black;
+    box-shadow: -7px 7px 8px rgba(0, 0, 0, .5);
     font-size: 1em;
     border-bottom-left-radius: 7px;
 }
@@ -167,8 +180,9 @@ nav div:first-child{
 
 /* Home Categories View */
 #home_cat {
-    background-color: var(--catbg-color);
-    border-bottom: 2px solid var(--black-color);
+    /* background-color: var(--catbg-color); */
+    /* border-bottom: 2px solid var(--black-color); */
+    padding-top: 0.5em;
 }
 .item_cat{
     /* background-image: linear-gradient(to bottom, #75ebeb, #5dcfcf, #44b4b4, #2a9a9a, #008080);
@@ -196,6 +210,7 @@ nav div:first-child{
     text-align:center;
     margin: 0 auto;
     color:white;
+    justify-content: center;
     background-color :transparent;
         -webkit-transform:skew(30deg);
       -moz-transform:skew(30deg);
@@ -669,7 +684,7 @@ img.photo_modal.portrait, img.photo_modal.square{
 .admin {
     position: absolute;
     right: 2em;
-    bottom: 0.5em;
+    bottom: 3em;
 }
 .admin-wrap{
     display: flex;
@@ -842,6 +857,7 @@ input[type=radio] + label {
     
 }
 
+
 /* KnaCSS surcharge*/
 
 .checkbox{
@@ -858,4 +874,21 @@ input[type=radio] + label {
     -ms-filter: blur(5px);
     
     filter: blur(5px);
+}
+
+.error-wrap{
+    display:flex;
+    justify-content: space-between;
+    max-width: 1617px;
+    margin: auto;
+    height: 100%;
+}
+.error-wrap h1{
+    font-size: 7em;
+}
+.error-wrap div, .error-wrap figure{
+    align-self: center;
+}
+.responsive_table{
+    overflow-x:auto;
 }
