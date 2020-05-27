@@ -93,6 +93,7 @@ class User implements UserInterface
         $this->followByUsers = new ArrayCollection();
         $this->photos = new ArrayCollection();
         $this->reports = new ArrayCollection();
+        $this->likes = new ArrayCollection();
     }
 
     public function getId(): ?int

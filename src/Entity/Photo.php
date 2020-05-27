@@ -66,7 +66,7 @@ class Photo
     private $likeUsers;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Report", mappedBy="photo")
+     * @ORM\OneToMany(targetEntity="App\Entity\Report", mappedBy="photo", cascade={"remove"})
      */
     private $reports;
 
@@ -267,6 +267,24 @@ class Photo
             if ($report->getPhoto() === $this) {
                 $report->setPhoto(null);
             }
+        }
+
+        return $this;
+    }
+
+    public function addCategory(Category $category): self
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories[] = $category;
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(Category $category): self
+    {
+        if ($this->categories->contains($category)) {
+            $this->categories->removeElement($category);
         }
 
         return $this;

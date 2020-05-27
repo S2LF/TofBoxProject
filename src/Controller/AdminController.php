@@ -29,6 +29,7 @@ class AdminController extends AbstractController
 {
     /**
      * @Route("/", name="admin")
+     * Get all informations for display in admin panel
      */
     public function index()
     {
@@ -68,6 +69,9 @@ class AdminController extends AbstractController
 
     /**
      * @Route("/report", name="admin_reports")
+     * Get all Reports for display
+     * Active reports are ON
+     * Inactive reports are OFF
      */
     public function adminReports()
     {
@@ -92,6 +96,7 @@ class AdminController extends AbstractController
 
     /**
      * @Route("/users", name="admin_users")
+     * Get all infos from Users for display
      */
     public function adminUsers()
     {
@@ -106,6 +111,8 @@ class AdminController extends AbstractController
 
     /** 
      * @Route("/categories", name="admin_categories")
+     * Get Categories for display
+     * Create form for add category
     */
     public function adminCategories(Request $request, EntityManagerInterface $em)
     {
@@ -164,6 +171,8 @@ class AdminController extends AbstractController
     
     /**
      * @Route("/ajax/cat_edit", name="ajax_cat_edit")
+     * Ajax request
+     * Create form for edit category
      */
     public function ajaxEditCat(Request $request, EntityManagerInterface $em)
     {
@@ -182,6 +191,7 @@ class AdminController extends AbstractController
     }
     /**
      * @Route("/cat_edit", name="cat_edit")
+     * Catch response from category edit form
      */
     public function editCat(Request $request, EntityManagerInterface $em)
     {
@@ -202,6 +212,7 @@ class AdminController extends AbstractController
 
     /**
      * @Route("/cat/delete/{id}", name="cat_delete")
+     * Delete a category
      */
     public function deleteCat(Request $request, EntityManagerInterface $em, CategoryRepository $crepo)
     {
@@ -215,6 +226,8 @@ class AdminController extends AbstractController
 
     /**
      * @Route("/cat/delete_suggest/{key}", name="cat_delete_suggest")
+     * 
+     * Delete a suggest from the .txt
      */
     public function deleteSuggest(Request $request){
 
@@ -234,7 +247,7 @@ class AdminController extends AbstractController
 
                     $suggests = array_diff($suggests, $arr);
 
-                                    // On serialize
+                    // On serialize
                     $s = serialize($suggests);
 
                     // On clos le fichier

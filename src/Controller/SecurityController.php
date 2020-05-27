@@ -21,6 +21,8 @@ class SecurityController extends AbstractController
 {
     /**
      * @Route("/login", name="app_login")
+     * 
+     * Display login form
      */
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
@@ -38,6 +40,8 @@ class SecurityController extends AbstractController
 
     /**
      * @Route("/logout", name="app_logout")
+     * 
+     * Logout connected User
      */
     public function logout()
     {
@@ -46,6 +50,9 @@ class SecurityController extends AbstractController
 
     /**
      * @Route("/forgottenPassword", name="app_forgotten_password")
+     * 
+     * Display forgottent password form
+     * Send email
      */
     public function forgottenPassword( Request $request, UserPasswordEncoderInterface $encoder, \Swift_Mailer $mailer, TokenGeneratorInterface $tokenGenerator): Response
     {
@@ -90,6 +97,10 @@ class SecurityController extends AbstractController
 
     /**
      * @Route("/reset_password/{token}", name="app_reset_password")
+     * 
+     * Check the token
+     * Display reset password form
+     * Encode & Change password in DB
      */
 
      public function resetPassword(Request $request, string $token, UserPasswordEncoderInterface $passwordEncoder)
@@ -128,6 +139,10 @@ class SecurityController extends AbstractController
 
      /**
       * @Route("/change_password/{id}", name="app_change_password")
+      * 
+      * Check if User can change password
+      * Display form
+      * Encode & Change password in DB
       */
       public function changePassword(Request $request, EntityManagerInterface $em, User $user, UserPasswordEncoderInterface $passwordEncoder)
       {
@@ -161,6 +176,12 @@ class SecurityController extends AbstractController
 
       /**
       * @Route("/change_email/{id}", name="app_change_email")
+      *
+      * Check if User can change an Email
+      * Display form
+      * Check if new email already exist in DB 
+      * Change email in DB
+      * Logout
       */
       public function changeEmail(Request $request, EntityManagerInterface $em, User $user, UserRepository $urepo)
       {

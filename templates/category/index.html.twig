@@ -7,7 +7,7 @@
         <div class="item_cat">
             <a href="{{path('home') }}">
                 <div class="droit">
-                    Tout voir
+                    TOUT VOIR
                 </div>
             </a>
         </div>
@@ -18,7 +18,7 @@
 
             <a href="{{ path('home_cat', {'cat_id' : cat.id}) }}">
                 <div class="droit">
-                    {{ cat.intitule | capitalize }}
+                    {{ cat.intitule | upper }}
                 </div>
             </a>
         </div>

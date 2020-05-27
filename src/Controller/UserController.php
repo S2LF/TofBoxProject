@@ -37,6 +37,11 @@ class UserController extends AbstractController
 
     /**
      * @Route("/photos/{id}", name="user_photos")
+     * 
+     * Display Photos of a User
+     * Get user
+     * Get photo from this user & paginate
+     * Get isFollow status
      */
     public function user_photos(Request $request, PaginatorInterface $paginator, EntityManagerInterface $em, FollowRepository $frepo)
     {
@@ -66,6 +71,9 @@ class UserController extends AbstractController
     /**
      * @Route("/edit/{id}", name="user_edit")
      * 
+     * Check if User can edit a User
+     * Display form
+     * Change informations
      */
     public function edit(User $user, Request $request, EntityManagerInterface $em)
     {
@@ -125,8 +133,16 @@ class UserController extends AbstractController
 
     /**
      * @Route("/delete/ajax", name="delete_profil_ajax", methods={"GET"} )
+     * 
+     * Ajax request
+     * Check if user can access this
+     * Display modal for delete account
+     * 
      */
     public function ajaxDeleteProfil(Request $request, EntityManagerInterface $em){
+
+        if ( $this->isGranted('ROLE_ADMIN') || $this->getUser() == $user){
+
         $userId = $request->query->get("userId");
 
         $user = $em->getRepository(User::class)->findOneBy(['id' => $userId]);
@@ -137,11 +153,18 @@ class UserController extends AbstractController
         ]);
 
         return new Response($html);
-
+        }else {
+            $this->addFlash("error", "Vous ne pouvez pas faire ça !");
+        }
+        return $this->redirectToRoute('home');
     }
 
     /**
      * @Route("/delete/{id}", name="delete_profil")
+     * 
+     * Check if user can delete an account
+     * Delete Photo & Files
+     * Delete follows & like
      */
     public function deleteProfil(User $user, EntityManagerInterface $em, PhotoRepository $prepo, FollowRepository $frepo )
     {
@@ -160,10 +183,11 @@ class UserController extends AbstractController
                 }
             }
             $prepo->deletePhoto($user->getId());
-
-            $user->setNickname("Compte Supprimé");
+            $user->setNickname("CompteSupprimé". \uniqid());
             $user->setDescription(null);
             $user->setPhotoProfil('default/default.jpg');
+            // $user->setEmail(\uniqid().'@anonyme.fr');
+
 
             // Supprime les followed & followBy
             $frepo->deleteAllFollow($user->getId());
@@ -178,6 +202,8 @@ class UserController extends AbstractController
 
     /**
      * @Route("/{id}", name="profil")
+     * 
+     * 
      */
     public function userProfil(User $user, Request $request, EntityManagerInterface $em, FollowRepository $frepo)
     {

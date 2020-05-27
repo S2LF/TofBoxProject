@@ -5,7 +5,7 @@
 
 <div class="user-wrap">
 
-    <h1>{{ user.nickname }} 
+    <h1 class="title">{{ user.nickname }} 
         {% if app.user == user or is_granted('ROLE_ADMIN')%}
             <a href="{{ path('user_edit', {'id':user.id}) }}"><i class="fas fa-user-edit"></i></a>
         {% endif %}
@@ -15,11 +15,14 @@
     <div class="user_action" >
         <div class="actionzone">
             {% include "user/ajaxFollow.html.twig" %}
-            <p><a class="action" href="{{ path('user_photos', {'id':user.id}) }}">Voir ses photos</a></p>
+            
+
             {% if app.user == user %}
+            <p><a class="action" href="{{ path('user_photos', {'id':user.id}) }}">Voir mes photos</a></p>
             <p><a class="action" href="{{ path('retour_form', {'id':user.id})  }}">Retour sur expérience</a></p> 
             <p><a class="action" id="suggestCat" href="" >Suggérer des catégories</p></a>
- 
+            {% else %}
+            <p><a class="action" href="{{ path('user_photos', {'id':user.id}) }}">Voir ses photos</a></p>
             {% endif %}
             {# TODO : Chat - Conversation 
             <p><a class="action" href="{{ path('chat', {'id': user.id} ) }}">Démarrer une conversation</a></p>
@@ -54,7 +57,7 @@
     <p>L'utilisateur n'as pas encore de description</p>
     {% endif %}
 
-
+</div>
 
 
     <div class="user-wrap">
@@ -95,11 +98,14 @@
     <div class="user_action_mobile" >
         <div class="actionzone">
             {% include "user/ajaxFollow.html.twig" %}
+            
 
             {% if app.user == user %}
+            <p><a class="action" href="{{ path('user_photos', {'id':user.id}) }}">Voir mes photos</a></p>
             <p><a class="action" href="{{ path('retour_form', {'id':user.id})  }}">Retour sur expérience</a></p> 
             <p><a class="action" id="suggestCat" href="" >Suggérer des catégories</p></a>
- 
+            {% else %}
+            <p><a class="action" href="{{ path('user_photos', {'id':user.id}) }}">Voir ses photos</a></p>
             {% endif %}
             {# TODO : Chat - Conversation 
             <p><a class="action" href="{{ path('chat', {'id': user.id} ) }}">Démarrer une conversation</a></p>

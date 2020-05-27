@@ -4,7 +4,7 @@
 
 {% block body %}
 
-<h1 class="center">Démarrer une conversation entre {{currentUser.nickname }} & {{ user2.nickname }}</h1>
+<h1 class="center ">Démarrer une conversation entre {{currentUser.nickname }} & {{ user2.nickname }}</h1>
 
 {% for chat in currentUser.chats %}
     {% for user in chat.users %}

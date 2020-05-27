@@ -6,37 +6,40 @@
 
 <p><a href="{{ path('admin') }}">Retour</a></p>
 
-<h1 class="center">Espace Administrateur</h1>
+<h1 class="center title">Espace Administrateur</h1>
 
-<h2 class="center">Gestion des signalements</h2>
+<h2 class="center title">Gestion des signalements</h2>
 
 <h3 class="center">Signalements actifs</h3>
 
 {% if activeReports %}
-<table class="center">
-    <thead>
-        <th>N°</th>
-        <th>Date</th>
-        <th>Type</th>
-        <th>Commentaire</th>
-        <th>Photo</th>
-        <th>Signalé par</th>
-        <th>Actions</th>
-    </thead>
-    <tbody>
-    {% for report in activeReports %}
-        <tr>
-            <td>{{ loop.index }}</td>
-            <td>{{ report.dateReport | format_datetime('long', 'none', locale='fr') }} ( {{ report.dateReport | timeago }} )</td>
-            <td>{{ report.type }}</td>
-            <td>{{ report.commentary }}</td>
-            <td><a class="report_photo" data-photo={{ report.photo.id }} href="">{{ report.photo.title }}</a></td>
-            <td><a href="{{ path('profil', {'id':report.user.id }) }}">{{ report.user.nickname }}</a></td>
-            <td><a href="{{ path('report_checked', {'id':report.id}) }}"><i title="Traité ?" class="fas fa-check-circle"></i></a></td>
-        </tr>    
-    {% endfor %}
-    </tbody>
-</table>
+<div class="responsive_table">
+    <table class="center">
+        <thead>
+            <th>N°</th>
+            <th>Date</th>
+            <th>Type</th>
+            <th>Commentaire</th>
+            <th>Photo</th>
+            <th>Signalé par</th>
+            <th>Actions</th>
+        </thead>
+        <tbody>
+        {% for report in activeReports %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ report.dateReport | format_datetime('long', 'none', locale='fr') }} ( {{ report.dateReport | timeago }} )</td>
+                <td>{{ report.type }}</td>
+                <td>{{ report.commentary }}</td>
+                <td><a class="report_photo" data-photo={{ report.photo.id }} href="">{{ report.photo.title }}</a></td>
+                <td><a href="{{ path('profil', {'id':report.user.id }) }}">{{ report.user.nickname }}</a></td>
+                <td><a href="{{ path('report_checked', {'id':report.id}) }}"><i title="Traité ?" class="fas fa-check-circle"></i></a></td>
+            </tr>    
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
 {% else %}
     <p class="center">Pas de signalement a traité</p>
 {% endif %}
@@ -44,30 +47,33 @@
 <h3 class="center">Signalements traités</h3>
 
 {% if inactiveReports %}
-<table class="center">
-    <thead>
-        <th>N°</th>
-        <th>Date</th>
-        <th>Type</th>
-        <th>Commentaire</th>
-        <th>Photo</th>
-        <th>Signalé par</th>
-        <th>Actions</th>
-    </thead>
-    <tbody>
-    {% for report in inactiveReports %}
-        <tr>
-            <td>{{ loop.index }}</td>
-            <td>{{ report.dateReport | format_datetime('long', 'none', locale='fr') }} ( {{ report.dateReport | timeago }} )</td>
-            <td>{{ report.type }}</td>
-            <td>{{ report.commentary }}</td>
-            <td>{{ report.photo.title }}</td>
-            <td>{{ report.user.nickname }}</td>
-            <td><a href="{{ path('report_checked', {'id':report.id}) }}"><i class="fas fa-times-circle"></i></a></td>
-        </tr>    
-    {% endfor %}
-    </tbody>
-</table>
+<div class="responsive_table">
+    <table class="center">
+        <thead>
+            <th>N°</th>
+            <th>Date</th>
+            <th>Type</th>
+            <th>Commentaire</th>
+            <th>Photo</th>
+            <th>Signalé par</th>
+            <th>Actions</th>
+        </thead>
+        <tbody>
+        {% for report in inactiveReports %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ report.dateReport | format_datetime('long', 'none', locale='fr') }} ( {{ report.dateReport | timeago }} )</td>
+                <td>{{ report.type }}</td>
+                <td>{{ report.commentary }}</td>
+                <td>{{ report.photo.title }}</td>
+                <td>{{ report.user.nickname }}</td>
+                <td><a href="{{ path('report_checked', {'id':report.id}) }}"><i class="fas fa-times-circle"></i></a></td>
+            </tr>    
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
 {% else %}
     <p class="center">Pas de signalement traité</p>
 {% endif %}

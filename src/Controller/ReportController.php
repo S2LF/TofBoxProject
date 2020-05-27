@@ -22,6 +22,8 @@ class ReportController extends AbstractController
 {
     /**
      * @Route("/", name="ajax_signal")
+     * 
+     * Display report modal
      */
     public function index(Request $request)
     {
@@ -38,6 +40,8 @@ class ReportController extends AbstractController
     /**
      * @Route("/ajax/add_report", name="ajax_add_report")
      * @IsGranted("ROLE_USER")
+     * 
+     * Create new report with informations
      */
     public function add_report(Request $request, EntityManagerInterface $em)
     {
@@ -73,6 +77,8 @@ class ReportController extends AbstractController
     /**
      * @Route("/checked/{id}", name="report_checked")
      * @IsGranted("ROLE_ADMIN")
+     * 
+     * Check & Change status of a report
      */
     public function report_checked(Report $report, EntityManagerInterface $em )
     {
@@ -92,6 +98,8 @@ class ReportController extends AbstractController
 
     /**
      * @Route("/retourxp/form/{id}", name="retour_form")
+     * 
+     * Check & Save in a .doc callbacks
      */
     public function retour_form(User $user, Request $request)
     {

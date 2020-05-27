@@ -7,10 +7,13 @@
     <div class="user_action" >
         <div class="actionzone">
             {% include "user/ajaxFollow.html.twig" %}
-            <p><a class="action" href="{{ path('profil', {'id':user.id} ) }}">Voir son profil</a></p>
             {% if app.user == user or is_granted('ROLE_ADMIN') %}
+            <p><a class="action" href="{{ path('profil', {'id':user.id} ) }}">Voir mon profil</a></p>
             <p><a class="action" href="{{ path('add_photo') }}">Ajouter une photo</a></p> 
             <p><a class="action" id="suggestCat" href="" >Suggérer des catégories</p></a>
+
+            {% else %}
+            <p><a class="action" href="{{ path('profil', {'id':user.id} ) }}">Voir son profil</a></p>
             {% endif %}
             {# TODO : Chat - Conversation 
             <p><a class="action" href="{{ path('chat', {'id': user.id} ) }}">Démarrer une conversation</a></p>
@@ -19,7 +22,7 @@
 
     </div>
 
-    <h1 class="">Photos de {{ user.nickname }}: {{ user.photos | length }} </h1> 
+    <h1 class="title">Photos de {{ user.nickname }}: {{ user.photos | length }} </h1> 
 
 
     <div class="user_action_mobile" >
