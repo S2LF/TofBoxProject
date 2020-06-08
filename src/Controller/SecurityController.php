@@ -84,7 +84,7 @@ class SecurityController extends AbstractController
                     ->setFrom('no-reply@tofbox.fr')
                     ->setTo($user->getEmail())
                     ->setBody(
-                        "Bonjour, voici le lien pour réinitialiser votre mot de passe : ". $url,
+                        "Bonjour, voici le lien pour réinitialiser votre mot de passe : <a target='_blank' href='". $url."'>Cliquez ici</a>",
                         'text/html'
                     );
             $mailer->send($message);

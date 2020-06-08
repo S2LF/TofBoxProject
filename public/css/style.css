@@ -663,6 +663,7 @@ a.action:hover{
 }
 .header-modal h1, .header-modal p{
     margin: 0;
+    padding:0;
 }
 .header-modal img{
     vertical-align: middle;
