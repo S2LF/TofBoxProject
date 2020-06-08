@@ -89,8 +89,8 @@
     .admin{
         position: static;
     }
-    .terms-wrap{
-        padding:2em:
+    div.terms-wrap{
+        margin:0 2em;
     }
 }
 
