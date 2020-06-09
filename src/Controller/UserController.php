@@ -9,6 +9,7 @@ use App\Form\RegisterEditType;
 use App\Form\RegistrationFormType;
 use App\Repository\PhotoRepository;
 use App\Repository\FollowRepository;
+use App\Repository\ReportRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -141,11 +142,10 @@ class UserController extends AbstractController
      */
     public function ajaxDeleteProfil(Request $request, EntityManagerInterface $em){
 
-        if ( $this->isGranted('ROLE_ADMIN') || $this->getUser() == $user){
-
         $userId = $request->query->get("userId");
-
         $user = $em->getRepository(User::class)->findOneBy(['id' => $userId]);
+
+        if ( $this->isGranted('ROLE_ADMIN') || $this->getUser() == $user){
 
         $html = $this->renderView("user/ajaxDelProfile.html.twig", [
             "user" => $user,
@@ -166,7 +166,7 @@ class UserController extends AbstractController
      * Delete Photo & Files
      * Delete follows & like
      */
-    public function deleteProfil(User $user, EntityManagerInterface $em, PhotoRepository $prepo, FollowRepository $frepo )
+    public function deleteProfil(User $user, EntityManagerInterface $em, PhotoRepository $prepo, FollowRepository $frepo, ReportRepository $rrepo )
     {
 
         if ( $this->isGranted('ROLE_ADMIN') || $this->getUser() == $user){
@@ -182,17 +182,21 @@ class UserController extends AbstractController
                     $this->addFlash("error", "Un problème est survenu lors de la suppression");
                 }
             }
+            foreach ($user->getPhotos() as $photo){
+                $rrepo->delReport($photo->getId());
+            }
             $prepo->deletePhoto($user->getId());
-            $user->setNickname("CompteSupprimé". \uniqid());
+            $user->setNickname("Anonyme ". \uniqid());
             $user->setDescription(null);
             $user->setPhotoProfil('default/default.jpg');
-            // $user->setEmail(\uniqid().'@anonyme.fr');
+            $user->setEmail(\uniqid().'@anonyme.fr');
 
 
             // Supprime les followed & followBy
             $frepo->deleteAllFollow($user->getId());
             
             $em->flush();
+            return $this->redirectToRoute('app_logout');
         } else {
             $this->addFlash("error", "Vous ne pouvez pas faire ça !");
         }

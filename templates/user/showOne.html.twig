@@ -3,7 +3,7 @@
 {% block body %}
 
 
-<div class="user-wrap">
+<div class="user-wrap" id="box-size">
 
     <h1 class="title">{{ user.nickname }} 
         {% if app.user == user or is_granted('ROLE_ADMIN')%}

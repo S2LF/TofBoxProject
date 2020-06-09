@@ -76,4 +76,13 @@ class ReportRepository extends ServiceEntityRepository
         );
         return $query->execute();
     }
+
+    public function delReport($photoId){
+        $entityManager = $this->getEntityManager();
+        $request = $this->createQueryBuilder('r')
+        ->delete()
+        ->andWhere('r.photo ='. $photoId)
+        ->getQuery()
+        ->getResult();
+    }
 }
