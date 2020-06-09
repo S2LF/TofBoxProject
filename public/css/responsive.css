@@ -89,6 +89,9 @@
     .admin{
         position: static;
     }
+    div.terms-wrap{
+        margin:0 2em;
+    }
 }
 
 /* Reponsive en dessous de 640px */

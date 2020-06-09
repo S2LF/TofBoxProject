@@ -12,7 +12,7 @@
 <p class="center">Il est possible de modifier les information d'un utilisateur depuis le profil de cet utilisateur</p>
 
 <div class="responsive_table">
-    <table class="center" id="user_admin">
+    <table class="center"  id="user_admin">
         <thead>
             <th>Pseudo</th>
             <th>E-mail</th>
@@ -58,7 +58,6 @@
 {{ parent() }}
 
 <script>
-
     $(document).ready( function () {
         $('#user_admin').DataTable({
             "language": {
@@ -92,8 +91,6 @@
                 }
             }
         });
-
     } );
-
 </script>
-{% endblock %}
+{% endblock %} 

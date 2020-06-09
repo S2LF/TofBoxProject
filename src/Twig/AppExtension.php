@@ -36,5 +36,6 @@ class AppExtension extends AbstractExtension
                     ' Il y a '.$numberOfUnits.' '.$val.(($numberOfUnits>1 && $val != 'mois') ? 's' : '');
             }
     }
-}
 
+
+}

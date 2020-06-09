@@ -666,6 +666,7 @@ a.action:hover{
 }
 .header-modal h1, .header-modal p{
     margin: 0;
+    padding:0;
 }
 .header-modal img{
     vertical-align: middle;
@@ -712,27 +713,33 @@ table, th, td {
       background-color: white;
       color:black;
   }
-  table.dataTable{
-      padding: 0;
-  }
-  tbody tr:nth-child(even){
-    background-color: #f2f2f2;
-  }
+  tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
   tbody tr:hover{
-    background-color: var(--header-color);
-    color:white;
+      background-color: var(--header-color);
+      color:white;
   }
-  table.dataTable tbody tr:nth-child(even){
+  table.dataTable{
+    padding: 0;
+    }
+    tbody tr:nth-child(even){
     background-color: #f2f2f2;
-  }
-  table.dataTable tbody tr:hover{
+    }
+    tbody tr:hover{background-color: var(--header-color);
+        color:white;
+    }
+    table.dataTable tbody tr:nth-child(even){
+        background-color: #f2f2f2;
+    }
+    table.dataTable tbody tr:hover{
     background-color: var(--header-color);
     color:white;
-  }
-  #user_admin_wrapper{
+    }
+    #user_admin_wrapper{
     max-width: 1712px;
     margin: auto;
-  }
+    }
 .cat_del{
     padding-left: 1.5em;
 }

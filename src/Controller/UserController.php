@@ -142,15 +142,10 @@ class UserController extends AbstractController
      */
     public function ajaxDeleteProfil(Request $request, EntityManagerInterface $em){
 
-
         $userId = $request->query->get("userId");
         $user = $em->getRepository(User::class)->findOneBy(['id' => $userId]);
 
-
         if ( $this->isGranted('ROLE_ADMIN') || $this->getUser() == $user){
-
- 
-
 
         $html = $this->renderView("user/ajaxDelProfile.html.twig", [
             "user" => $user,
@@ -190,7 +185,6 @@ class UserController extends AbstractController
             foreach ($user->getPhotos() as $photo){
                 $rrepo->delReport($photo->getId());
             }
-            // $rrepo->delReport($user->getPhotos());
             $prepo->deletePhoto($user->getId());
             $user->setNickname("Anonyme ". \uniqid());
             $user->setDescription(null);
@@ -202,7 +196,6 @@ class UserController extends AbstractController
             $frepo->deleteAllFollow($user->getId());
             
             $em->flush();
-
             return $this->redirectToRoute('app_logout');
         } else {
             $this->addFlash("error", "Vous ne pouvez pas faire ça !");
