@@ -15,7 +15,9 @@
             <figcaption><div>
                             <a  href="{{ path('profil', {'id':photo.user.id}) }}">
 
-                                    <img class="profil_photo" src="{{ asset('img/' ~ photo.user.photoProfil) }}" alt="{{photo.user.nickname}}">
+                                    <img class="profil_photo" 
+                                         src="{{ asset('img/' ~ photo.user.photoProfil) }}" 
+                                         alt="{{photo.user.nickname}}">
                                     &nbsp;{{ photo.user.nickname }}
 
                             </a>
@@ -36,3 +38,4 @@
 
     </div>
 {% endblock %}
+

@@ -33,9 +33,8 @@ class AppExtension extends AbstractExtension
             if ($time < $unit) continue;
             $numberOfUnits = floor($time / $unit);
             return ($val == 'seconde')? 'Il y a quelques instants' : 
-                    ' Il y a '.$numberOfUnits.' '.$val.(($numberOfUnits>1) ? 's' : '');
+                    ' Il y a '.$numberOfUnits.' '.$val.(($numberOfUnits>1 && $val != 'mois') ? 's' : '');
             }
     }
-
-
 }
+
