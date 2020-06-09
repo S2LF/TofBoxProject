@@ -19,8 +19,7 @@
     </section>
 </div>
 
-<div class="responsive_table">
-<table class="center">
+<table class="center" id="cat_admin">
     <thead>
         <th>Intitulé</th>
         <th>Photos</th>
@@ -39,7 +38,6 @@
     </tbody>
 </table>
 
-</div>
 
 
 
@@ -48,6 +46,14 @@
         <!-- TODO : Suggestion Catégorie des Users -->
         <h3 class="center">Catégories suggérées <br> par les utilisateurs</h3>
         
+        {{ form_start(form)}}
+        <p>
+            {{ form_errors(form.intitule) }}
+            {{ form_widget(form.intitule)}}
+            
+                <button class="btn">Valider</button>
+            </p> 
+        {{ form_end(form)}}
 
         <div>
             {% if nb_suggests == null %}
@@ -55,7 +61,7 @@
                 <p>Pas de catégorie suggéré</p>
 
             {% else %}
-                {% for sug, nb in nb_suggests %}
+                {% for sug, nb in nb_suggests | sort | reverse %}
                 <div>
                     <p>{{ sug | capitalize }} ({{ nb }})</p><p><a class="suggest_cat_del red" href="{{path('cat_delete_suggest', {'key':sug}) }}"><i  class="fas fa-times"></i></a></p>
                 </div>
@@ -65,14 +71,7 @@
 
         </div>
 
-        {{ form_start(form)}}
-        <p>
-            {{ form_errors(form.intitule) }}
-            {{ form_widget(form.intitule)}}
-            
-                <button class="btn">Valider</button>
-            </p> 
-        {{ form_end(form)}}
+
     </section>
 </div>
 </div>
@@ -106,6 +105,43 @@ $('.cat_edit').on('click', function(e){
         }
     )
 })
+
+
+    $(document).ready( function () {
+        $('#cat_admin').DataTable({
+            "language": {
+                "sEmptyTable":     "Aucune donnée disponible dans le tableau",
+                "sInfo":           "Affichage de l'élément _START_ à _END_ sur _TOTAL_ éléments",
+                "sInfoEmpty":      "Affichage de l'élément 0 à 0 sur 0 élément",
+                "sInfoFiltered":   "(filtré à partir de _MAX_ éléments au total)",
+                "sInfoPostFix":    "",
+                "sInfoThousands":  ",",
+                "sLengthMenu":     "Afficher _MENU_ éléments",
+                "sLoadingRecords": "Chargement...",
+                "sProcessing":     "Traitement...",
+                "sSearch":         "Rechercher :",
+                "sZeroRecords":    "Aucun élément correspondant trouvé",
+                "oPaginate": {
+                    "sFirst":    "Premier",
+                    "sLast":     "Dernier",
+                    "sNext":     "Suivant",
+                    "sPrevious": "Précédent"
+                },
+                "oAria": {
+                    "sSortAscending":  ": activer pour trier la colonne par ordre croissant",
+                    "sSortDescending": ": activer pour trier la colonne par ordre décroissant"
+                },
+                "select": {
+                        "rows": {
+                            "_": "%d lignes sélectionnées",
+                            "0": "Aucune ligne sélectionnée",
+                            "1": "1 ligne sélectionnée"
+                        } 
+                }
+            }
+        });
+
+    } );
 
 </script>
 
