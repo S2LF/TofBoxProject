@@ -4,7 +4,7 @@
 
 {% block body %}
 
-<p><a href="{{ path('admin') }}">Retour</a></p>
+<p class='admin_retour'><a  href="{{ path('admin') }}">Retour</a></p>
 
 <h1 class="center title">Espace Administrateur</h1>
 <h2 class="center title">Gestion des utilisateurs</h2>
@@ -35,13 +35,12 @@
                 <td>{{ user.likes | length }}</td>
                 <td>{{ user.followByUsers | length }}</td>
                 <td>{{ user.followedUsers | length }}</td>
-                <td>{{ user.dateCreation | format_datetime('short', 'none', locale='fr') }} ( {{ user.dateCreation | timeago }} )
+                <td data-sort='{{user.dateCreation | date('Y-m-d') }}'>{{ user.dateCreation | format_datetime('short', 'none', locale='fr') }} ( {{ user.dateCreation | timeago }} )
                 </td>
-                <td>
                     {% if user.lastLogin != null %}
-                    {{ user.lastLogin | format_datetime('short', 'none', locale='fr') }} ( {{ user.lastLogin | timeago }} )
+                    <td data-sort='{{user.lastLogin | date('Y-m-d') }}'>{{ user.lastLogin | format_datetime('short', 'none', locale='fr') }} ( {{ user.lastLogin | timeago }} )</td>
                     {% else %}
-                    N/A
+                    <td>N/A</td>
                     {% endif %}
                 
                 </td>
