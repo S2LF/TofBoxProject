@@ -32,6 +32,19 @@
     .sticky a{
         flex: 0.5;
     }
+    .admin-cat-wrap{
+        flex-direction: column;
+        max-width: 600px;
+        margin: auto;
+    }
+    .admin-cat-wrap div{
+        align-self: center ;
+    }
+    #cat_admin_wrapper{
+        padding-top: 1em;
+        padding-bottom: 1em;
+    }
+
 }
 
 /* Reponsive en dessous de 640px */

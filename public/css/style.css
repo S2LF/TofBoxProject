@@ -696,6 +696,24 @@ img.photo_modal.portrait, img.photo_modal.square{
     flex-wrap: wrap;
     margin: auto;
 }
+.admin_retour{
+    position: absolute;
+    top: 8em;
+    left: 6em;
+}
+.admin_retour a{
+    background-color: var(--button-color);
+    color:white;
+    padding: 1em;
+    border-radius: 7px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, .3);
+    transition: transform 0.5s;
+
+}
+.admin_retour a:hover{
+    transform: scale(1.1);
+    background-color: var(--button-hover-color);;
+}
 table{
     margin:auto;
     border: 1px solid black;
