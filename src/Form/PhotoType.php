@@ -59,8 +59,9 @@ class PhotoType extends AbstractType
                 'choice_label' => 'intitule',
                 'expanded' => true,
                 'multiple' => true,
+                'attr' => [ 'required' => 'required' ],
                 'choice_attr' => function(){
-                    return [ 'class' => 'checkbox'];
+                    return [ 'class' => 'checkbox' ];
                 } 
             ])
             
