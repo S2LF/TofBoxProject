@@ -55,37 +55,36 @@ class PhotoController extends AbstractController
                 $photo->setUser($this->getUser());
             }
 
+            if(count($form->get('categories')->getData()) == 0){
+                $this->addFlash("error", "Veuillez ajouter au moins une catégorie");
+                return $this->render('photo/form.html.twig', [
+                    "form" => $form->createView()
+                ]);
+            } else {
+                /** @var UploadedFile $imageFile */
+                $imageFile = $form->get('photo')->getData();
+                // Rename file with SafeName + UniqId
+                $safeFileName = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $photo->getTitle());
+                $newFilename = $safeFileName.'-'.uniqid().'.'.$imageFile->guessExtension();
 
-        /** @var UploadedFile $imageFile */
-        $imageFile = $form->get('photo')->getData();
-        // Rename file with SafeName + UniqId
-        $safeFileName = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $photo->getTitle());
-        $newFilename = $safeFileName.'-'.uniqid().'.'.$imageFile->guessExtension();
+                // Move the file to the directory public/img
+                try {
+                    $path = $photo->getUser()->getId();
+                    $imageFile->move(
+                        // img_directory is define in services.yaml
+                        $this->getParameter('img_directory').$path,
+                        $newFilename
+                    );
+                    $photo->setPath($path."/".$newFilename);
+                } catch( FileException $e) {
+                    $this->addFlash("error", "Une problème est survenu lors de l'upload de l'image");
+                }
+                $photo->setDateCreation(new \Datetime('now', new \DateTimeZone('Europe/Paris')  ));
 
-        // Move the file to the directory public/img
-        try {
-            $path = $photo->getUser()->getId();
-            $imageFile->move(
-                // img_directory is define in services.yaml
-                $this->getParameter('img_directory').$path,
-                $newFilename
-            );
-            $photo->setPath($path."/".$newFilename);
-        } catch( FileException $e) {
-            $this->addFlash("error", "Une problème est survenu lors de l'upload de l'image");
-        }
-        $photo->setDateCreation(new \Datetime('now', new \DateTimeZone('Europe/Paris')  ));
-
-        if(count($form->get('categories')->getData()) == 0){
-            $this->addFlash("error", "Veuillez ajouter au moins une catégorie");
-            return $this->render('photo/form.html.twig', [
-                "form" => $form->createView()
-            ]);
-        } else {
-            $em->persist($photo);
-            $em->flush();
-            $this->addFlash("success", "La photo a bien été ajouté, merci !");
-        }
+                $em->persist($photo);
+                $em->flush();
+                $this->addFlash("success", "La photo a bien été ajouté, merci !");
+            }
 
         return $this->redirectToRoute('user_photos', array('id' => $photo->getUser()->getId()) );
         }
