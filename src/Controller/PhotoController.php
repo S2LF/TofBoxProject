@@ -76,10 +76,17 @@ class PhotoController extends AbstractController
         }
         $photo->setDateCreation(new \Datetime('now', new \DateTimeZone('Europe/Paris')  ));
 
-        $em->persist($photo);
-        $em->flush();
+        if(count($form->get('categories')->getData()) == 0){
+            $this->addFlash("error", "Veuillez ajouter au moins une catégorie");
+            return $this->render('photo/form.html.twig', [
+                "form" => $form->createView()
+            ]);
+        } else {
+            $em->persist($photo);
+            $em->flush();
+            $this->addFlash("success", "La photo a bien été ajouté, merci !");
+        }
 
-        $this->addFlash("success", "La photo a bien été ajouté, merci !");
         return $this->redirectToRoute('user_photos', array('id' => $photo->getUser()->getId()) );
         }
 
@@ -106,10 +113,19 @@ class PhotoController extends AbstractController
 
             if($form->isSubmitted() && $form->isValid()) {
                 $photo->setDateUpdate(new \DateTime('now', new \DateTimeZone('Europe/Paris') ));
-                $em->flush();
-                $this->addFlash("success", "La photo a bien été modifié !");
-                return $this->redirectToRoute('user_photos', array('id' => $photo->getUser()->getId()));
-            } 
+
+                if(count($form->get('categories')->getData()) == 0){
+                    $this->addFlash("error", "Veuillez ajouter au moins une catégorie");
+                    return $this->render('photo/form.html.twig', [
+                        "form" => $form->createView(),
+                        "photo" => $photo
+                    ]);
+                } else {
+                    $em->flush();
+                    $this->addFlash("success", "La photo a bien été modifié !");
+                    return $this->redirectToRoute('user_photos', array('id' => $photo->getUser()->getId()));
+                }
+            }
 
             return $this->render('photo/form.html.twig', [
                 "form" => $form->createView(),
