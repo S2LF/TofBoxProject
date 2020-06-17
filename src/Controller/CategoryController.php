@@ -22,14 +22,7 @@ class CategoryController extends AbstractController
      */
     public function index()
     {
-
-        $categories = $this->getDoctrine()
-        ->getRepository(Category::class)
-        ->getAll();
-
-        return $this->render('category/index.html.twig', [
-            'categories' => $categories,
-        ]);
+        return $this->redirectToRoute('home');
     }
 
 
