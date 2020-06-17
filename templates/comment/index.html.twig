@@ -7,9 +7,12 @@
     <img src="{{ asset('img/'~ comment.user.photoProfil) }}" alt="{{comment.user.nickname }}">
     <div class="comment">
         <div class="comment_header">
-            <h4>{{ comment.user.nickname}}</h4> <small>{{ comment.dateComment | timeago }}</small>
+            <h4>{{ comment.user.nickname}}</h4> <small class="small">{{ comment.dateComment | timeago }}</small>
         </div>
-        <p>{{ comment.comment | nl2br}}</p>
+        <p>{{ comment.comment | nl2br}}{% if comment.isEdit == true %}
+            <small class="small">&nbsp;-&nbsp;modifié</small>
+        {% endif %}</p> 
+        
 
         {% if app.user == comment.user or is_granted('ROLE_ADMIN') %}
             <div class="comment_action">

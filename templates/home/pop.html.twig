@@ -1,0 +1,84 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tof'Box{% endblock %}
+
+{% block body %}
+
+    {# Gestion des catégories #}
+    {% include 'category/index.html.twig' %}
+
+
+<section id="content_photo_cat">
+
+    {# Affichage des photos #}
+    <h1 class="center title">Photos les plus populaires </h1>
+    <div class="photo-wrap">    
+    {% for photo in photos  %}
+{# |sort((a, b) => a.likeUsers|length <=> b.likeUsers|length)|reverse #}
+
+    <figure class="relative">
+        <a class="myBtn" data-photo="{{ photo.id }}" href="">
+            <div id="cadre_photo">
+                <div class="relative">
+                                        <img {# class="photo_view" #} src="{{ asset('img/' ~ photo.path ) |imagine_filter('bg') }}" alt="{{ photo.title }}">
+                    <div class="photo_title"><h3>{{ photo.title }}</h3></div>
+                </div>
+            </div>
+        </a>
+
+        <figcaption>
+                    <div>
+                        <a class="span_vertical_align" href="{{ path('profil', {'id':photo.user.id}) }}">
+
+                            <img {# class="profil_photo" #} src="{{ asset('img/' ~ photo.user.photoProfil) |imagine_filter('photo_profil_bg') }}" alt="{{photo.user.nickname}}">
+                            <span>&nbsp;{{ photo.user.nickname }}</span>
+
+                        </a>
+                    </div>
+                    <div>
+                        <span>
+                            <i class="far fa-comment"></i> {{ photo.Comments | length }}
+                            &nbsp;
+                            <i class="far fa-thumbs-up"></i> {{ photo.likeUsers | length }}
+                        </span>
+                        
+                        
+                    </div>
+        </figcaption>
+    </figure>
+
+    {% endfor %}
+    </div>
+
+    <div class="center pagination">
+        {{knp_pagination_render(photos)}}
+    </div>
+
+</section>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+
+            // Get the button that opens the modal
+        $(document).ready(function(){
+            $("section#content_photo_cat").on("click", '.myBtn', function(e){
+                e.preventDefault()
+
+                let photoid = $(this).data("photo")
+                $.get(
+                    "{{ path('ajax_show') }}",
+                    {
+                        "photoid" : photoid
+                    },
+                    function(data){
+                        $("#myModal .modal-body").html(data)
+                        $("#myModal").show()
+                    }
+                )
+            })
+        })
+    
+    </script>
+{% endblock %}
+

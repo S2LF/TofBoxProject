@@ -1,8 +1,9 @@
 <?php 
 namespace App\Twig;
 
-use Twig\Extension\AbstractExtension;
+use Exception;
 use Twig\TwigFilter;
+use Twig\Extension\AbstractExtension;
 
 class AppExtension extends AbstractExtension
 {
@@ -10,6 +11,7 @@ class AppExtension extends AbstractExtension
     {
         return [
             new TwigFilter('timeago', [$this, 'timeago']),
+            new TwigFilter('sortbyfield', [$this, 'sortbyfield'])
         ];
     }
 
@@ -36,6 +38,5 @@ class AppExtension extends AbstractExtension
                     ' Il y a '.$numberOfUnits.' '.$val.(($numberOfUnits>1 && $val != 'mois') ? 's' : '');
             }
     }
-
 
 }

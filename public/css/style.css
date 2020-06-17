@@ -325,6 +325,9 @@ img.photo_view.portrait{
 .infos section{
     flex-basis: 500px;
 }
+.infos aside{
+    max-width: 500px;
+}
 .infos aside article{
 border: 3px dashed var(--header-color);
 padding: 1em;
@@ -379,7 +382,7 @@ width: 100%;
     display: flex;
     justify-content: space-between;
 }
-.comment_header small{
+.small{
     color: #a9a9a9;
 }
 .comment_action {

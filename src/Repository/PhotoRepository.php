@@ -67,6 +67,16 @@ class PhotoRepository extends ServiceEntityRepository
         return $query;
     }
 
+    public function getPopularPages()
+    {
+        $qb = $this->createQueryBuilder('p')
+        ->select('COUNT(u) AS HIDDEN nb', 'p')
+        ->leftJoin('p.likeUsers', 'u')
+        ->orderBy('nb', 'DESC')
+        ->groupBy('p');
+        return $qb->getQuery();
+    }
+
     public function getPhotosFromUser($userId){
 
         return $this->createQueryBuilder('p')
@@ -76,8 +86,28 @@ class PhotoRepository extends ServiceEntityRepository
         ;
      }
 
+     public function findLasts($number)
+     {
+         return $this->createQueryBuilder('p')
+             ->orderBy('p.date_creation', 'DESC')
+             ->setMaxResults($number)
+             ->getQuery()
+             ->getResult()
+         ;
+     }
+     public function findLastsByPop($number)
+     {
+         return $this->createQueryBuilder('p')
+         ->select('COUNT(u) AS HIDDEN nb', 'p')
+         ->leftJoin('p.likeUsers', 'u')
+         ->orderBy('nb', 'DESC')
+         ->groupBy('p')
+         ->setMaxResults($number)
+         ->getQuery()
+         ->getResult();
+     }
 
-    public function findLasts($number, $user)
+    public function findLastsByUser($number, $user)
     {
         return $this->createQueryBuilder('p')
             ->orderBy('p.date_creation', 'DESC')
@@ -87,6 +117,47 @@ class PhotoRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+    // public function findByFollowedRandom($number, $user)
+    // {
+    //     return $this->createQueryBuilder('p')
+    //         ->from('User', 'u')
+    //         ->where('User = '.$user)
+    // }
+
+    // public function findByFollowedRandom($number, $user){
+    //     $entityManager = $this->getEntityManager();
+    //     $query = $entityManager ->createQuery(
+    //                 "SELECT p
+    //                     FROM App\Entity\Photo p, App\Entity\User u
+    //                     WHERE u.id = $user
+    //                     AND p.user = u.followedUsers"
+                        
+    //     );
+    //     return $query->execute();
+    // }
+
+    public function findByFollowedRandom($users){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager ->createQuery(
+                    "SELECT p
+                        FROM App\Entity\Photo p
+                        WHERE p.user = $users"
+        );
+        return $query->execute();
+    }
+
+
+    // public function findByFollowedRandom($userId){
+    //     $entityManager = $this->getEntityManager();
+    //     $query = $entityManager ->createQuery(
+    //                 "SELECT p
+    //                     FROM App\Entity\Photo p
+    //                     WHERE p.user IN
+    //                     (SELECT u FROM App\Entity\User u JOIN u.followedUsers f WHERE u = $userId)"
+    //     );
+    //     return $query->execute();
+    // }
 
     public function deletePhoto($userId)
     {
