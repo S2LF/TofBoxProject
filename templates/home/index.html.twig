@@ -98,8 +98,8 @@
 
         <div class="photo-wrap">
         {% if followPhoto | length == 0 %}
-            <p>Vous ne suivez personne pour l'instant.<br>
-            Suivez d'autres utilisateur et vous verrez certaines de leurs photos apparaître ici </p>
+            <p class="center">Vous ne suivez personne pour l'instant.<br>
+            Suivez d'autres utilisateurs et vous verrez certaines de leurs photos apparaîtrent ici !</p>
         {% else %}
             {% for photo in followPhoto|slice(0, 4) %}
         
