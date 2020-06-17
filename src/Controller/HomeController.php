@@ -37,22 +37,24 @@ class HomeController extends AbstractController
 
         $lastsPhotos = $this->getDoctrine()->getRepository(Photo::class)->findLasts(4);
         $lastsPhotosByPop = $this->getDoctrine()->getRepository(Photo::class)->findLastsByPop(4);
-        // if($this->getUser()){
+        if($this->getUser()){
 
             $followers = $this->getUser()->getFollowByUsers();;
 
-
-            $photos = [];
-
+            $followPhotos = [];
             foreach($followers as $follower){
-                $photos = array_merge($photos, $follower->getFollowedUsers()->getPhotos()->toArray());
+                $followPhotos = array_merge($followPhotos, $follower->getFollowedUsers()->getPhotos()->toArray());
             }
 
+            shuffle($followPhotos);
+
+        }else{
+            $photo = null;
+        }
         return $this->render('home/index.html.twig', [
             'lastsPhotos' => $lastsPhotos,
             'lastsByPop' => $lastsPhotosByPop,
-            'Followphoto' => $photos,
-            // 'lastsByFollow' => $followers,
+            'followPhoto' => $followPhotos,
             'categories' => $categories,
         ]);
     }
