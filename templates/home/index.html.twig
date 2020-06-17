@@ -97,7 +97,7 @@
         <h1 class="center title">Photos de ceux que vous suivez</h1>
 
         <div class="photo-wrap">
-        {% if followPhoto | length = 0 %}
+        {% if followPhoto | length == 0 %}
             <p>Vous ne suivez personne pour l'instant.<br>
             Suivez d'autres utilisateur et vous verrez certaines de leurs photos apparaître ici </p>
         {% else %}
