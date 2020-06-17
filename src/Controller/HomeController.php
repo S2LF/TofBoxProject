@@ -32,6 +32,47 @@ class HomeController extends AbstractController
         ->getRepository(Category::class)
         ->getAll();
 
+
+
+
+        $lastsPhotos = $this->getDoctrine()->getRepository(Photo::class)->findLasts(4);
+        $lastsPhotosByPop = $this->getDoctrine()->getRepository(Photo::class)->findLastsByPop(4);
+        // if($this->getUser()){
+
+            $followers = $this->getUser()->getFollowByUsers();;
+
+
+            $photos = [];
+
+            foreach($followers as $follower){
+                $photos = array_merge($photos, $follower->getFollowedUsers()->getPhotos()->toArray());
+            }
+
+        return $this->render('home/index.html.twig', [
+            'lastsPhotos' => $lastsPhotos,
+            'lastsByPop' => $lastsPhotosByPop,
+            'Followphoto' => $photos,
+            // 'lastsByFollow' => $followers,
+            'categories' => $categories,
+        ]);
+    }
+
+
+    /**
+     * @Route("/lasts", name="home_lasts")
+     * 
+     * Get photos with pagination
+     * Get categories for slide
+     * Display home page
+     */
+    public function getPhotosByLasts(PaginatorInterface $paginator, Request $request)
+    {
+
+        // Get all categories
+        $categories = $this->getDoctrine()
+        ->getRepository(Category::class)
+        ->getAll();
+
         // Get all photos
 
         $photos = $paginator->paginate(
@@ -40,14 +81,11 @@ class HomeController extends AbstractController
             12
         );
 
-        return $this->render('home/index.html.twig', [
+        return $this->render('home/lasts.html.twig', [
             'photos' => $photos,
             'categories' => $categories,
         ]);
     }
-
-
-
 
     /**
      * @Route("/home_cat/{cat_id}", name="home_cat")
@@ -66,6 +104,7 @@ class HomeController extends AbstractController
              $categories = $this->getDoctrine()
             ->getRepository(Category::class)
             ->getAll();
+            
 
             $photos = $paginator->paginate(
                 $this->getDoctrine()->getRepository(Category::class)->getPhotosFromCat($catId),
@@ -78,6 +117,34 @@ class HomeController extends AbstractController
                 'category' => $category,
                 'categories' => $categories,
             ]);
-
         }
+
+    /**
+     * @Route("/home_pop", name="home_pop")
+     */
+    public function getPhotosByPopular(Request $request, PaginatorInterface $paginator){
+    
+        // Get all categories
+            $categories = $this->getDoctrine()
+        ->getRepository(Category::class)
+        ->getAll();
+
+        // Get all categories
+        $categories = $this->getDoctrine()
+        ->getRepository(Category::class)
+        ->getAll();
+
+        $photos = $paginator->paginate(
+            $this->getDoctrine()->getRepository(Photo::class)->getPopularPages(),
+            $request->query->getInt('page', 1),
+            12
+        );
+
+        return $this->render('home/pop.html.twig', [
+            'photos' => $photos,
+            'categories' => $categories,
+        ]);
+    }
+
+    public function getPhotosByFollowed(){}
 }

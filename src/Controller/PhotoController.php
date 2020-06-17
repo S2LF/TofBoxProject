@@ -181,7 +181,7 @@ class PhotoController extends AbstractController
 
         $photoid = $request->query->get("photoid");
         $photo = $em->getRepository(Photo::class)->findOneBy(['id' => $photoid]);
-        $lastsPhotos = $prepo->findLasts(4, $photo->getUser()->getId());
+        $lastsPhotos = $prepo->findLastsByUser(4, $photo->getUser()->getId());
 
         if($photo->getLikeUsers()->contains($this->getUser())){
             $isLiking = true;
@@ -218,7 +218,7 @@ class PhotoController extends AbstractController
     public function ajax_del(Request $request, EntityManagerInterface $em, PhotoRepository $prepo, FollowRepository $frepo){
         $photoid = $request->query->get("photoid");
         $photo = $em->getRepository(Photo::class)->findOneBy(['id' => $photoid]);
-        $lastsPhotos = $prepo->findLasts(4, $photo->getUser()->getId());
+        $lastsPhotos = $prepo->findLastsByUser(4, $photo->getUser()->getId());
 
         if($photo->getLikeUsers()->contains($this->getUser())){
             $isLiking = true;
