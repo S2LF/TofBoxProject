@@ -49,7 +49,7 @@ class HomeController extends AbstractController
             shuffle($followPhotos);
 
         }else{
-            $photo = null;
+            $followPhotos = null;
         }
         return $this->render('home/index.html.twig', [
             'lastsPhotos' => $lastsPhotos,

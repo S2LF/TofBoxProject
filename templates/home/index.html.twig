@@ -90,6 +90,10 @@
     
         {% endfor %}
         </div>
+
+    {% if app.user %}
+        
+    
     <h1 class="center title">Photos de ceux que vous suivez</h1>
 
     <div class="photo-wrap">  
@@ -125,10 +129,10 @@
             </figcaption>
         </figure>
     {% endfor %}
-    </div>
+
    
-    {# {{ dump(followPhoto) }}
-    {{ dump(followRand) }} #}
+    </div>
+    {% endif %}
 
 </section>
 {% endblock %}
