@@ -144,17 +144,28 @@
     {{ parent() }}
     <script>
 
-            // Get the button that opens the modal
         $(document).ready(function(){
-            $("section#content_photo_cat").on("click", '.myBtn', function(e){
+            // On cible le classe présente sur le photo
+            $(".myBtn").on("click", function(e){
+                // On intercepte l'évènement par défaut du <a>
+                // On empêche ainsi le rechargement de la page
                 e.preventDefault()
 
+                // On récupère le data-photo qui contient l'ID de la photo ciblée
                 let photoid = $(this).data("photo")
+
+                // On prépare la requête Ajax en GET
                 $.get(
+                    // On définit le chemin de la méthode ciblée
+                    // On injecte l'ID de la photo
                     "{{ path('ajax_show') }}",
                     {
                         "photoid" : photoid
                     },
+
+                    // Le réponse, renvoyé par le controller
+                    // Qui sera injecté dans le contenu de la fenêtre modale
+                    // Puis on affichera la fenêtre modale à l'utilisateur
                     function(data){
                         $("#myModal .modal-body").html(data)
                         $("#myModal").show()

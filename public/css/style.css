@@ -558,7 +558,7 @@ div.actionzone p a:hover{
     max-width: 270px;
 }
 #photo-edit-view{
-    width: 60%;
+    margin-bottom: 1em;
 }
 #title input{
     width: 300px;
