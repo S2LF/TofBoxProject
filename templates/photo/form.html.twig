@@ -15,7 +15,7 @@
 
         {% if 'photo/edit' in app.request.uri %}
         <div class="center">
-            <img id="photo-edit-view" src="{{ asset('img/' ~ photo.path ) }}">
+            <img id="photo-edit-view" src="{{ asset('img/' ~ photo.path ) |imagine_filter('show') }}">
         </div>
 
         {% endif %}

@@ -121,7 +121,7 @@ class PhotoController extends AbstractController
                     ]);
                 } else {
                     $em->flush();
-                    $this->addFlash("success", "La photo a bien été modifié !");
+                    $this->addFlash("success", "La photo a bien été modifiée !");
                     return $this->redirectToRoute('user_photos', array('id' => $photo->getUser()->getId()));
                 }
             }
@@ -179,10 +179,15 @@ class PhotoController extends AbstractController
      */
     public function ajax_show(Request $request, EntityManagerInterface $em, PhotoRepository $prepo, FollowRepository $frepo){
 
+        // On récupère le Photo ID passé en argument
         $photoid = $request->query->get("photoid");
+        // On appelle la méthode 'findOneBy' dans le Repository lié à l'Entité Photo
         $photo = $em->getRepository(Photo::class)->findOneBy(['id' => $photoid]);
+        // On récupère les 4 dernièrs photos grâce à la méthode 'findLasts'
         $lastsPhotos = $prepo->findLastsByUser(4, $photo->getUser()->getId());
 
+        // Si l'utilisateur courant 'like' la photo
+        // $isLiking = true ou false
         if($photo->getLikeUsers()->contains($this->getUser())){
             $isLiking = true;
         } else {
@@ -197,15 +202,16 @@ class PhotoController extends AbstractController
             $isFollow = false;
         }
 
+        // On renvoie les informations nécessaires à l'affichage vers la Vue, ici 'photo/ajaxShow.html.twig'
         $html = $this->renderView("photo/ajaxShow.html.twig", [
             "lastsPhotos" => $lastsPhotos,
             "photo" => $photo,
             "isLiking" => $isLiking,
             "isFollow" => $isFollow
         ]);
-
+        
+        // On retourne une réponse qui contient la VUe et les informations nécessaire.
         return new Response($html);
-
     }
 
     /**
