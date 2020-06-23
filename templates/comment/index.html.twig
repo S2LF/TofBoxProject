@@ -4,7 +4,7 @@
 {% for comment in photo.comments %}
 
 <div class="comment-block">
-    <img src="{{ asset('img/'~ comment.user.photoProfil) }}" alt="{{comment.user.nickname }}">
+    <img src="{{ asset('img/'~ comment.user.photoProfil) | imagine_filter('comment_photo_profil') }}" alt="{{comment.user.nickname }}">
     <div class="comment">
         <div class="comment_header">
             <h4>{{ comment.user.nickname}}</h4> <small class="small">{{ comment.dateComment | timeago }}</small>

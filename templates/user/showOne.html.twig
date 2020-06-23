@@ -71,7 +71,7 @@
 
                 <div class="follow">
                     {% for followBy in user.followByUsers %}
-                        <p><a href="{{ path('profil', {'id':followBy.followedUsers.id }) }}"><img class="profil_photo" src="{{ asset('img/' ~ followBy.followedUsers.photoProfil ) }}" alt="">&nbsp;{{ followBy.followedUsers.nickname }}</a></p>
+                        <p><a href="{{ path('profil', {'id':followBy.followedUsers.id }) }}"><img class="profil_photo" src="{{ asset('img/' ~ followBy.followedUsers.photoProfil ) | imagine_filter('photoProfilNav') }}" alt="">&nbsp;{{ followBy.followedUsers.nickname }}</a></p>
                     {% endfor %} 
                 </div>
             {% else %}
@@ -85,7 +85,7 @@
                 <h2>Vous êtes suivis par: {{ user.followedUsers | length }}</h2>
                 <div class="follow" id="followList">
                     {% for followBy in user.followedUsers %}
-                        <p id="{{ followBy.followByUsers.id }}"><a href="{{ path('profil', {'id':followBy.followByUsers.id }) }}"><img class="profil_photo" src="{{ asset('img/' ~ followBy.followByUsers.photoProfil ) }}" alt="">&nbsp;{{ followBy.followByUsers.nickname }}</a></p>
+                        <p id="{{ followBy.followByUsers.id }}"><a href="{{ path('profil', {'id':followBy.followByUsers.id }) }}"><img class="profil_photo" src="{{ asset('img/' ~ followBy.followByUsers.photoProfil ) | imagine_filter('photoProfilNav') }}" alt="">&nbsp;{{ followBy.followByUsers.nickname }}</a></p>
                     {% endfor %}
                 </div>
             {% else %}

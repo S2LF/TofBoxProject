@@ -53,7 +53,7 @@
             {% if app.user %}
 
             <div class="comment-block">
-                <img src="{{ asset('img/'~ app.user.photoProfil) }}" alt="{{ app.user.nickname }}">
+                <img src="{{ asset('img/'~ app.user.photoProfil) | imagine_filter('comment_photo_profil') }}" alt="{{ app.user.nickname }}">
 
                 <div class="comment">
                     <div class="comment_header"><h4>{{ app.user.nickname }}</h4> </div>
@@ -110,9 +110,11 @@
                 <h5>Followers: <span id="followNb_modal">{{photo.user.followByUsers | length }}</span></h5>
                 <h5>Photos: {{ photo.user.photos | length }}</h5>
                 <h6>Ses dernières photos:</h6>
-                {% for LastPhoto in lastsPhotos %}
-                    <img class="lasts" src="{{ asset('img/' ~ LastPhoto.path) }}" alt="{{ LastPhoto.title }}">
-                {% endfor %}
+                <div class="center">
+                    {% for LastPhoto in lastsPhotos %}
+                    <img src="{{ asset('img/' ~ LastPhoto.path) | imagine_filter('last_photos') }}" alt="{{ LastPhoto.title }}">
+                    {% endfor %}
+                </div>
             </article>
             <div class="signal">
                 <a href="" id="modal-signal" data-photo="{{ photo.id }}"><small><i class="fas fa-exclamation-triangle"></i>&nbsp;Signaler</small></a>
