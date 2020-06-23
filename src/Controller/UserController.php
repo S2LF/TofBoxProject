@@ -10,6 +10,7 @@ use App\Form\RegistrationFormType;
 use App\Repository\PhotoRepository;
 use App\Repository\FollowRepository;
 use App\Repository\ReportRepository;
+use App\Repository\CommentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -164,7 +165,7 @@ class UserController extends AbstractController
      * Delete Photo & Files
      * Delete follows & like
      */
-    public function deleteProfil(User $user, EntityManagerInterface $em, PhotoRepository $prepo, FollowRepository $frepo, ReportRepository $rrepo )
+    public function deleteProfil(User $user, EntityManagerInterface $em, PhotoRepository $prepo, FollowRepository $frepo, ReportRepository $rrepo, CommentRepository $crepo )
     {
 
         if ( $this->isGranted('ROLE_ADMIN') || $this->getUser() == $user){
@@ -180,8 +181,12 @@ class UserController extends AbstractController
                     $this->addFlash("error", "Un problème est survenu lors de la suppression");
                 }
             }
-            foreach ($user->getPhotos() as $photo){
+
+           foreach ($user->getPhotos() as $photo){
                 $rrepo->delReport($photo->getId());
+                foreach($photo->getComments() as $comment){
+                    $crepo->deleteComment($comment->getId());
+                }
             }
             $prepo->deletePhoto($user->getId());
             $user->setNickname("Anonyme ". \uniqid());
