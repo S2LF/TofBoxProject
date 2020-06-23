@@ -357,9 +357,7 @@ width: 100%;
 .propos h3{
     padding-right: 1em;
 }
-.lasts {
-    width: 75px;
-}
+
 .comment-block{
     border-bottom: 1px solid #ddd;
     padding-top: 1em ;
@@ -893,7 +891,7 @@ input[type=radio] + label {
     border:1px solid var(--header-color);
     font-weight: bold;    
 }
-.previous, .first, .next, .last {
+.previous, .first, .next {
     padding: 0 0.5em;
     
 }
