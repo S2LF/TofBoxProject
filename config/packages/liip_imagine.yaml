@@ -13,19 +13,7 @@ liip_imagine:
     cache: cache_photos
 
     filter_sets: 
-        
-        polar:
-            quality: 75
-            filters:
-                scale:
-                    dim: [250, 250]
 
-        carre: # Nom du filtre
-            quality: 75 # Qualité de l'image
-            filters: # Liste des filtres à appliquer
-                thumbnail: # Filtre "Thumbnail"
-                    size: [200, 200] # Taille de l'image de sortie
-                    mode: inset # Découpage de l'image
 
         bg:
             quality: 75
@@ -67,3 +55,18 @@ liip_imagine:
                 thumbnail:
                     size: [400, 400]
                     mode: outbound
+
+        comment_photo_profil:
+            quality: 75
+            filters:
+                thumbnail:
+                    size: [50,50]
+                    mode: outbound
+
+        last_photos:
+            quality: 75
+            filters:
+                thumbnail:
+                    size: [100,200]
+                    mode: outbound
+
